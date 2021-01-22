@@ -1,0 +1,34 @@
+{
+  "name": "essem.js",
+  "version": "0.0.0",
+  "description": "A javascript based game engine that can make any fast and powerful application.",
+  "scripts": {
+    "dev": "rollup -cw",
+    "build": "rollup -c"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Calbabreaker/essem.js.git"
+  },
+  "keywords": [
+    "library",
+    "javascript",
+    "typescript",
+    "maker",
+    "application",
+    "games",
+    "engine"
+  ],
+  "author": "Calbabreaker",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Calbabreaker/essem.js/issues"
+  },
+  "homepage": "https://github.com/Calbabreaker/essem.js#readme",
+  "devDependencies": {
+    "rollup": "^2.37.1",
+    "rollup-plugin-typescript2": "^0.29.0",
+    "typescript": "^4.1.3"
+  },
+  "dependencies": {}
+}
