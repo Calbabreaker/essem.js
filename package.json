@@ -4,7 +4,7 @@
   "description": "A javascript based game engine that can make any fast and powerful application.",
   "scripts": {
     "start": "npm run dev",
-    "dev": "rollup -cw --environment DEV_SERVER",
+    "dev": "rollup -cw --environment DEV,SERVER",
     "build": "rollup -c"
   },
   "repository": {
@@ -28,6 +28,7 @@
   "homepage": "https://github.com/Calbabreaker/essem.js#readme",
   "devDependencies": {
     "rollup": "^2.37.1",
+    "rollup-plugin-jscc": "^2.0.0",
     "rollup-plugin-serve": "^1.1.0",
     "rollup-plugin-sourcemaps": "^0.6.3",
     "rollup-plugin-terser": "^7.0.2",

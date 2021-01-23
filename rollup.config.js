@@ -1,3 +1,4 @@
+import jscc from "rollup-plugin-jscc";
 import typescript from "rollup-plugin-typescript2";
 import sourcemaps from "rollup-plugin-sourcemaps";
 import serve from "rollup-plugin-serve";
@@ -7,7 +8,8 @@ import path from "path";
 import pkg from "./package.json";
 
 export default () => {
-    const useDevServer = process.env.DEV_SERVER || false;
+    const isDev = process.env.DEV || false;
+    const useServer = process.env.SERVER || false;
 
     const date = new Date().toUTCString();
     const banner = [
@@ -26,13 +28,22 @@ export default () => {
             banner,
             name: "ESSEM",
         },
-        plugins: [typescript(), sourcemaps()],
+        plugins: [
+            jscc({
+                values: {
+                    _DEBUG: isDev,
+                    _PRODUCTION: !isDev,
+                    _VERSION: pkg.version,
+                },
+            }),
+            sourcemaps(),
+            typescript(),
+        ],
     };
 
-    if (useDevServer) {
+    if (useServer) {
         baseBundle.plugins.push(
             serve({
-                open: true,
                 openPage: "/examples/",
                 port: 8080,
             })
