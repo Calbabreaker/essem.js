@@ -1,3 +1,3 @@
 export function test(): void {
-    console.log("Hello testing yay");
+    console.log("Hello testing yary");
 }

@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "es6",
     "sourceMap": true,
-    "outDir": "./dist",
+    "outDir": "./build",
     "moduleResolution": "node",
     "noImplicitAny": true,
     "strictNullChecks": true,
