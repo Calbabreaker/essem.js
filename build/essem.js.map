@@ -1,0 +1,1 @@
+{"version":3,"file":"essem.js","sources":["../src/core/application.ts","../src/index.ts"],"sourcesContent":["export class Application {\n    constructor() {}\n}\n","export * from \"./core/application\";\n\nexport const VERSION = \"$_VERSION\";\n"],"names":[],"mappings":";;;;;;;;;;;;UAAa,WAAW;QACpB,iBAAgB;;;UCCP,OAAO,GAAG;;;;;;;;;;;"}

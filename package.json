@@ -2,6 +2,9 @@
   "name": "essem.js",
   "version": "0.0.0",
   "description": "A javascript based game engine that can make any fast and powerful application.",
+  "main": "build/essem.js",
+  "module": "build/essem.module.js",
+  "types": "build/essem.d.ts",
   "scripts": {
     "start": "npm run dev",
     "dev": "rollup -cw --environment DEV,SERVER",
@@ -28,6 +31,7 @@
   "homepage": "https://github.com/Calbabreaker/essem.js#readme",
   "devDependencies": {
     "rollup": "^2.37.1",
+    "rollup-plugin-dts": "^2.0.1",
     "rollup-plugin-jscc": "^2.0.0",
     "rollup-plugin-serve": "^1.1.0",
     "rollup-plugin-sourcemaps": "^0.6.3",

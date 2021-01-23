@@ -1,4 +1,5 @@
 import jscc from "rollup-plugin-jscc";
+import dts from "rollup-plugin-dts";
 import typescript from "rollup-plugin-typescript2";
 import sourcemaps from "rollup-plugin-sourcemaps";
 import serve from "rollup-plugin-serve";
@@ -81,6 +82,12 @@ export default () => {
             file: path.join(__dirname, "build/essem.module.js"),
             format: "esm",
         },
+    });
+
+    bundles.push({
+        input: "./src/index.ts",
+        output: [{ file: "build/essem.d.ts", format: "es" }],
+        plugins: [dts()],
     });
 
     return bundles;
