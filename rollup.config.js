@@ -45,7 +45,6 @@ export default () => {
     if (useServer) {
         baseBundle.plugins.push(
             serve({
-                openPage: "/examples/",
                 port: 8080,
             })
         );
@@ -81,13 +80,15 @@ export default () => {
             ...baseBundle.output,
             file: path.join(__dirname, "build/essem.module.js"),
             format: "esm",
+            sourcemap: false,
         },
     });
 
+    // type declarations
     bundles.push({
         input: "./src/index.ts",
-        output: [{ file: "build/essem.d.ts", format: "es" }],
-        plugins: [dts()],
+        output: { ...baseBundle.output, file: "build/essem.d.ts", format: "es", sourcemap: false },
+        plugins: [...baseBundle.plugins, dts()],
     });
 
     return bundles;

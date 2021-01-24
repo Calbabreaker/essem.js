@@ -1,14 +1,16 @@
 /*!
  * essem.js - v0.0.0
- * Compiled Sat, 23 Jan 2021 11:11:12 GMT
+ * Compiled Sun, 24 Jan 2021 02:15:57 GMT
  *
  * Free to use under the MIT LICENSE.
  */
 class Application {
     constructor() { }
+    test() {
+        console.log("Testing");
+    }
 }
 
 const VERSION = "0.0.0";
 
 export { Application, VERSION };
-//# sourceMappingURL=essem.module.js.map
