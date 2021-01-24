@@ -1,5 +1,7 @@
 export class Application {
-    constructor() {}
+    constructor() {
+        // nothing for now
+    }
 
     test(): void {
         console.log("Testing");

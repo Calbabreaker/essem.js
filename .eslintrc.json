@@ -1,0 +1,52 @@
+{
+    "env": {
+        "es6": true,
+        "browser": true,
+        "node": true
+    },
+    "ignorePatterns": [
+        "node_modules",
+        "build",
+        "docs"
+    ],
+    "root": true,
+    "parser": "@typescript-eslint/parser",
+    "plugins": [
+        "@typescript-eslint",
+        "prettier"
+    ],
+    "extends": [
+        "eslint:recommended",
+        "prettier"
+    ],
+    "rules": {
+        "prettier/prettier": "error"
+    },
+    "overrides": [
+        {
+            "files": [
+                "*.ts"
+            ],
+            "extends": [
+                "plugin:@typescript-eslint/recommended",
+                "prettier/@typescript-eslint"
+            ],
+            "rules": {
+                "no-unused-vars": "off",
+                "@typescript-eslint/no-explicit-any": [
+                    "error",
+                    {
+                        "ignoreRestArgs": true
+                    }
+                ],
+                "@typescript-eslint/no-unused-vars": [
+                    "error",
+                    {
+                        "argsIgnorePattern": "^_"
+                    }
+                ],
+                "@typescript-eslint/no-namespace": "off"
+            }
+        }
+    ]
+}

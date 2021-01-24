@@ -1,3 +1,3 @@
 export * from "./core/application";
 
-export const VERSION: string = "$_VERSION";
+export const VERSION = "$_VERSION";
