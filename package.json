@@ -8,7 +8,9 @@
   "scripts": {
     "start": "npm run dev",
     "dev": "rollup -cw --environment DEV,SERVER",
-    "build": "rollup -c"
+    "build": "rollup -c",
+    "build:dev": "rollup -c --environment DEV",
+    "add-build-changes": "git add --force build/*"
   },
   "repository": {
     "type": "git",
