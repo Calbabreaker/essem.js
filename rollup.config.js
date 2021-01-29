@@ -42,14 +42,6 @@ export default () => {
         ],
     };
 
-    if (useServer) {
-        baseBundle.plugins.push(
-            serve({
-                port: 8080,
-            })
-        );
-    }
-
     const bundles = [];
 
     // unminified for browser
@@ -62,34 +54,47 @@ export default () => {
         },
     });
 
-    // minified for browser
-    bundles.push({
-        ...baseBundle,
-        output: {
-            ...baseBundle.output,
-            file: path.join(__dirname, "build/essem.min.js"),
-            format: "umd",
-        },
-        plugins: [...baseBundle.plugins, terser()],
-    });
+    if (useServer) {
+        bundles[0].plugins.push(
+            serve({
+                port: 8080,
+            })
+        );
+    } else {
+        // minified for browser
+        bundles.push({
+            ...baseBundle,
+            output: {
+                ...baseBundle.output,
+                file: path.join(__dirname, "build/essem.min.js"),
+                format: "umd",
+            },
+            plugins: [...baseBundle.plugins, terser()],
+        });
 
-    // for modules
-    bundles.push({
-        ...baseBundle,
-        output: {
-            ...baseBundle.output,
-            file: path.join(__dirname, "build/essem.module.js"),
-            format: "esm",
-            sourcemap: false,
-        },
-    });
+        // for modules
+        bundles.push({
+            ...baseBundle,
+            output: {
+                ...baseBundle.output,
+                file: path.join(__dirname, "build/essem.module.js"),
+                format: "esm",
+                sourcemap: false,
+            },
+        });
 
-    // type declarations
-    bundles.push({
-        input: "./src/index.ts",
-        output: { ...baseBundle.output, file: "build/essem.d.ts", format: "es", sourcemap: false },
-        plugins: [...baseBundle.plugins, dts()],
-    });
+        // type declarations
+        bundles.push({
+            input: "./src/index.ts",
+            output: {
+                ...baseBundle.output,
+                file: "build/essem.d.ts",
+                format: "es",
+                sourcemap: false,
+            },
+            plugins: [...baseBundle.plugins, dts()],
+        });
+    }
 
     return bundles;
 };
