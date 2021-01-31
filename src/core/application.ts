@@ -1,11 +1,16 @@
 import { Manager } from "src/ecs/manager";
+import { Scene } from "src/ecs/scene";
 
 export class Application {
-    // @ts-ignore:
     private _manager: Manager;
 
     constructor() {
         this._manager = new Manager();
+    }
+
+    createScene(): Scene {
+        const scene = new Scene(this._manager);
+        return scene;
     }
 
     test(): void {
@@ -14,7 +19,7 @@ export class Application {
         class Transform2D {
             x: number;
             y: number;
-            name: string = "hello";
+            name = "hello";
         }
 
         function addComponent<T>(

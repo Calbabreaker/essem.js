@@ -1,7 +1,18 @@
 import { Entity } from "./entity";
+import { Manager } from "./manager";
 
 export class Scene {
-    constructor() {}
+    _manager: Manager;
 
-    createEntity(): Entity {}
+    constructor(manager: Manager) {
+        this._manager = manager;
+    }
+
+    createEntity(): Entity {
+        return this._manager.createEntity();
+    }
+
+    destroyEntity(entity: Entity): void {
+        this._manager.destroyEntity(entity);
+    }
 }

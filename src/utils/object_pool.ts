@@ -20,11 +20,11 @@ export class ObjectPool<T> {
         return object;
     }
 
-    release(object: T) {
+    release(object: T): void {
         this.availiable.push(object);
     }
 
-    reset() {
+    reset(): void {
         const countToFillIn = this.totalObjects - this.availiable.length;
         for (let i = 0; i < countToFillIn; i++) {
             const object = new this.ObjectClass();
@@ -32,7 +32,7 @@ export class ObjectPool<T> {
         }
     }
 
-    reserve(count: number) {
+    reserve(count: number): void {
         for (let i = 0; i < count; i++) {
             const object = new this.ObjectClass();
             this.availiable.push(object);
