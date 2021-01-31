@@ -1,9 +1,11 @@
+type ObjectPoolCtor<T> = { new (id: number): T } | { new (): T };
+
 export class ObjectPool<T> {
-    ObjectClass: { new (): T };
+    ObjectClass: ObjectPoolCtor<T>;
     availiable: T[] = [];
     totalObjects = 0;
 
-    constructor(ObjectClass: { new (): T }, count: number) {
+    constructor(ObjectClass: ObjectPoolCtor<T>, count: number) {
         this.ObjectClass = ObjectClass;
         this.reserve(count);
     }
@@ -16,7 +18,7 @@ export class ObjectPool<T> {
             this.reserve(toExpand);
         }
 
-        const object = this.availiable.pop() as T;
+        const object = this.availiable.shift() as T;
         return object;
     }
 
@@ -24,17 +26,9 @@ export class ObjectPool<T> {
         this.availiable.push(object);
     }
 
-    reset(): void {
-        const countToFillIn = this.totalObjects - this.availiable.length;
-        for (let i = 0; i < countToFillIn; i++) {
-            const object = new this.ObjectClass();
-            this.availiable.push(object);
-        }
-    }
-
     reserve(count: number): void {
         for (let i = 0; i < count; i++) {
-            const object = new this.ObjectClass();
+            const object = new this.ObjectClass(this.totalObjects + i);
             this.availiable.push(object);
         }
 
