@@ -44,8 +44,7 @@
                     {
                         "argsIgnorePattern": "^_"
                     }
-                ],
-                "@typescript-eslint/no-namespace": "off"
+                ]
             }
         }
     ]

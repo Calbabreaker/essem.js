@@ -8,8 +8,31 @@
     </head>
     <body>
         <script>
+            class PositionComponent {
+                constructor(x, y) {
+                    this.x = x;
+                    this.y = y;
+                }
+            }
+
+            class HelloComponent {
+                constructor(greeting) {
+                    this.greeting = greeting;
+                }
+            }
+
             const app = new ESSEM.Application();
+            app.registerComponent(PositionComponent);
+            app.registerComponent(HelloComponent);
+
             const scene = app.createScene();
+            const entityA = scene.createEntity();
+            entityA.addComponent(new PositionComponent(3, 1));
+            entityA.addComponent(new HelloComponent("boujour"));
+
+            const entityB = scene.createEntity();
+            entityB.addComponent(new PositionComponent(400, 100));
+            entityB.addComponent(new HelloComponent("konichiwa"));
         </script>
     </body>
 </html>

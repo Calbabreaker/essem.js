@@ -33,7 +33,7 @@ export default () => {
             jscc({
                 values: {
                     _DEBUG: isDev,
-                    _PRODUCTION: !isDev,
+                    _RELEASE: !isDev,
                     _VERSION: pkg.version,
                 },
             }),
@@ -85,14 +85,14 @@ export default () => {
 
         // type declarations
         bundles.push({
-            input: "./src/index.ts",
+            ...baseBundle,
             output: {
                 ...baseBundle.output,
                 file: "build/essem.d.ts",
                 format: "es",
                 sourcemap: false,
             },
-            plugins: [...baseBundle.plugins, dts()],
+            plugins: [dts()],
         });
     }
 
