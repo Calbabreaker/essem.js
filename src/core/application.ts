@@ -6,8 +6,35 @@ import { AnyCtor } from "../utils/types";
 export class Application {
     private _manager: Manager;
 
+    lastFrameTime: number = 0;
+    running: boolean = true;
+
     constructor() {
         this._manager = new Manager();
+
+        window.addEventListener("load", () => {
+            const loop = () => {
+                if (this.running) {
+                    this._onUpdate();
+                    requestAnimationFrame(loop);
+                }
+            };
+
+            requestAnimationFrame(loop);
+        });
+    }
+
+    private _onUpdate() {
+        const now = performance.now();
+        const delta = now - this.lastFrameTime;
+
+        this._manager.runSystems(delta);
+
+        this.lastFrameTime = now;
+    }
+
+    shutdown() {
+        this.running = false;
     }
 
     registerComponent<T extends Component>(componentClass: AnyCtor<T>): Application {
