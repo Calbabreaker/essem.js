@@ -11,18 +11,18 @@ export class Entity {
     // @ts-ignore
     private _manager: Manager;
 
-    constructor(id: number) {
-        this.id = id;
+    constructor() {
         this.componentMap = new Map();
     }
 
-    addComponent<T extends Component>(component: T): T {
+    addComponent(component: Component): Component {
         const typeName = component.constructor.name;
         const entitySet = this._manager.getEntityIDSet(typeName);
         assert(!this.componentMap.has(typeName), `Component '${typeName}' already exists!`);
 
         this.componentMap.set(typeName, component);
-        entitySet.add(this.id);
+        entitySet.add(this);
+        this._manager.notifySystemEntityChange();
         return component;
     }
 
@@ -32,7 +32,8 @@ export class Entity {
         assert(this.componentMap.has(typeName), `Component '${typeName}' does not exist!`);
 
         this.componentMap.delete(typeName);
-        entitySet.delete(this.id);
+        entitySet.delete(this);
+        this._manager.notifySystemEntityChange();
     }
 
     hasComponent<T extends Component>(componentType: AnyCtor<T> | string): boolean {
@@ -51,9 +52,13 @@ export class Entity {
         if (this.destroyed) return;
 
         for (const [typeName] of this.componentMap) {
-            this.removeComponent(typeName);
+            const entitySet = this._manager.getEntityIDSet(typeName);
+
+            this.componentMap.delete(typeName);
+            entitySet.delete(this);
         }
 
+        this._manager.notifySystemEntityChange();
         this.destroyed = true;
     }
 

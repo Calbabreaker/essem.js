@@ -1,4 +1,4 @@
-type ObjectPoolCtor<T> = { new (id: number): T } | { new (): T };
+type ObjectPoolCtor<T> = { new (): T };
 
 export class ObjectPool<T> {
     ObjectClass: ObjectPoolCtor<T>;
@@ -28,7 +28,7 @@ export class ObjectPool<T> {
 
     reserve(count: number): void {
         for (let i = 0; i < count; i++) {
-            const object = new this.ObjectClass(this.totalObjects + i);
+            const object = new this.ObjectClass();
             this.availiable.push(object);
         }
 

@@ -1,5 +1,6 @@
 import { Component, Manager } from "../ecs/manager";
 import { Scene } from "../ecs/scene";
+import { System } from "../ecs/system";
 import { AnyCtor } from "../utils/types";
 
 export class Application {
@@ -9,8 +10,14 @@ export class Application {
         this._manager = new Manager();
     }
 
-    registerComponent<T extends Component>(component: AnyCtor<T>): void {
-        this._manager.registerComponent(component);
+    registerComponent<T extends Component>(componentClass: AnyCtor<T>): Application {
+        this._manager.registerComponent(componentClass);
+        return this;
+    }
+
+    registerSystem<T extends System>(systemClass: { new (manager: Manager): T }): Application {
+        this._manager.registerSystem(systemClass);
+        return this;
     }
 
     createScene(): Scene {
