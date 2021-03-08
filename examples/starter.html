@@ -21,9 +21,20 @@
                 }
             }
 
+            // class SayHelloSystem extends System {
+            //     update(delta) {
+            //         for (const entity of this.entities) {
+            //             const position = entity.getComponent(PositionComponent);
+            //             const hello = entity.getComponent(HelloComponent);
+            //             console.log(`${hello.greeting} from {x: ${position.x}, y: ${position.y}}`);
+            //         }
+            //     }
+            // }
+
             const app = new ESSEM.Application();
             app.registerComponent(PositionComponent);
             app.registerComponent(HelloComponent);
+            // app.registerSystem(SayHelloSystem, [PositionComponent, HelloComponent]);
 
             const scene = app.createScene();
             const entityA = scene.createEntity();

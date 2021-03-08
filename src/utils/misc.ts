@@ -5,6 +5,6 @@ export class AssertionError extends Error {
     }
 }
 
-export function assert(value: any, message?: string): asserts value {
-    if (!value) throw new AssertionError(message);
+export function assert(condition: boolean, message?: string): asserts condition {
+    if (!condition) throw new AssertionError(message);
 }

@@ -1,46 +1,65 @@
-import { Manager } from "./manager";
+import { Component, Manager } from "./manager";
 import { assert } from "../utils/misc";
 import { AnyCtor } from "../utils/types";
 
 export class Entity {
     id: number;
-    componentToIndexMap: Map<string, number>;
+    destroyed: boolean = false;
 
+    componentMap: Map<string, Component>;
+
+    // @ts-ignore
     private _manager: Manager;
 
     constructor(id: number) {
         this.id = id;
-        this.componentToIndexMap = new Map();
+        this.componentMap = new Map();
     }
 
-    addComponent<T extends Object>(component: T): T {
-        const name = component.constructor.name;
-        assert(!this.componentToIndexMap.has(name), `Component '${name}' already exists!`);
+    addComponent<T extends Component>(component: T): T {
+        const typeName = component.constructor.name;
+        const entitySet = this._manager.getEntityIDSet(typeName);
+        assert(!this.componentMap.has(typeName), `Component '${typeName}' already exists!`);
 
-        const index = this._manager.entityComponentAdd(this, component);
-        this.componentToIndexMap.set(name, index);
+        this.componentMap.set(typeName, component);
+        entitySet.add(this.id);
         return component;
     }
 
-    removeComponent<T extends Object>(componentType: AnyCtor<T> | string): void {
-        const name = (componentType as AnyCtor<T>).name ?? componentType;
-        assert(this.componentToIndexMap.has(name), `Component '${name}' does not exist!`);
+    removeComponent<T extends Component>(componentType: AnyCtor<T> | string): void {
+        const typeName = (componentType as AnyCtor<T>).name ?? componentType;
+        const entitySet = this._manager.getEntityIDSet(typeName);
+        assert(this.componentMap.has(typeName), `Component '${typeName}' does not exist!`);
 
-        const index = this.componentToIndexMap.get(name) as number;
-        this._manager.entityComponentRemove(name, index);
-        this.componentToIndexMap.delete(name);
+        this.componentMap.delete(typeName);
+        entitySet.delete(this.id);
     }
 
-    hasComponent<T extends Object>(componentType: AnyCtor<T> | string): boolean {
-        const name = (componentType as AnyCtor<T>).name ?? componentType;
-        return this.componentToIndexMap.get(name) !== undefined;
+    hasComponent<T extends Component>(componentType: AnyCtor<T> | string): boolean {
+        const typeName = (componentType as AnyCtor<T>).name ?? componentType;
+        return this.componentMap.has(typeName);
     }
 
-    getComponent<T extends Object>(componentType: AnyCtor<T> | string): T {
-        const name = (componentType as AnyCtor<T>).name ?? componentType;
-        assert(this.componentToIndexMap.has(name), `Component '${name}' does not exist!`);
+    getComponent<T extends Component>(componentType: AnyCtor<T> | string): T {
+        const typeName = (componentType as AnyCtor<T>).name ?? componentType;
+        const component = this.componentMap.get(typeName);
+        assert(component !== undefined, `Component '${typeName}' does not exist!`);
+        return component as T;
+    }
 
-        const index = this.componentToIndexMap.get(name) as number;
-        return this._manager.entityComponentGet(name, index);
+    destroy(): void {
+        if (this.destroyed) return;
+
+        for (const [typeName] of this.componentMap) {
+            this.removeComponent(typeName);
+        }
+
+        this.destroyed = true;
+    }
+
+    _setup(): void {
+        if (!this.destroyed) return;
+
+        this.destroyed = false;
     }
 }
