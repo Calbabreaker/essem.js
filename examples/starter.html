@@ -7,6 +7,12 @@
         <script src="/build/essem.js"></script>
     </head>
     <body>
+        <h1>Starter Example</h1>
+        <div>
+            <script>
+                class sidfj {}
+            </script>
+        </div>
         <script>
             class PositionComponent {
                 constructor(x, y) {
@@ -15,41 +21,35 @@
                 }
             }
 
-            class HelloComponent {
-                constructor(greeting) {
-                    this.greeting = greeting;
+            class SpriteRenderer2DComponent {
+                constructor(color) {
+                    this.color = color;
                 }
             }
 
-            class SayHelloSystem extends ESSEM.System {
+            class Renderer2DSystem extends ESSEM.System {
                 onInit() {
-                    this.setComponentTypes([PositionComponent, HelloComponent]);
+                    this.setTypes([PositionComponent, SpriteRenderer2DComponent]);
                 }
 
                 onUpdate(delta) {
-                    const entities = this.getEntities();
-
-                    for (const entity of entities) {
-                        const position = entity.getComponent(PositionComponent);
-                        const hello = entity.getComponent(HelloComponent);
-                        console.log(`${hello.greeting} from {x: ${position.x}, y: ${position.y}}`);
+                    for (const entity of this.getEntities()) {
+                        // ESSEM.Renderer.render(entity.getComponent(SpriteRenderer2DComponent));
                     }
                 }
             }
 
             const app = new ESSEM.Application();
             app.registerComponent(PositionComponent);
-            app.registerComponent(HelloComponent);
-            app.registerSystem(SayHelloSystem);
+            app.registerComponent(SpriteRenderer2DComponent);
+            app.registerSystem(Renderer2DSystem);
 
             const scene = app.createScene();
             const entityA = scene.createEntity();
             entityA.addComponent(new PositionComponent(3, 1));
-            entityA.addComponent(new HelloComponent("boujour"));
 
             const entityB = scene.createEntity();
             entityB.addComponent(new PositionComponent(400, 100));
-            entityB.addComponent(new HelloComponent("konichiwa"));
         </script>
     </body>
 </html>

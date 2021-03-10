@@ -15,7 +15,7 @@ export abstract class System {
     abstract onInit(): void;
     abstract onUpdate(delta: number): void;
 
-    setComponentTypes(componentTypes: AnyCtor<Component>[] | string[]): void {
+    setTypes(componentTypes: AnyCtor<Component>[] | string[]): void {
         this.typeNames = [];
         for (const componentType of componentTypes) {
             const typeName = (componentType as AnyCtor<Component>).name ?? componentType;

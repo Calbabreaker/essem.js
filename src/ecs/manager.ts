@@ -35,7 +35,7 @@ export class Manager {
         this.systems.push(system);
     }
 
-    runSystems(delta: number) {
+    runSystems(delta: number): void {
         for (const system of this.systems) {
             system.onUpdate(delta);
         }
