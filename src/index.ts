@@ -8,6 +8,9 @@ export * from "./ecs/system";
 
 export * from "./renderer/renderer";
 
+export * from "./math/common";
+export * from "./math/vector2";
+
 export * from "./utils/misc";
 export * from "./utils/object_pool";
 
