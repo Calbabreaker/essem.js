@@ -13,3 +13,5 @@ export const RAD_TO_DEG = Math.PI / 180;
 export function toDegrees(radians: number): number {
     return radians * RAD_TO_DEG;
 }
+
+export const TWO_PI = Math.PI * 2;

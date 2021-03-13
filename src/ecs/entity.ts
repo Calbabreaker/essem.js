@@ -4,11 +4,10 @@ import { AnyCtor } from "../utils/types";
 
 export class Entity {
     id: number;
-    destroyed: boolean = false;
+    destroyed = false;
 
     componentMap: Map<string, Component>;
 
-    // @ts-ignore
     private _manager: Manager;
 
     constructor() {

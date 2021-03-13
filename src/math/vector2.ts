@@ -1,33 +1,52 @@
 import { approxEquals } from "./common";
+import { Matrix3 } from "./matrix3";
 
 export class Vector2 {
     x: number;
     y: number;
+    private _array: Float32Array | null = null;
 
     constructor(x = 0, y = 0) {
         this.x = x;
         this.y = y;
     }
 
-    add(vector: Vector2): Vector2 {
+    clone(): Vector2 {
+        return new Vector2(this.x, this.y);
+    }
+
+    toString(): string {
+        return `Vector2(${this.x}, ${this.y})`;
+    }
+
+    toArray(out?: Float32Array): Float32Array {
+        if (!this._array) this._array = new Float32Array(2);
+
+        const array = out ?? this._array;
+        array[0] = this.x;
+        array[1] = this.y;
+        return array;
+    }
+
+    add(vector: Vector2): this {
         this.x += vector.x;
         this.y += vector.y;
         return this;
     }
 
-    subtract(vector: Vector2): Vector2 {
+    subtract(vector: Vector2): this {
         this.x -= vector.x;
         this.y -= vector.y;
         return this;
     }
 
-    multiply(scalar: number): Vector2 {
+    multiply(scalar: number): this {
         this.x *= scalar;
         this.y *= scalar;
         return this;
     }
 
-    divide(scalar: number): Vector2 {
+    divide(scalar: number): this {
         this.x /= scalar;
         this.y /= scalar;
         return this;
@@ -51,7 +70,7 @@ export class Vector2 {
         return Math.sqrt(this.magnitudeSquared());
     }
 
-    normalize(): Vector2 {
+    normalize(): this {
         this.divide(this.magnitude());
         return this;
     }
@@ -64,14 +83,14 @@ export class Vector2 {
         return this.x * vector.y - this.y * vector.x;
     }
 
-    random(magnitude = 1): Vector2 {
+    random(magnitude = 1): this {
         const rValue = Math.random() * Math.PI * 2;
         this.x = Math.cos(rValue) * magnitude;
         this.y = Math.cos(rValue) * magnitude;
         return this;
     }
 
-    rotate(radians: number, origin: Vector2 = new Vector2()): Vector2 {
+    rotate(radians: number, origin: Vector2 = new Vector2()): this {
         const pointX = this.x - origin.x;
         const pointY = this.y - origin.y;
 
@@ -83,16 +102,22 @@ export class Vector2 {
         return this;
     }
 
-    angle(vector: Vector2 = new Vector2()): number {
-        return Math.atan2(this.y - this.y, vector.x - vector.x);
+    angle(origin: Vector2 = new Vector2()): number {
+        return Math.atan2(this.y - this.y, origin.x - origin.x);
     }
 
-    exactEquals(a: Vector2, b: Vector2): boolean {
-        return a.x === b.x && a.y === b.y;
+    exactEquals(vector: Vector2): boolean {
+        return this.x === vector.x && this.y === vector.y;
     }
 
-    approxEquals(a: Vector2, b: Vector2, epsilon = 0.0001): boolean {
-        return approxEquals(a.x, b.x, epsilon) && approxEquals(a.y, b.y, epsilon);
+    approxEquals(vector: Vector2, epsilon = 0.0001): boolean {
+        return approxEquals(this.x, vector.x, epsilon) && approxEquals(this.y, vector.y, epsilon);
+    }
+
+    transformMatrix3(matrix: Matrix3): this {
+        this.x = matrix.xScale * this.x + matrix.xSkew * this.y + matrix.xTrans;
+        this.y = matrix.ySkew * this.x + matrix.yScale * this.y + matrix.yTrans;
+        return this;
     }
 
     sub = this.subtract;
