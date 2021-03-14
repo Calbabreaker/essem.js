@@ -53,17 +53,22 @@ export class Entity {
 
     destroy(removeComponents = true): void {
         if (this.destroyed) return;
-
-        if (removeComponents) this.componentMap.clear();
-        this._manager.notifySystemsEntityChange(this, this.signiture, "");
         this.destroyed = true;
+
+        this._manager.notifySystemsEntityChange(this, this.signiture, "");
+
+        if (removeComponents) {
+            this.componentMap.clear();
+            this.signiture = "";
+        }
     }
 
     setup(): void {
+        if (!this.destroyed) return;
+        this.destroyed = false;
+
         if (this.signiture !== "") {
             this._manager.notifySystemsEntityChange(this, "", this.signiture);
         }
-
-        this.destroyed = false;
     }
 }

@@ -17,7 +17,6 @@ export * from "./math/matrix3";
 
 export * from "./utils/browser";
 export * from "./utils/misc";
-export * from "./utils/object_pool";
 
 export const VERSION = "$_VERSION";
 

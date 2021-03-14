@@ -24,12 +24,13 @@
 
             class Renderer2DSystem extends ESSEM.System {
                 onInit() {
-                    this.setTypes(PositionComponent, SpriteRendererComponent);
+                    this.setTypes(PositionComponent);
                 }
 
                 onUpdate(delta) {
                     for (const entity of this.entities) {
                         // ESSEM.Renderer.render(entity.getComponent(SpriteRenderer2DComponent));
+                        console.log(entity.signiture);
                     }
                 }
             }
