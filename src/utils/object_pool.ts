@@ -1,4 +1,4 @@
-type ObjectPoolCtor<T> = { new (): T };
+export type ObjectPoolCtor<T> = { new (): T };
 
 export class ObjectPool<T> {
     ObjectClass: ObjectPoolCtor<T>;

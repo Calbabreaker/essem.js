@@ -8,11 +8,6 @@
     </head>
     <body>
         <h1>Starter Example</h1>
-        <div>
-            <script>
-                class sidfj {}
-            </script>
-        </div>
         <script>
             class PositionComponent {
                 constructor(x, y) {
@@ -21,7 +16,7 @@
                 }
             }
 
-            class SpriteRenderer2DComponent {
+            class SpriteRendererComponent {
                 constructor(color) {
                     this.color = color;
                 }
@@ -29,24 +24,23 @@
 
             class Renderer2DSystem extends ESSEM.System {
                 onInit() {
-                    this.setTypes([PositionComponent, SpriteRenderer2DComponent]);
+                    this.setTypes(PositionComponent, SpriteRendererComponent);
                 }
 
                 onUpdate(delta) {
-                    for (const entity of this.getEntities()) {
+                    for (const entity of this.entities) {
                         // ESSEM.Renderer.render(entity.getComponent(SpriteRenderer2DComponent));
                     }
                 }
             }
 
             const app = new ESSEM.Application();
-            app.registerComponent(PositionComponent);
-            app.registerComponent(SpriteRenderer2DComponent);
             app.registerSystem(Renderer2DSystem);
 
             const scene = app.createScene();
             const entityA = scene.createEntity();
             entityA.addComponent(new PositionComponent(3, 1));
+            entityA.addComponent(new SpriteRendererComponent(12));
 
             const entityB = scene.createEntity();
             entityB.addComponent(new PositionComponent(400, 100));
