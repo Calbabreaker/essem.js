@@ -4,8 +4,6 @@ import { AnyCtor } from "../utils/types";
 
 export class Entity {
     componentMap: Map<string, Component> = new Map();
-    signiture = "";
-    destroyed = true;
 
     private _manager: Manager;
 
@@ -16,12 +14,9 @@ export class Entity {
     addComponent(component: Component): Component {
         const typeName = component.constructor.name;
         assert(!this.componentMap.has(typeName), `Component '${typeName}' already exists!`);
-
-        const newSigniture = this.signiture + typeName;
-        this._manager.notifySystemsEntityChange(this, this.signiture, newSigniture);
-        this.signiture = newSigniture;
-
         this.componentMap.set(typeName, component);
+
+        this._manager.entityComponentAdd(this, typeName);
         return component;
     }
 
@@ -29,19 +24,21 @@ export class Entity {
         const typeName = (componentType as AnyCtor<Component>).name ?? componentType;
         assert(this.componentMap.has(typeName), `Component '${typeName}' does not exist!`);
 
-        // fast remove component name out of string
-        const start = this.signiture.indexOf(typeName);
-        const newSigniture =
-            this.signiture.substr(0, start) + this.signiture.substr(start + typeName.length);
-        this._manager.notifySystemsEntityChange(this, this.signiture, newSigniture);
-        this.signiture = newSigniture;
-
+        this._manager.entityComponentRemove(this, typeName);
         this.componentMap.delete(typeName);
     }
 
     hasComponent(componentType: AnyCtor<Component> | string): boolean {
         const typeName = (componentType as AnyCtor<Component>).name ?? componentType;
         return this.componentMap.has(typeName);
+    }
+
+    hasAllComponents(componentTypes: AnyCtor<Component>[] | string[]): boolean {
+        for (let i = 0; i < componentTypes.length; i++) {
+            if (!this.hasComponent(componentTypes[i])) return false;
+        }
+
+        return true;
     }
 
     getComponent(componentType: AnyCtor<Component> | string): Component {
@@ -51,24 +48,9 @@ export class Entity {
         return component as Component;
     }
 
-    destroy(removeComponents = true): void {
-        if (this.destroyed) return;
-        this.destroyed = true;
-
-        this._manager.notifySystemsEntityChange(this, this.signiture, "");
-
-        if (removeComponents) {
-            this.componentMap.clear();
-            this.signiture = "";
-        }
-    }
-
-    setup(): void {
-        if (!this.destroyed) return;
-        this.destroyed = false;
-
-        if (this.signiture !== "") {
-            this._manager.notifySystemsEntityChange(this, "", this.signiture);
+    destroy(): void {
+        for (const [typeName] of this.componentMap) {
+            this.removeComponent(typeName);
         }
     }
 }

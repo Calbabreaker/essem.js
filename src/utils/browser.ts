@@ -4,7 +4,7 @@ let webgl2Supported: boolean | undefined;
 export function isWebGL2Supported(): boolean {
     if (webgl2Supported === undefined) {
         const canvasElm = document.createElement("canvas");
-        const gl = canvasElm.getContext("webgl2") ?? canvasElm.getContext("experimental-webgl2");
+        const gl = canvasElm.getContext("webgl2");
 
         webgl2Supported = gl !== undefined;
     }

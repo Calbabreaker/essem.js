@@ -1,29 +1,29 @@
 import { Component, Manager } from "./manager";
 import { AnyCtor } from "../utils/types";
 import { Entity } from "./entity";
+import { assert } from "../utils/misc";
 
 export abstract class System {
-    signiture = "";
     entities: Set<Entity> = new Set();
+    typeNames: string[] = [];
     private _manager: Manager;
+
+    abstract onInit(): void;
+    abstract onUpdate(delta: number): void;
 
     constructor(manager: Manager) {
         this._manager = manager;
     }
 
-    abstract onInit(): void;
-    abstract onUpdate(delta: number): void;
-
     setTypes(...componentTypes: AnyCtor<Component>[] | string[]): void {
-        const systemMap = this._manager.signitureToSystemMap;
-        if (systemMap.has(this.signiture)) systemMap.delete(this.signiture);
-
-        this.signiture = "";
+        this.typeNames = [];
         for (const componentType of componentTypes) {
             const typeName = (componentType as AnyCtor<Component>).name ?? componentType;
-            this.signiture += typeName;
-        }
+            const systemSet = this._manager.typeNameToSystem.get(typeName);
+            assert(systemSet !== undefined, `Component '${typeName}' has not been registered!`);
 
-        systemMap.set(this.signiture, this);
+            systemSet.push(this);
+            this.typeNames.push(typeName);
+        }
     }
 }

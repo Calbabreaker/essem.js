@@ -30,18 +30,22 @@
                 onUpdate(delta) {
                     for (const entity of this.entities) {
                         // ESSEM.Renderer.render(entity.getComponent(SpriteRenderer2DComponent));
-                        console.log(entity.signiture);
+                        if (entity.hasComponent(PositionComponent)) {
+                            console.log(entity);
+                            throw new Error("yes");
+                        }
                     }
                 }
             }
 
             const app = new ESSEM.Application();
+            app.registerComponent(PositionComponent, SpriteRendererComponent);
             app.registerSystem(Renderer2DSystem);
 
             const scene = app.createScene();
             const entityA = scene.createEntity();
-            entityA.addComponent(new PositionComponent(3, 1));
             entityA.addComponent(new SpriteRendererComponent(12));
+            entityA.addComponent(new PositionComponent(3, 1));
 
             const entityB = scene.createEntity();
             entityB.addComponent(new PositionComponent(400, 100));

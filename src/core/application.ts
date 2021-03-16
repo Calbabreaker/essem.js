@@ -1,8 +1,9 @@
 import { Renderer } from "../renderer/renderer";
-import { Manager } from "../ecs/manager";
+import { Component, Manager } from "../ecs/manager";
 import { Scene } from "../ecs/scene";
 import { System } from "../ecs/system";
 import { Canvas } from "./canvas";
+import { AnyCtor } from "../utils/types";
 
 export class Application {
     private _manager: Manager;
@@ -43,6 +44,14 @@ export class Application {
 
     shutdown(): void {
         this.running = false;
+    }
+
+    registerComponent(...componentClasses: AnyCtor<Component>[]): this {
+        for (const componentClass of componentClasses) {
+            this._manager.registerComponent(componentClass);
+        }
+
+        return this;
     }
 
     registerSystem(...systemClasses: { new (manager: Manager): System }[]): this {

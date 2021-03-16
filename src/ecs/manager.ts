@@ -1,3 +1,5 @@
+import { assert } from "..";
+import { AnyCtor } from "../utils/types";
 import { Entity } from "./entity";
 import { System } from "./system";
 
@@ -6,8 +8,17 @@ import { System } from "./system";
 export type Component = Object;
 
 export class Manager {
-    signitureToSystemMap: Map<string, System> = new Map();
     systems: System[] = [];
+    typeNameToSystem: Map<string, System[]> = new Map();
+
+    registerComponent(componentClass: AnyCtor<Component>): void {
+        const typeName = componentClass.name;
+        assert(
+            !this.typeNameToSystem.has(typeName),
+            `Component '${typeName}' is already registered!`
+        );
+        this.typeNameToSystem.set(typeName, []);
+    }
 
     registerSystem<T extends System>(systemClass: { new (manager: Manager): T }): void {
         const system = new systemClass(this);
@@ -21,17 +32,21 @@ export class Manager {
         }
     }
 
-    notifySystemsEntityChange(entity: Entity, from: string, to: string): void {
-        const systemMap = this.signitureToSystemMap;
-
-        if (from) {
-            const systemFrom = systemMap.get(from);
-            if (systemFrom) systemFrom.entities.delete(entity);
+    entityComponentAdd(entity: Entity, typeName: string): void {
+        const systems = this.typeNameToSystem.get(typeName);
+        assert(systems !== undefined, `Component ${typeName} has not registered!`);
+        for (const system of systems) {
+            if (entity.hasAllComponents(system.typeNames)) {
+                system.entities.add(entity);
+            }
         }
+    }
 
-        if (to) {
-            const systemTo = systemMap.get(to);
-            if (systemTo) systemTo.entities.add(entity);
+    entityComponentRemove(entity: Entity, typeName: string): void {
+        const systems = this.typeNameToSystem.get(typeName);
+        assert(systems !== undefined, `Component ${typeName} has not registered!`);
+        for (const system of systems) {
+            system.entities.delete(entity);
         }
     }
 }
