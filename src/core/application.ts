@@ -34,10 +34,11 @@ export class Application {
         const now = performance.now();
         const delta = now - this.lastFrameTime;
 
-        this._manager.runSystems(delta);
         const gl = this.renderer.gl;
-        gl.clearColor(1, 0, 1, 1);
+        gl.clearColor(0, 0, 0, 1);
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+        this._manager.runSystems(delta);
 
         this.lastFrameTime = now;
     }

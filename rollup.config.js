@@ -4,6 +4,7 @@ import typescript from "rollup-plugin-typescript2";
 import sourcemaps from "rollup-plugin-sourcemaps";
 import serve from "rollup-plugin-serve";
 import { terser } from "rollup-plugin-terser";
+import glsl from "rollup-plugin-glsl";
 
 import path from "path";
 import pkg from "./package.json";
@@ -36,6 +37,9 @@ export default () => {
                     _RELEASE: !isDev,
                     _VERSION: pkg.version,
                 },
+            }),
+            glsl({
+                include: "src/renderer/shaders/*.glsl",
             }),
             sourcemaps(),
             typescript(),

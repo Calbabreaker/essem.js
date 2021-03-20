@@ -15,9 +15,13 @@
             })();
 
             const app = new ESSEM.Application();
+            app.registerComponent(ESSEM.Transform2DComponent, ESSEM.SpriteComponent);
+            app.registerSystem(ESSEM.SpriteRendererSystem);
 
             const scene = app.createScene();
             const entityA = scene.createEntity();
+            entityA.addComponent(new ESSEM.Transform2DComponent());
+            entityA.addComponent(new ESSEM.SpriteComponent(texture));
 
             const entityB = scene.createEntity();
         </script>

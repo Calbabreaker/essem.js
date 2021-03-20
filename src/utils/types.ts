@@ -5,8 +5,3 @@ declare global {
         ESSEM: Record<string, unknown> | undefined;
     }
 }
-
-declare module "*.glsl" {
-    const content: string;
-    export default content;
-}

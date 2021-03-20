@@ -11,7 +11,7 @@ export class Entity {
         this._manager = manager;
     }
 
-    addComponent(component: Component): Component {
+    addComponent<T extends Component>(component: T): T {
         const typeName = component.constructor.name;
         assert(!this.componentMap.has(typeName), `Component '${typeName}' already exists!`);
         this.componentMap.set(typeName, component);
@@ -41,11 +41,11 @@ export class Entity {
         return true;
     }
 
-    getComponent(componentType: AnyCtor<Component> | string): Component {
+    getComponent<T extends Component>(componentType: AnyCtor<T> | string): T {
         const typeName = (componentType as AnyCtor<Component>).name ?? componentType;
         const component = this.componentMap.get(typeName);
         assert(component !== undefined, `Component '${typeName}' does not exist!`);
-        return component as Component;
+        return component as T;
     }
 
     destroy(): void {
