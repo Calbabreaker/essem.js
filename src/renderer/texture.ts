@@ -1,20 +1,19 @@
-import { Renderer } from "./renderer";
+import { assert } from "../utils/misc";
 
 export type TextureSource = HTMLImageElement | HTMLCanvasElement;
 
 export class Texture {
     source: TextureSource;
-    handle: WebGLTexture | null = null;
+    glTexture: WebGLTexture | null = null;
 
     constructor(source: TextureSource) {
         this.source = source;
     }
 
-    init(renderer: Renderer) {
-        const gl = renderer.gl;
-
-        this.handle = gl.createTexture();
-        this.bind(renderer);
+    init(gl: WebGL2RenderingContext) {
+        this.glTexture = gl.createTexture();
+        assert(this.glTexture !== null, "Could not create glTexture!");
+        this.bind(gl);
         // TODO: add options for this
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.MIRRORED_REPEAT);
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.MIRRORED_REPEAT);
@@ -33,20 +32,18 @@ export class Texture {
         );
     }
 
-    bind(renderer: Renderer, slot = 0): void {
-        const gl = renderer.gl;
-
-        if (this.handle === null) {
-            this.init(renderer);
+    bind(gl: WebGL2RenderingContext, slot = 0): void {
+        if (this.glTexture === null) {
+            this.init(gl);
         } else {
             gl.activeTexture(gl.TEXTURE0 + slot);
-            gl.bindTexture(gl.TEXTURE_2D, this.handle);
+            gl.bindTexture(gl.TEXTURE_2D, this.glTexture);
         }
     }
 
-    dispose(renderer: Renderer) {
-        renderer.gl.deleteTexture(this.handle);
-        this.handle = null;
+    dispose(gl: WebGL2RenderingContext) {
+        gl.deleteTexture(this.glTexture);
+        this.glTexture = null;
     }
 
     static async fromURL(url: string): Promise<Texture> {

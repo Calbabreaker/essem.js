@@ -24,9 +24,3 @@ export function sayHello(): void {
 export function skipHello(): void {
     saidHello = true;
 }
-
-declare global {
-    interface Window {
-        ESSEM: Record<string, unknown> | undefined;
-    }
-}
