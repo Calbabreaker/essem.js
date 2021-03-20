@@ -9,46 +9,17 @@
     <body>
         <h1>Starter Example</h1>
         <script>
-            class PositionComponent {
-                constructor(x, y) {
-                    this.x = x;
-                    this.y = y;
-                }
-            }
-
-            class SpriteRendererComponent {
-                constructor(color) {
-                    this.color = color;
-                }
-            }
-
-            class Renderer2DSystem extends ESSEM.System {
-                onInit() {
-                    this.setTypes(PositionComponent);
-                }
-
-                onUpdate(delta) {
-                    for (const entity of this.entities) {
-                        // ESSEM.Renderer.render(entity.getComponent(SpriteRenderer2DComponent));
-                        if (entity.hasComponent(PositionComponent)) {
-                            console.log(entity);
-                            throw new Error("yes");
-                        }
-                    }
-                }
-            }
+            let texture;
+            (async () => {
+                texture = await ESSEM.Texture.fromURL("assets/blobfish.jpeg");
+            })();
 
             const app = new ESSEM.Application();
-            app.registerComponent(PositionComponent, SpriteRendererComponent);
-            app.registerSystem(Renderer2DSystem);
 
             const scene = app.createScene();
             const entityA = scene.createEntity();
-            entityA.addComponent(new SpriteRendererComponent(12));
-            entityA.addComponent(new PositionComponent(3, 1));
 
             const entityB = scene.createEntity();
-            entityB.addComponent(new PositionComponent(400, 100));
         </script>
     </body>
 </html>

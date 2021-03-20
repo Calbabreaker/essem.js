@@ -20,33 +20,33 @@ export class Manager {
         this.typeNameToSystem.set(typeName, []);
     }
 
-    registerSystem<T extends System>(systemClass: { new (manager: Manager): T }): void {
+    registerSystem<T extends System>(systemClass: { new (manager: Manager): T }): System {
         const system = new systemClass(this);
-        system.onInit();
         this.systems.push(system);
+        return system;
     }
 
     runSystems(delta: number): void {
-        for (const system of this.systems) {
+        this.systems.forEach((system) => {
             system.onUpdate(delta);
-        }
+        });
     }
 
     entityComponentAdd(entity: Entity, typeName: string): void {
         const systems = this.typeNameToSystem.get(typeName);
         assert(systems !== undefined, `Component ${typeName} has not registered!`);
-        for (const system of systems) {
+        systems.forEach((system) => {
             if (entity.hasAllComponents(system.typeNames)) {
                 system.entities.add(entity);
             }
-        }
+        });
     }
 
     entityComponentRemove(entity: Entity, typeName: string): void {
         const systems = this.typeNameToSystem.get(typeName);
         assert(systems !== undefined, `Component ${typeName} has not registered!`);
-        for (const system of systems) {
+        systems.forEach((system) => {
             system.entities.delete(entity);
-        }
+        });
     }
 }

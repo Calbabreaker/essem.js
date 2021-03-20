@@ -56,7 +56,8 @@ export class Application {
 
     registerSystem(...systemClasses: { new (manager: Manager): System }[]): this {
         for (const systemClass of systemClasses) {
-            this._manager.registerSystem(systemClass);
+            const system = this._manager.registerSystem(systemClass);
+            system.onInit(this);
         }
 
         return this;

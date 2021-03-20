@@ -10,6 +10,7 @@ export * from "./ecs/scene";
 export * from "./ecs/system";
 
 export * from "./renderer/renderer";
+export * from "./renderer/texture";
 
 export * from "./math/common";
 export * from "./math/vector2";

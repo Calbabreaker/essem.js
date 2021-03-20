@@ -2,7 +2,7 @@ import { assert } from "../utils/misc";
 import { isWebGL2Supported } from "../utils/browser";
 
 export class Renderer {
-    gl: WebGL2RenderingContext;
+    readonly gl: WebGL2RenderingContext;
 
     constructor(canvasElement: HTMLCanvasElement) {
         if (isWebGL2Supported()) {
