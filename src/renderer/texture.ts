@@ -32,11 +32,14 @@ export class Texture {
         );
     }
 
-    bind(gl: WebGL2RenderingContext, slot = 0): void {
+    bind(gl: WebGL2RenderingContext, slot?: number): void {
+        if (slot) {
+            gl.activeTexture(gl.TEXTURE0 + slot);
+        }
+
         if (this.glTexture === null) {
             this.init(gl);
         } else {
-            gl.activeTexture(gl.TEXTURE0 + slot);
             gl.bindTexture(gl.TEXTURE_2D, this.glTexture);
         }
     }

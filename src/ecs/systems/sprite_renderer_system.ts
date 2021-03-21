@@ -5,23 +5,33 @@ import { AbstractBatchRenderer } from "../../renderer/abstract_batch_renderer";
 
 export class SpriteRenderer extends AbstractBatchRenderer {
     // prettier-ignore
-    static quadVertexPositions: Float32Array = new Float32Array([
-         -0.5, -0.5,   
-          0.5, -0.5,   
-          0.5,  0.5,   
-         -0.5,  0.5,  
+    static vertexPositions: Float32Array = new Float32Array([
+        -0.5, -0.5,   
+         0.5, -0.5,   
+         0.5,  0.5,   
+        -0.5,  0.5,  
+    ]);
+
+    // prettier-ignore
+    static texCoords: Float32Array = new Float32Array([
+        0.0, 0.0, 
+        1.0, 0.0, 
+        1.0, 1.0, 
+        0.0, 1.0, 
     ]);
 
     drawSprite(sprite: SpriteComponent, transform: Transform2DComponent) {
         if (this.indicesCount >= AbstractBatchRenderer.maxIndices) this.nextBatch();
 
-        const vertexPoses = SpriteRenderer.quadVertexPositions;
         for (let i = 0; i < 4; i++) {
-            this.vertices[this.verticesIndex++] = vertexPoses[i * 2 + 0];
-            this.vertices[this.verticesIndex++] = vertexPoses[i * 2 + 1];
+            const index = i * 2;
+            this.vertices[this.verticesIndex++] = SpriteRenderer.vertexPositions[index + 0];
+            this.vertices[this.verticesIndex++] = SpriteRenderer.vertexPositions[index + 1];
+            this.vertices[this.verticesIndex++] = SpriteRenderer.texCoords[index + 0];
+            this.vertices[this.verticesIndex++] = SpriteRenderer.texCoords[index + 1];
+            this.vertices[this.verticesIndex++] = this.getTextureSlot(sprite.texture);
         }
 
-        sprite;
         transform;
         this.indicesCount += 6;
     }

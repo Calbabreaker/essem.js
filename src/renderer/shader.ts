@@ -76,6 +76,10 @@ export class Shader {
         gl.uniform1i(this.getUniformLocation(gl, name), value);
     }
 
+    setIntArray(gl: WebGL2RenderingContext, name: string, value: Int32Array) {
+        gl.uniform1iv(this.getUniformLocation(gl, name), value);
+    }
+
     setMatrix3(gl: WebGL2RenderingContext, name: string, value: Matrix3) {
         gl.uniformMatrix3fv(this.getUniformLocation(gl, name), false, value.toArray(true));
     }

@@ -19,5 +19,5 @@
         "alwaysStrict": true
     },
     "exclude": ["node_modules", "**/dist/**"],
-    "include": ["./src/**/*.ts"]
+    "include": ["./src/**/*.ts", "./src/**/*.glsl)"]
 }
