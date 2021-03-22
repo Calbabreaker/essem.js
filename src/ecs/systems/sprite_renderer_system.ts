@@ -1,5 +1,5 @@
 import { System } from "../system";
-import { Application } from "../../core/application";
+import { Application, ApplicationUpdateEvent } from "../../core/application";
 import { SpriteComponent, Transform2DComponent } from "../components";
 import { AbstractBatchRenderer } from "../../renderer/abstract_batch_renderer";
 
@@ -40,12 +40,13 @@ export class SpriteRenderer extends AbstractBatchRenderer {
 export class SpriteRendererSystem extends System {
     spriteRenderer?: SpriteRenderer;
 
-    onInit(app: Application) {
-        this.setTypes(Transform2DComponent, SpriteComponent);
+    init(app: Application) {
+        this.setComponents(Transform2DComponent, SpriteComponent);
+        app.events.addListener(ApplicationUpdateEvent, this.onUpdate.bind(this));
         this.spriteRenderer = new SpriteRenderer(app.renderer);
     }
 
-    onUpdate() {
+    onUpdate(): void {
         this.spriteRenderer?.beginScene();
         this.entities.forEach((entity) => {
             this.spriteRenderer?.drawSprite(

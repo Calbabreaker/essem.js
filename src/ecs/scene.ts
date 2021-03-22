@@ -1,15 +1,15 @@
 import { Entity } from "./entity";
-import { Manager } from "./manager";
+import { ECSManager } from "./ecs_manager";
 
 export class Scene {
-    private _manager: Manager;
+    private _ecsManager: ECSManager;
 
-    constructor(manager: Manager) {
-        this._manager = manager;
+    constructor(manager: ECSManager) {
+        this._ecsManager = manager;
     }
 
     createEntity(): Entity {
-        return new Entity(this._manager);
+        return new Entity(this._ecsManager);
     }
 
     destroyEntity(entity: Entity): void {

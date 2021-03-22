@@ -1,14 +1,14 @@
-import { Component, Manager } from "./manager";
+import { Component, ECSManager } from "./ecs_manager";
 import { assert } from "../utils/misc";
 import { AnyCtor } from "../utils/types";
 
 export class Entity {
     componentMap: Map<string, Component> = new Map();
 
-    private _manager: Manager;
+    private _ecsManager: ECSManager;
 
-    constructor(manager: Manager) {
-        this._manager = manager;
+    constructor(manager: ECSManager) {
+        this._ecsManager = manager;
     }
 
     addComponent<T extends Component>(component: T): T {
@@ -16,15 +16,15 @@ export class Entity {
         assert(!this.componentMap.has(typeName), `Component '${typeName}' already exists!`);
         this.componentMap.set(typeName, component);
 
-        this._manager.entityComponentAdd(this, typeName);
-        return component;
+        this._ecsManager.entityComponentAdd(this, typeName);
+        return component as T;
     }
 
     removeComponent(componentType: AnyCtor<Component> | string): void {
         const typeName = (componentType as AnyCtor<Component>).name ?? componentType;
         assert(this.componentMap.has(typeName), `Component '${typeName}' does not exist!`);
 
-        this._manager.entityComponentRemove(this, typeName);
+        this._ecsManager.entityComponentRemove(this, typeName);
         this.componentMap.delete(typeName);
     }
 

@@ -1,29 +1,26 @@
-import { Component, Manager } from "./manager";
+import { Component, ECSManager } from "./ecs_manager";
 import { AnyCtor } from "../utils/types";
 import { Entity } from "./entity";
-import { assert } from "../utils/misc";
+import { mapGet } from "../utils/misc";
 import { Application } from "../core/application";
 
 export abstract class System {
     entities: Set<Entity> = new Set();
     typeNames: string[] = [];
-    private _manager: Manager;
+    private _ecsManager: ECSManager;
 
-    onInit(_app: Application): void {}
-    onUpdate(_delta: number): void {}
+    init(_app: Application): void {}
 
-    constructor(manager: Manager) {
-        this._manager = manager;
+    constructor(manager: ECSManager) {
+        this._ecsManager = manager;
     }
 
-    setTypes(...componentTypes: AnyCtor<Component>[] | string[]): void {
+    setComponents(...componentTypes: AnyCtor<Component>[] | string[]): void {
         this.typeNames = [];
         for (const componentType of componentTypes) {
             const typeName = (componentType as AnyCtor<Component>).name ?? componentType;
-            const systemSet = this._manager.typeNameToSystem.get(typeName);
-            assert(systemSet !== undefined, `Component '${typeName}' has not been registered!`);
-
-            systemSet.push(this);
+            const systems = mapGet(this._ecsManager.typeNameToSystem, typeName, Array);
+            systems.push(this);
             this.typeNames.push(typeName);
         }
     }

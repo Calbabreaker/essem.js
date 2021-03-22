@@ -6,8 +6,8 @@ export * from "./core/canvas";
 
 export * from "./ecs/systems/sprite_renderer_system";
 export * from "./ecs/components";
+export * from "./ecs/ecs_manager";
 export * from "./ecs/entity";
-export * from "./ecs/manager";
 export * from "./ecs/scene";
 export * from "./ecs/system";
 
