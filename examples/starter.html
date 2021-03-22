@@ -18,6 +18,7 @@
             app.registerSystem(ESSEM.SpriteRendererSystem);
 
             app.events.addListener(ESSEM.ApplicationInitEvent, () => {
+                app.canvas.setParent(document.body);
                 const scene = app.createScene();
                 const entityA = scene.createEntity();
                 entityA.addComponent(new ESSEM.Transform2DComponent());

@@ -2,7 +2,7 @@ import { Renderer } from "../renderer/renderer";
 import { ECSManager } from "../ecs/ecs_manager";
 import { Scene } from "../ecs/scene";
 import { System } from "../ecs/system";
-import { Canvas } from "./canvas";
+import { Canvas, ICanvasOptions } from "./canvas";
 import { Event, EventManager } from "./event_manager";
 
 export class ApplicationInitEvent extends Event {}
@@ -15,6 +15,10 @@ export class ApplicationUpdateEvent extends Event {
     }
 }
 
+export interface IApplicationOptions {
+    canvasOptions?: ICanvasOptions;
+}
+
 export class Application {
     private _ecsManager: ECSManager;
     events: EventManager;
@@ -24,15 +28,16 @@ export class Application {
     lastFrameTime = 0;
     running = true;
 
-    constructor() {
+    constructor(options: IApplicationOptions = {}) {
         this._ecsManager = new ECSManager();
         this.events = new EventManager();
-        this.canvas = new Canvas();
+        this.canvas = new Canvas(options.canvasOptions, this.events);
         this.renderer = new Renderer(this.canvas.element);
 
         window.addEventListener("load", () => {
             this._ecsManager.systems.forEach((system) => system.init(this));
             this.events.sendEvent(new ApplicationInitEvent());
+            this.canvas.init();
 
             const loop = () => {
                 if (this.running) {
