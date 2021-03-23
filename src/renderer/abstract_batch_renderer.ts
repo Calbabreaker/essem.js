@@ -4,6 +4,7 @@ import { VertexArray } from "./vertex_array";
 import textureVertexSrc from "./shaders/texture_vert.glsl";
 import textureFragmentSrc from "./shaders/texture_frag.glsl";
 import { Texture } from "./texture";
+import { Matrix3 } from "../math/matrix3";
 
 export abstract class AbstractBatchRenderer {
     static readonly vertexSize = 5; // position (2) + texCoord (2) + texture index (1)
@@ -18,7 +19,6 @@ export abstract class AbstractBatchRenderer {
     vertexArray: VertexArray;
     vertexBuffer: WebGLBuffer;
     textureShader: Shader;
-
     textureSlots: Texture[];
     textureToSlotMap: Map<Texture, number> = new Map();
     vertices: Float32Array = new Float32Array(AbstractBatchRenderer.maxVertices);
@@ -64,13 +64,10 @@ export abstract class AbstractBatchRenderer {
         this.textureSlots = new Array(renderer.maxTextureSlots).fill(undefined);
     }
 
-    beginScene() {
-        // TODO: make this be a camera
-        //const matrix = new Matrix3();
-
+    beginScene(viewProjection: Matrix3) {
         const gl = this.renderer.gl;
         this.textureShader.bind(gl);
-        //this.textureShader.setMatrix3(gl, "u_viewProjection", matrix);
+        this.textureShader.setMatrix3(gl, "u_viewProjection", viewProjection);
 
         this.startBatch();
     }

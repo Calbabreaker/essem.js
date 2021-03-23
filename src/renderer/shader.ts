@@ -47,7 +47,7 @@ export class Shader {
         gl.deleteProgram(this.glProgram);
     }
 
-    getUniformLocation(gl: WebGL2RenderingContext, name: string): WebGLUniformLocation | null {
+    getUniformLocation(gl: WebGL2RenderingContext, name: string): WebGLUniformLocation {
         const cachedLocation = this.uniformLocationCache.get(name);
         if (cachedLocation !== undefined) {
             return cachedLocation;
@@ -55,10 +55,7 @@ export class Shader {
 
         assert(this.glProgram !== null, `Has not initialized yet in '${this.name}' shader!`);
         const location = gl.getUniformLocation(this.glProgram, name);
-        if (location === null) {
-            console.warn(`Uniform ${name} does not appear to exist!`);
-            return null;
-        }
+        assert(location !== null, `Uniform '${name}' does not appear to exist!`);
 
         this.uniformLocationCache.set(name, location);
         return location;

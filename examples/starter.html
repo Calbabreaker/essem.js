@@ -5,24 +5,53 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Starter Example</title>
         <script src="/build/essem.js"></script>
+        <style>
+            * {
+                margin: 0;
+            }
+
+            body {
+                overflow: hidden;
+            }
+
+            canvas {
+                right: 50%;
+                bottom: 50%;
+                transform: translate(50%, 50%);
+                position: absolute;
+            }
+        </style>
     </head>
     <body>
-        <h1>Starter Example</h1>
         <script>
+            // TODO: add loader
             let texture;
             (async () => {
                 texture = await ESSEM.Texture.fromURL("assets/blobfish.jpeg");
             })();
 
-            const app = new ESSEM.Application();
-            app.registerSystem(ESSEM.SpriteRendererSystem);
+            const app = new ESSEM.Application({
+                canvasOptions: { fixedSize: false, aspectRatio: 16 / 9 },
+            });
+            app.registerSystem(ESSEM.SpriteRendererSystem, ESSEM.CameraSystem);
+
+            document.body.appendChild(app.canvas.element);
+
+            const scene = app.createScene();
+            const entityA = scene.createEntity();
+            entityA.addComponent(new ESSEM.TransformComponent());
+
+            const camera = scene.createEntity();
+            camera.addComponent(new ESSEM.CameraComponent(2));
+            const transform = camera.addComponent(new ESSEM.TransformComponent());
+            ESSEM.CameraSystem.mainCamera = camera;
 
             app.events.addListener(ESSEM.ApplicationInitEvent, () => {
-                app.canvas.setParent(document.body);
-                const scene = app.createScene();
-                const entityA = scene.createEntity();
-                entityA.addComponent(new ESSEM.Transform2DComponent());
                 entityA.addComponent(new ESSEM.SpriteComponent(texture));
+            });
+
+            app.events.addListener(ESSEM.ApplicationUpdateEvent, (event) => {
+                transform.rotation += ESSEM.toRadians(event.delta * 0.25);
             });
         </script>
     </body>

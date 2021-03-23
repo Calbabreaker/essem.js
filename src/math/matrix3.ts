@@ -1,3 +1,8 @@
+/**
+ * xScale|xSkew |xTrans
+ * ySkew |yScale|yTrans
+ * 0     |0     |1
+ */
 export class Matrix3 {
     xScale: number;
     ySkew: number;
@@ -74,6 +79,7 @@ export class Matrix3 {
         const yScale = this.yScale;
         const xTrans = this.xTrans;
         const det = xScale * yScale - ySkew * xSkew;
+        if (det === 0) return this;
 
         this.xScale = yScale / det;
         this.ySkew = -ySkew / det;
@@ -98,7 +104,7 @@ export class Matrix3 {
         const xScale = this.xScale;
         const ySkew = this.ySkew;
         const xSkew = this.xSkew;
-        const yScale = this.xSkew;
+        const yScale = this.yScale;
 
         this.xScale = xScale * matrix.xScale + xSkew * matrix.ySkew;
         this.ySkew = ySkew * matrix.xScale + yScale * matrix.ySkew;
@@ -108,6 +114,28 @@ export class Matrix3 {
         this.xTrans = xScale * matrix.xTrans + xSkew * matrix.yTrans + this.xTrans;
         this.yTrans = ySkew * matrix.xTrans + yScale * matrix.yTrans + this.yTrans;
         return this;
+    }
+
+    multiplyFront(matrix: Matrix3) {
+        const xTrans = this.xTrans;
+
+        if (
+            matrix.xScale !== 1 ||
+            matrix.ySkew !== 0 ||
+            matrix.xSkew !== 0 ||
+            matrix.yScale !== 1
+        ) {
+            const xScale1 = this.xScale;
+            const xSkew = this.xSkew;
+
+            this.xScale = xScale1 * matrix.xScale + this.ySkew * matrix.xSkew;
+            this.ySkew = xScale1 * matrix.ySkew + this.ySkew * matrix.yScale;
+            this.xSkew = xSkew * matrix.xScale + this.yScale * matrix.xSkew;
+            this.yScale = xSkew * matrix.ySkew + this.yScale * matrix.yScale;
+        }
+
+        this.xTrans = xTrans * matrix.xScale + this.yTrans * matrix.xSkew + matrix.xTrans;
+        this.yTrans = xTrans * matrix.ySkew + this.yTrans * matrix.yScale + matrix.yTrans;
     }
 
     translate(x: number, y: number): this {
@@ -140,6 +168,19 @@ export class Matrix3 {
         this.yScale = xSkew * sin + this.yScale * cos;
         this.xTrans = xTrans * cos - this.yTrans * sin;
         this.yTrans = xTrans * sin + this.yTrans * cos;
+        return this;
+    }
+
+    projection(left: number, right: number, bottom: number, top: number): this {
+        const rl = right - left;
+        const tp = top - bottom;
+
+        this.xScale = 2 / rl;
+        this.yScale = 2 / tp;
+        this.xTrans = (right + left) / rl;
+        this.yTrans = (top + bottom) / tp;
+        this.xSkew = 0;
+        this.ySkew = 0;
         return this;
     }
 }

@@ -5,6 +5,7 @@ export * from "./core/application";
 export * from "./core/canvas";
 
 export * from "./ecs/systems/sprite_renderer_system";
+export * from "./ecs/systems/camera_system";
 export * from "./ecs/components";
 export * from "./ecs/ecs_manager";
 export * from "./ecs/entity";

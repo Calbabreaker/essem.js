@@ -3,7 +3,6 @@ import { Event, EventManager } from "./event_manager";
 export class CanvasResizedEvent extends Event {
     width: number;
     height: number;
-
     constructor(width: number, height: number) {
         super();
         this.width = width;
@@ -20,7 +19,6 @@ export interface ICanvasOptions {
 
 export class Canvas {
     element: HTMLCanvasElement;
-    parentElement?: HTMLElement;
 
     fixedSize: boolean;
     aspectRatio: number | null;
@@ -30,25 +28,23 @@ export class Canvas {
     private _eventManager: EventManager;
 
     constructor(options: ICanvasOptions = {}, eventManager: EventManager) {
-        this.fixedSize = options.fixedSize ?? false;
+        this.fixedSize = options.fixedSize ?? true;
         this._eventManager = eventManager;
 
         this.aspectRatio = options.aspectRatio ?? null;
         this.element = document.createElement("canvas");
-        this.resizeCanvas(options.width ?? 400, options.height ?? 400, false);
-    }
 
-    init() {
-        this._resizeFull();
+        if (!this.fixedSize) {
+            this.resizeFull();
+        } else {
+            this.resizeCanvas(options.width ?? 400, options.height ?? 400);
+        }
 
         window.addEventListener("resize", () => {
-            this._resizeFull();
+            if (!this.fixedSize) {
+                this.resizeFull();
+            }
         });
-    }
-
-    setParent(element: HTMLElement) {
-        this.parentElement = element;
-        element.appendChild(this.element);
     }
 
     resizeCanvas(width: number, height: number, sendEvent = true) {
@@ -63,18 +59,15 @@ export class Canvas {
     }
 
     // resizes with accordence to aspect ratio
-    private _resizeFull() {
-        if (this.parentElement === undefined || this.fixedSize) return;
-
+    resizeFull() {
         if (this.aspectRatio !== null) {
-            let height = this.parentElement.offsetHeight;
-            const aspectHeight = this.parentElement.offsetWidth / this.aspectRatio;
-            if (aspectHeight < height) height = aspectHeight;
+            let height = window.innerHeight;
+            const aspectWidth = window.innerWidth / this.aspectRatio;
+            if (aspectWidth < height) height = aspectWidth;
 
             this.resizeCanvas(height * this.aspectRatio, height);
         } else {
-            console.log(this.parentElement.offsetHeight);
-            this.resizeCanvas(this.parentElement.offsetWidth, this.parentElement.offsetHeight);
+            this.resizeCanvas(window.innerWidth, window.innerHeight);
         }
     }
 }

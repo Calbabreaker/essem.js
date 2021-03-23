@@ -1,16 +1,16 @@
 import { System } from "../system";
 import { Application, ApplicationUpdateEvent } from "../../core/application";
-import { SpriteComponent, Transform2DComponent } from "../components";
+import { CameraComponent, SpriteComponent, TransformComponent } from "../components";
 import { AbstractBatchRenderer } from "../../renderer/abstract_batch_renderer";
-
+import { CameraSystem } from "./camera_system";
+import { assert } from "../../utils/misc";
 export class SpriteRenderer extends AbstractBatchRenderer {
     // prettier-ignore
     static vertexPositions: Float32Array = new Float32Array([
         -0.5, -0.5,   
          0.5, -0.5,   
          0.5,  0.5,   
-        -0.5,  0.5,  
-    ]);
+        -0.5,  0.5,  ]);
 
     // prettier-ignore
     static texCoords: Float32Array = new Float32Array([
@@ -20,7 +20,7 @@ export class SpriteRenderer extends AbstractBatchRenderer {
         0.0, 1.0, 
     ]);
 
-    drawSprite(sprite: SpriteComponent, transform: Transform2DComponent) {
+    drawSprite(sprite: SpriteComponent, transform: TransformComponent) {
         if (this.indicesCount >= AbstractBatchRenderer.maxIndices) this.nextBatch();
 
         for (let i = 0; i < 4; i++) {
@@ -38,23 +38,31 @@ export class SpriteRenderer extends AbstractBatchRenderer {
 }
 
 export class SpriteRendererSystem extends System {
-    spriteRenderer?: SpriteRenderer;
+    spriteRenderer!: SpriteRenderer;
 
-    init(app: Application) {
-        this.setComponents(Transform2DComponent, SpriteComponent);
+    setup(app: Application): void {
+        this.setComponents(TransformComponent, SpriteComponent);
         app.events.addListener(ApplicationUpdateEvent, this.onUpdate.bind(this));
         this.spriteRenderer = new SpriteRenderer(app.renderer);
     }
 
     onUpdate(): void {
-        this.spriteRenderer?.beginScene();
+        const mainCamera = CameraSystem.mainCamera;
+        assert(mainCamera !== null, "No main camera has been set!");
+
+        const viewProjection = mainCamera.getComponent(CameraComponent).projectionMatrix;
+        viewProjection.multiply(
+            mainCamera.getComponent(TransformComponent).transformMatrix.invert()
+        );
+
+        this.spriteRenderer.beginScene(viewProjection);
         this.entities.forEach((entity) => {
-            this.spriteRenderer?.drawSprite(
+            this.spriteRenderer.drawSprite(
                 entity.getComponent(SpriteComponent),
-                entity.getComponent(Transform2DComponent)
+                entity.getComponent(TransformComponent)
             );
         });
 
-        this.spriteRenderer?.endScene();
+        this.spriteRenderer.endScene();
     }
 }

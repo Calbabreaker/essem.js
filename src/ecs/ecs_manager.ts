@@ -21,6 +21,9 @@ export class ECSManager {
         systems.forEach((system) => {
             if (entity.hasAllComponents(system.typeNames)) {
                 system.entities.add(entity);
+                if (system.onEntityAdd !== undefined) {
+                    system.onEntityAdd(entity);
+                }
             }
         });
     }

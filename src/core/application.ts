@@ -2,7 +2,7 @@ import { Renderer } from "../renderer/renderer";
 import { ECSManager } from "../ecs/ecs_manager";
 import { Scene } from "../ecs/scene";
 import { System } from "../ecs/system";
-import { Canvas, ICanvasOptions } from "./canvas";
+import { Canvas, CanvasResizedEvent, ICanvasOptions } from "./canvas";
 import { Event, EventManager } from "./event_manager";
 
 export class ApplicationInitEvent extends Event {}
@@ -35,9 +35,11 @@ export class Application {
         this.renderer = new Renderer(this.canvas.element);
 
         window.addEventListener("load", () => {
-            this._ecsManager.systems.forEach((system) => system.init(this));
             this.events.sendEvent(new ApplicationInitEvent());
-            this.canvas.init();
+
+            this.events.addListener(CanvasResizedEvent, (event: CanvasResizedEvent) => {
+                this.renderer.gl.viewport(0, 0, event.width, event.height);
+            });
 
             const loop = () => {
                 if (this.running) {
@@ -69,7 +71,8 @@ export class Application {
 
     registerSystem(...systemClasses: { new (manager: ECSManager): System }[]): this {
         for (const systemClass of systemClasses) {
-            this._ecsManager.registerSystem(systemClass);
+            const system = this._ecsManager.registerSystem(systemClass);
+            system.setup(this);
         }
 
         return this;
