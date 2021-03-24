@@ -24,15 +24,11 @@
     </head>
     <body>
         <script>
-            // TODO: add loader
-            let texture;
-            (async () => {
-                texture = await ESSEM.Texture.fromURL("assets/blobfish.jpeg");
-            })();
-
             const app = new ESSEM.Application({
                 canvasOptions: { fixedSize: false },
             });
+
+            app.loader.add("assets/blobfish.jpeg");
             app.registerSystem(ESSEM.SpriteRendererSystem, ESSEM.CameraSystem);
 
             document.body.appendChild(app.canvas.element);
@@ -47,7 +43,9 @@
             ESSEM.CameraSystem.mainCamera = camera;
 
             app.events.addListener(ESSEM.ApplicationInitEvent, () => {
-                entityA.addComponent(new ESSEM.SpriteComponent(texture));
+                entityA.addComponent(
+                    new ESSEM.SpriteComponent(app.loader.resources["assets/blobfish.jpeg"])
+                );
             });
 
             app.events.addListener(ESSEM.ApplicationUpdateEvent, (event) => {

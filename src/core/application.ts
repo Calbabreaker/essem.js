@@ -4,6 +4,7 @@ import { Scene } from "../ecs/scene";
 import { System } from "../ecs/system";
 import { Canvas, CanvasResizedEvent, ICanvasOptions } from "./canvas";
 import { Event, EventManager } from "./event_manager";
+import { Loader } from "./loader";
 
 export class ApplicationInitEvent extends Event {}
 
@@ -14,7 +15,6 @@ export class ApplicationUpdateEvent extends Event {
         this.delta = delta;
     }
 }
-
 export interface IApplicationOptions {
     canvasOptions?: ICanvasOptions;
 }
@@ -24,6 +24,7 @@ export class Application {
     events: EventManager;
     canvas: Canvas;
     renderer: Renderer;
+    loader: Loader;
 
     lastFrameTime = 0;
     running = true;
@@ -33,8 +34,10 @@ export class Application {
         this.events = new EventManager();
         this.canvas = new Canvas(options.canvasOptions, this.events);
         this.renderer = new Renderer(this.canvas.element);
+        this.loader = new Loader();
 
-        window.addEventListener("load", () => {
+        window.addEventListener("load", async () => {
+            await this.loader.loadAll();
             this.events.sendEvent(new ApplicationInitEvent());
 
             this.events.addListener(CanvasResizedEvent, (event: CanvasResizedEvent) => {

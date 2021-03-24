@@ -27,6 +27,7 @@ export class TransformComponent {
         return this._transformMatrix;
     }
 }
+
 export class SpriteComponent {
     texture: Texture;
 
