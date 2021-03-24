@@ -15,14 +15,14 @@ export class TransformComponent {
     }
 
     get transformMatrix(): Matrix3 {
-        this._transformMatrix
-            .identity()
-            .translate(this.position.x, this.position.y)
-            .scale(this.scale.x, this.scale.y);
-
+        this._transformMatrix.identity();
         if (this.rotation !== 0) {
             this._transformMatrix.rotate(this.rotation);
         }
+
+        this._transformMatrix
+            .translate(this.position.x, this.position.y)
+            .scale(this.scale.x, this.scale.y);
 
         return this._transformMatrix;
     }

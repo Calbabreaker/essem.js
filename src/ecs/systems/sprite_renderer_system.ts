@@ -4,6 +4,7 @@ import { CameraComponent, SpriteComponent, TransformComponent } from "../compone
 import { AbstractBatchRenderer } from "../../renderer/abstract_batch_renderer";
 import { CameraSystem } from "./camera_system";
 import { assert } from "../../utils/misc";
+import { Vector2 } from "../../math/vector2";
 export class SpriteRenderer extends AbstractBatchRenderer {
     // prettier-ignore
     static vertexPositions: Float32Array = new Float32Array([
@@ -20,14 +21,23 @@ export class SpriteRenderer extends AbstractBatchRenderer {
         0.0, 1.0, 
     ]);
 
+    private _cacheVector: Vector2 = new Vector2();
+
     drawSprite(sprite: SpriteComponent, transform: TransformComponent) {
         if (this.indicesCount >= AbstractBatchRenderer.maxIndices) this.nextBatch();
+        const matrix = transform.transformMatrix;
 
         for (let i = 0; i < 4; i++) {
             const index = i * 2;
-            this.vertices[this.verticesIndex++] = SpriteRenderer.vertexPositions[index + 0];
-            this.vertices[this.verticesIndex++] = SpriteRenderer.vertexPositions[index + 1];
-            this.vertices[this.verticesIndex++] = SpriteRenderer.texCoords[index + 0];
+            this._cacheVector
+                .set(
+                    SpriteRenderer.vertexPositions[index] * sprite.texture.aspectRatio,
+                    SpriteRenderer.vertexPositions[index + 1]
+                )
+                .transformMatrix3(matrix);
+            this.vertices[this.verticesIndex++] = this._cacheVector.x;
+            this.vertices[this.verticesIndex++] = this._cacheVector.y;
+            this.vertices[this.verticesIndex++] = SpriteRenderer.texCoords[index];
             this.vertices[this.verticesIndex++] = SpriteRenderer.texCoords[index + 1];
             this.vertices[this.verticesIndex++] = this.getTextureSlot(sprite.texture);
         }

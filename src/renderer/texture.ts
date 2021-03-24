@@ -5,9 +5,11 @@ export type TextureSource = HTMLImageElement | HTMLCanvasElement;
 export class Texture {
     source: TextureSource;
     glTexture: WebGLTexture | null = null;
+    aspectRatio: number;
 
     constructor(source: TextureSource) {
         this.source = source;
+        this.aspectRatio = this.source.width / this.source.height;
     }
 
     init(gl: WebGL2RenderingContext) {

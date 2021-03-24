@@ -31,7 +31,7 @@
             })();
 
             const app = new ESSEM.Application({
-                canvasOptions: { fixedSize: false, aspectRatio: 16 / 9 },
+                canvasOptions: { fixedSize: false },
             });
             app.registerSystem(ESSEM.SpriteRendererSystem, ESSEM.CameraSystem);
 
@@ -39,11 +39,11 @@
 
             const scene = app.createScene();
             const entityA = scene.createEntity();
-            entityA.addComponent(new ESSEM.TransformComponent());
+            const entityTransform = entityA.addComponent(new ESSEM.TransformComponent());
 
             const camera = scene.createEntity();
             camera.addComponent(new ESSEM.CameraComponent(2));
-            const transform = camera.addComponent(new ESSEM.TransformComponent());
+            camera.addComponent(new ESSEM.TransformComponent());
             ESSEM.CameraSystem.mainCamera = camera;
 
             app.events.addListener(ESSEM.ApplicationInitEvent, () => {
@@ -51,7 +51,7 @@
             });
 
             app.events.addListener(ESSEM.ApplicationUpdateEvent, (event) => {
-                transform.rotation += ESSEM.toRadians(event.delta * 0.25);
+                entityTransform.rotation += ESSEM.toRadians(event.delta * 0.25);
             });
         </script>
     </body>

@@ -35,13 +35,13 @@ export abstract class AbstractBatchRenderer {
         this.vertexBuffer = this.vertexArray.addVertexBuffer(gl, this.vertices, gl.DYNAMIC_DRAW);
 
         for (let i = 0, offset = 0; i < AbstractBatchRenderer.maxIndices; i += 6, offset += 4) {
-            this.indices[i + 0] = offset + 0;
+            this.indices[i] = offset;
             this.indices[i + 1] = offset + 1;
             this.indices[i + 2] = offset + 2;
 
             this.indices[i + 3] = offset + 2;
             this.indices[i + 4] = offset + 3;
-            this.indices[i + 5] = offset + 0;
+            this.indices[i + 5] = offset;
         }
 
         this.vertexArray.setIndexBuffer(gl, this.indices);

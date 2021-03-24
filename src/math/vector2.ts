@@ -11,6 +11,12 @@ export class Vector2 {
         this.y = y;
     }
 
+    set(x = 0, y = 0): this {
+        this.x = x;
+        this.y = y;
+        return this;
+    }
+
     clone(): Vector2 {
         return new Vector2(this.x, this.y);
     }
@@ -115,8 +121,9 @@ export class Vector2 {
     }
 
     transformMatrix3(matrix: Matrix3): this {
-        this.x = matrix.xScale * this.x + matrix.xSkew * this.y + matrix.xTrans;
-        this.y = matrix.ySkew * this.x + matrix.yScale * this.y + matrix.yTrans;
+        const x = this.x;
+        this.x = matrix.xScale * x + matrix.xSkew * this.y + matrix.xTrans;
+        this.y = matrix.ySkew * x + matrix.yScale * this.y + matrix.yTrans;
         return this;
     }
 
