@@ -3,7 +3,8 @@ import { assert } from "../utils/misc";
 import { AnyCtor } from "../utils/types";
 
 export class Entity {
-    componentMap: Map<string, Component> = new Map();
+    _componentMap: Map<string, Component> = new Map();
+    _systemIndexMap: Map<string, number> = new Map();
 
     private _ecsManager: ECSManager;
 
@@ -13,8 +14,8 @@ export class Entity {
 
     addComponent<T extends Component>(component: T): T {
         const typeName = component.constructor.name;
-        assert(!this.componentMap.has(typeName), `Component '${typeName}' already exists!`);
-        this.componentMap.set(typeName, component);
+        assert(!this._componentMap.has(typeName), `Component '${typeName}' already exists!`);
+        this._componentMap.set(typeName, component);
 
         this._ecsManager.entityComponentAdd(this, typeName);
         return component as T;
@@ -22,15 +23,15 @@ export class Entity {
 
     removeComponent(componentType: AnyCtor<Component> | string): void {
         const typeName = (componentType as AnyCtor<Component>).name ?? componentType;
-        assert(this.componentMap.has(typeName), `Component '${typeName}' does not exist!`);
+        assert(this._componentMap.has(typeName), `Component '${typeName}' does not exist!`);
 
         this._ecsManager.entityComponentRemove(this, typeName);
-        this.componentMap.delete(typeName);
+        this._componentMap.delete(typeName);
     }
 
     hasComponent(componentType: AnyCtor<Component> | string): boolean {
         const typeName = (componentType as AnyCtor<Component>).name ?? componentType;
-        return this.componentMap.has(typeName);
+        return this._componentMap.has(typeName);
     }
 
     hasAllComponents(componentTypes: AnyCtor<Component>[] | string[]): boolean {
@@ -43,13 +44,13 @@ export class Entity {
 
     getComponent<T extends Component>(componentType: AnyCtor<T> | string): T {
         const typeName = (componentType as AnyCtor<Component>).name ?? componentType;
-        const component = this.componentMap.get(typeName);
+        const component = this._componentMap.get(typeName);
         assert(component !== undefined, `Component '${typeName}' does not exist!`);
         return component as T;
     }
 
     destroy(): void {
-        for (const [typeName] of this.componentMap) {
+        for (const [typeName] of this._componentMap) {
             this.removeComponent(typeName);
         }
     }

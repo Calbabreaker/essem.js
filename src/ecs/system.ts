@@ -5,7 +5,7 @@ import { mapGet } from "../utils/misc";
 import { Application } from "../core/application";
 
 export abstract class System {
-    entities: Set<Entity> = new Set();
+    entities: Entity[] = [];
     typeNames: string[] = [];
     private _ecsManager: ECSManager;
 
