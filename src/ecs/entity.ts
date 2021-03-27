@@ -5,8 +5,10 @@ import { AnyCtor } from "../utils/types";
 export class Entity {
     _componentMap: Map<string, Component> = new Map();
     _systemIndexMap: Map<string, number> = new Map();
-
+    _arrayIndex = 0;
     private _ecsManager: ECSManager;
+
+    destroyed = true;
 
     constructor(manager: ECSManager) {
         this._ecsManager = manager;
@@ -49,7 +51,17 @@ export class Entity {
         return component as T;
     }
 
+    _setup(arrayIndex: number) {
+        if (!this.destroyed) return;
+
+        this.destroyed = false;
+        this._arrayIndex = arrayIndex;
+    }
+
     destroy(): void {
+        if (this.destroyed) return;
+
+        this.destroyed = true;
         for (const [typeName] of this._componentMap) {
             this.removeComponent(typeName);
         }

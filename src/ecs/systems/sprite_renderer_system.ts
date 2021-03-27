@@ -5,6 +5,7 @@ import { AbstractBatchRenderer } from "../../renderer/abstract_batch_renderer";
 import { CameraSystem } from "./camera_system";
 import { assert } from "../../utils/misc";
 import { Vector2 } from "../../math/vector2";
+
 export class SpriteRenderer extends AbstractBatchRenderer {
     // prettier-ignore
     static vertexPositions: Float32Array = new Float32Array([

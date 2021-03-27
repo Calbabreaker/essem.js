@@ -3,16 +3,38 @@ import { ECSManager } from "./ecs_manager";
 
 export class Scene {
     private _ecsManager: ECSManager;
+    private _availableEntities: Entity[] = [];
+
+    entities: Entity[] = [];
 
     constructor(manager: ECSManager) {
         this._ecsManager = manager;
+        this.reserveEntities(100);
     }
 
     createEntity(): Entity {
-        return new Entity(this._ecsManager);
+        if (this._availableEntities.length === 0) {
+            // resize by 20%
+            const totalEntities = this.entities.length;
+            this.reserveEntities(Math.ceil(totalEntities * 1.2) - totalEntities);
+        }
+
+        const entity = this._availableEntities.pop() as Entity;
+        entity._setup(this.entities.length);
+        this.entities.push(entity);
+        return entity;
     }
 
     destroyEntity(entity: Entity): void {
+        const lastEntity = this.entities[this.entities.length - 1];
+        this.entities[entity._arrayIndex] = lastEntity;
+        this.entities.pop();
         entity.destroy();
+    }
+
+    reserveEntities(count: number): void {
+        for (let i = 0; i < count; i++) {
+            this._availableEntities.push(new Entity(this._ecsManager));
+        }
     }
 }
