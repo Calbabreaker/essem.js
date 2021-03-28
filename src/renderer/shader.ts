@@ -16,7 +16,7 @@ export class Shader {
         this.name = name;
     }
 
-    init(gl: WebGL2RenderingContext) {
+    init(gl: WebGL2RenderingContext): void {
         const glVertexShader = this._compileGLShader(gl, gl.VERTEX_SHADER, this.vertexSrc);
         const glFragmentShader = this._compileGLShader(gl, gl.FRAGMENT_SHADER, this.fragmentSrc);
 
@@ -35,7 +35,7 @@ export class Shader {
         gl.deleteShader(glFragmentShader);
     }
 
-    bind(gl: WebGL2RenderingContext) {
+    bind(gl: WebGL2RenderingContext): void {
         if (!this.glProgram) {
             this.init(gl);
         }
@@ -43,7 +43,7 @@ export class Shader {
         gl.useProgram(this.glProgram);
     }
 
-    dispose(gl: WebGL2RenderingContext) {
+    dispose(gl: WebGL2RenderingContext): void {
         gl.deleteProgram(this.glProgram);
     }
 
@@ -61,23 +61,23 @@ export class Shader {
         return location;
     }
 
-    setFloat1(gl: WebGL2RenderingContext, name: string, value: number) {
+    setFloat1(gl: WebGL2RenderingContext, name: string, value: number): void {
         gl.uniform1f(this.getUniformLocation(gl, name), value);
     }
 
-    setFloat2(gl: WebGL2RenderingContext, name: string, value: Vector2) {
+    setFloat2(gl: WebGL2RenderingContext, name: string, value: Vector2): void {
         gl.uniform2f(this.getUniformLocation(gl, name), value.x, value.y);
     }
 
-    setInt1(gl: WebGL2RenderingContext, name: string, value: number) {
+    setInt1(gl: WebGL2RenderingContext, name: string, value: number): void {
         gl.uniform1i(this.getUniformLocation(gl, name), value);
     }
 
-    setIntArray(gl: WebGL2RenderingContext, name: string, value: Int32Array) {
+    setIntArray(gl: WebGL2RenderingContext, name: string, value: Int32Array): void {
         gl.uniform1iv(this.getUniformLocation(gl, name), value);
     }
 
-    setMatrix3(gl: WebGL2RenderingContext, name: string, value: Matrix3) {
+    setMatrix3(gl: WebGL2RenderingContext, name: string, value: Matrix3): void {
         gl.uniformMatrix3fv(this.getUniformLocation(gl, name), false, value.toArray(true));
     }
 

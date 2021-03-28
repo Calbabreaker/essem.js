@@ -7,20 +7,20 @@ import { System } from "../system";
 export class CameraSystem extends System {
     canvas!: Canvas;
 
-    setup(app: Application) {
+    setup(app: Application): void {
         this.setComponents(TransformComponent, CameraComponent);
         app.events.addListener(CanvasResizedEvent, this.onResized.bind(this));
         this.canvas = app.canvas;
     }
 
-    onEntityAdd(entity: Entity) {
+    onEntityAdd(entity: Entity): void {
         const cameraComponent = entity.getComponent(CameraComponent);
         if (!cameraComponent.fixedAspectRatio) {
             cameraComponent.setViewportSize(this.canvas.width, this.canvas.height);
         }
     }
 
-    onResized(event: CanvasResizedEvent) {
+    onResized(event: CanvasResizedEvent): void {
         this.entities.forEach((entity) => {
             const cameraComponent = entity.getComponent(CameraComponent);
             if (!cameraComponent.fixedAspectRatio) {

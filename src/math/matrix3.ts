@@ -116,7 +116,7 @@ export class Matrix3 {
         return this;
     }
 
-    multiplyFront(matrix: Matrix3) {
+    multiplyFront(matrix: Matrix3): this {
         const xTrans = this.xTrans;
 
         if (
@@ -136,6 +136,7 @@ export class Matrix3 {
 
         this.xTrans = xTrans * matrix.xScale + this.yTrans * matrix.xSkew + matrix.xTrans;
         this.yTrans = xTrans * matrix.ySkew + this.yTrans * matrix.yScale + matrix.yTrans;
+        return this;
     }
 
     translate(x: number, y: number): this {

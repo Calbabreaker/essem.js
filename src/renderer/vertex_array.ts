@@ -11,7 +11,7 @@ export class VertexArray {
         this.glVertexArray = glVertexArray;
     }
 
-    bind(gl: WebGL2RenderingContext) {
+    bind(gl: WebGL2RenderingContext): void {
         gl.bindVertexArray(this.glVertexArray);
     }
 
@@ -46,7 +46,7 @@ export class VertexArray {
         return glIndexBuffer;
     }
 
-    dispose(gl: WebGL2RenderingContext) {
+    dispose(gl: WebGL2RenderingContext): void {
         this.glVertexBuffers.forEach((buffer) => {
             gl.deleteBuffer(buffer);
         });

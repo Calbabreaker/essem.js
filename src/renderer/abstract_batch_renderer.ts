@@ -64,7 +64,7 @@ export abstract class AbstractBatchRenderer {
         this.textureSlots = new Array(renderer.maxTextureSlots).fill(undefined);
     }
 
-    beginScene(viewProjection: Matrix3) {
+    beginScene(viewProjection: Matrix3): void {
         const gl = this.renderer.gl;
         this.textureShader.bind(gl);
         this.textureShader.setMatrix3(gl, "u_viewProjection", viewProjection);
@@ -72,22 +72,22 @@ export abstract class AbstractBatchRenderer {
         this.startBatch();
     }
 
-    endScene() {
+    endScene(): void {
         this.flush();
     }
 
-    startBatch() {
+    startBatch(): void {
         this.verticesIndex = 0;
         this.indicesCount = 0;
     }
 
-    nextBatch() {
+    nextBatch(): void {
         this.flush();
         this.startBatch();
         this.textureSlotIndex = 0;
     }
 
-    flush() {
+    flush(): void {
         if (this.indicesCount === 0 || this.verticesIndex === 0) return;
 
         const gl = this.renderer.gl;
@@ -111,7 +111,7 @@ export abstract class AbstractBatchRenderer {
         gl.drawElements(gl.TRIANGLES, this.indicesCount, gl.UNSIGNED_SHORT, 0);
     }
 
-    getTextureSlot(texture: Texture) {
+    getTextureSlot(texture: Texture): number {
         let slot = this.textureToSlotMap.get(texture);
         if (slot === undefined) {
             if (this.textureSlotIndex >= this.renderer.maxTextureSlots) this.nextBatch();

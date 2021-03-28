@@ -8,10 +8,23 @@ export class Entity {
     _arrayIndex = 0;
     private _ecsManager: ECSManager;
 
+    active = false;
     destroyed = true;
 
     constructor(manager: ECSManager) {
         this._ecsManager = manager;
+    }
+
+    setActive(active: boolean): void {
+        if (this._componentMap.size !== 0 && this.active !== active) {
+            for (const [typeName] of this._componentMap) {
+                active
+                    ? this._ecsManager.entityComponentAdd(this, typeName)
+                    : this._ecsManager.entityComponentRemove(this, typeName);
+            }
+        }
+
+        this.active = active;
     }
 
     addComponent<T extends Component>(component: T): T {
@@ -51,9 +64,10 @@ export class Entity {
         return component as T;
     }
 
-    _setup(arrayIndex: number) {
+    _setup(arrayIndex: number): void {
         if (!this.destroyed) return;
 
+        this.setActive(true);
         this.destroyed = false;
         this._arrayIndex = arrayIndex;
     }
@@ -61,9 +75,8 @@ export class Entity {
     destroy(): void {
         if (this.destroyed) return;
 
+        this.setActive(false);
+        this._componentMap.clear();
         this.destroyed = true;
-        for (const [typeName] of this._componentMap) {
-            this.removeComponent(typeName);
-        }
     }
 }

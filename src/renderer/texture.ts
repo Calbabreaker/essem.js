@@ -12,7 +12,7 @@ export class Texture {
         this.aspectRatio = this.source.width / this.source.height;
     }
 
-    init(gl: WebGL2RenderingContext) {
+    init(gl: WebGL2RenderingContext): void {
         this.glTexture = gl.createTexture();
         assert(this.glTexture !== null, "Could not create glTexture!");
         this.bind(gl);
@@ -46,7 +46,7 @@ export class Texture {
         }
     }
 
-    dispose(gl: WebGL2RenderingContext) {
+    dispose(gl: WebGL2RenderingContext): void {
         gl.deleteTexture(this.glTexture);
         this.glTexture = null;
     }

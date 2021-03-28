@@ -4,8 +4,6 @@ export class Loader {
     imagePaths: string[] = [];
     resources: { [key: string]: Texture } = {};
 
-    constructor() {}
-
     add(imagePath: string): this {
         this.imagePaths.push(imagePath);
         return this;

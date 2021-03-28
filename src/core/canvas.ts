@@ -47,7 +47,7 @@ export class Canvas {
         });
     }
 
-    resizeCanvas(width: number, height: number, sendEvent = true) {
+    resizeCanvas(width: number, height: number, sendEvent = true): void {
         this.width = width;
         this.height = height;
         this.element.width = width;
@@ -59,7 +59,7 @@ export class Canvas {
     }
 
     // resizes with accordence to aspect ratio
-    resizeFull() {
+    resizeFull(): void {
         if (this.aspectRatio !== null) {
             let height = window.innerHeight;
             const aspectWidth = window.innerWidth / this.aspectRatio;

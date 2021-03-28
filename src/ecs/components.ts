@@ -14,7 +14,7 @@ export class TransformComponent {
         this.rotation = rotation;
     }
 
-    get transformMatrix(): Matrix3 {
+    getTransformMatrix(): Matrix3 {
         this._transformMatrix.identity();
         if (this.rotation !== 0) {
             this._transformMatrix.rotate(this.rotation);
@@ -47,11 +47,11 @@ export class CameraComponent {
         this.fixedAspectRatio = fixedAspectRatio;
     }
 
-    setViewportSize(width: number, height: number) {
+    setViewportSize(width: number, height: number): void {
         this.aspectRatio = width / height;
     }
 
-    get projectionMatrix(): Matrix3 {
+    getProjectionMatrix(): Matrix3 {
         return this._projectionMatrix.projection(
             -this.size * this.aspectRatio,
             this.size * this.aspectRatio,

@@ -24,9 +24,9 @@ export class SpriteRenderer extends AbstractBatchRenderer {
 
     private _cacheVector: Vector2 = new Vector2();
 
-    drawSprite(sprite: SpriteComponent, transform: TransformComponent) {
+    drawSprite(sprite: SpriteComponent, transform: TransformComponent): void {
         if (this.indicesCount >= AbstractBatchRenderer.maxIndices) this.nextBatch();
-        const matrix = transform.transformMatrix;
+        const matrix = transform.getTransformMatrix();
 
         for (let i = 0; i < 4; i++) {
             const index = i * 2;
@@ -61,9 +61,9 @@ export class SpriteRendererSystem extends System {
         const mainCamera = CameraSystem.mainCamera;
         assert(mainCamera !== null, "No main camera has been set!");
 
-        const viewProjection = mainCamera.getComponent(CameraComponent).projectionMatrix;
+        const viewProjection = mainCamera.getComponent(CameraComponent).getProjectionMatrix();
         viewProjection.multiply(
-            mainCamera.getComponent(TransformComponent).transformMatrix.invert()
+            mainCamera.getComponent(TransformComponent).getTransformMatrix().invert()
         );
 
         this.spriteRenderer.beginScene(viewProjection);

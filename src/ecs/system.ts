@@ -9,8 +9,13 @@ export abstract class System {
     typeNames: string[] = [];
     private _ecsManager: ECSManager;
 
-    setup(_app: Application): void {}
-    onEntityAdd?(_entity: Entity): void {}
+    setup(_app: Application): void {
+        // to override
+    }
+
+    onEntityAdd?(_entity: Entity): void {
+        // to override (optional)
+    }
 
     constructor(manager: ECSManager) {
         this._ecsManager = manager;
