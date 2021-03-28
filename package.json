@@ -1,7 +1,7 @@
 {
     "name": "essem",
     "version": "0.0.0",
-    "description": "A javascript based game engine that can make any fast and powerful application.",
+    "description": "Javascript ecs game engine.",
     "main": "build/essem.js",
     "module": "build/essem.module.js",
     "types": "build/essem.d.ts",
@@ -11,7 +11,8 @@
         "build": "rollup -c",
         "build:dev": "rollup -c --environment DEV",
         "lint": "eslint --ext .js,.ts . --max-warnings 0",
-        "lint:fix": "npm run lint -- --fix"
+        "lint:fix": "npm run lint -- --fix",
+        "docs": "webdoc --site-root docs"
     },
     "repository": {
         "type": "git",
@@ -21,10 +22,12 @@
         "library",
         "javascript",
         "typescript",
-        "maker",
         "application",
         "games",
-        "engine"
+        "engine",
+        "ecs",
+        "framework",
+        "renderer"
     ],
     "author": "Calbabreaker",
     "license": "MIT",
@@ -35,6 +38,8 @@
     "devDependencies": {
         "@typescript-eslint/eslint-plugin": "^4.19.0",
         "@typescript-eslint/parser": "^4.19.0",
+        "@webdoc/cli": "^1.2.0",
+        "@webdoc/legacy-template": "^1.2.0",
         "eslint": "^7.23.0",
         "eslint-config-prettier": "^8.1.0",
         "eslint-plugin-prettier": "^3.3.1",

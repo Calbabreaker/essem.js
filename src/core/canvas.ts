@@ -68,6 +68,11 @@ export interface ICanvasOptions {
     aspectRatio?: number;
 }
 
+/**
+ * Canvas for canvas element and the input events.
+ *
+ * @memberof ESSEM
+ */
 export class Canvas {
     element: HTMLCanvasElement;
 
@@ -81,6 +86,14 @@ export class Canvas {
     private _pressedMouseButtons: Map<MouseCode, boolean> = new Map();
     private _mousePosition: Vector2 = new Vector2();
 
+    /**
+     * @param {object} [options={}] - Optional parameters for Canvas.
+     * @param {number} [options.aspectRatio] - Aspect ratio for the canvas to resize to fixedSized
+     * @param {boolean} [options.fixedSize=true] - Will resize to fit window if true.
+     *                                          is true. Leave empty for no aspect ratio.
+     * @param {number} [options.width=400] - Initial width.
+     * @param {number} [options.height=400] - Initial height.
+     */
     constructor(options: ICanvasOptions = {}, eventManager: EventManager) {
         this.fixedSize = options.fixedSize ?? true;
         this._eventManager = eventManager;

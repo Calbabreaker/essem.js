@@ -6,6 +6,11 @@ import { System } from "./system";
 // eslint-disable-next-line @typescript-eslint/ban-types
 export type Component = Object;
 
+/**
+ * Helper class to make ecs work.
+ *
+ * @private
+ */
 export class ECSManager {
     systems: System[] = [];
     typeNameToSystem: Map<string, System[]> = new Map();

@@ -1,5 +1,10 @@
 import { AnyCtor } from "./types";
 
+/**
+ * Error class that is used for {@link ESSEM.assert}.
+ *
+ * @memberof ESSEM
+ */
 export class AssertionError extends Error {
     constructor(message?: string) {
         super(message);
@@ -7,6 +12,14 @@ export class AssertionError extends Error {
     }
 }
 
+/**
+ * Throws an error if condition is false.
+ *
+ * @memberof ESSEM
+ * @param condition - The condition to assert.
+ * @param message - The message to use in the Error.
+ * @return {void}
+ */
 export function assert(condition: boolean, message?: string): asserts condition {
     if (!condition) throw new AssertionError(message);
 }

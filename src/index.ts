@@ -1,3 +1,7 @@
+/**
+ * @namespace ESSEM
+ */
+
 export * from "./core/application";
 export * from "./core/canvas";
 export * from "./core/codes";
@@ -27,7 +31,12 @@ export * from "./math/matrix3";
 export * from "./utils/browser";
 export * from "./utils/misc";
 
-export const VERSION = "$_VERSION";
+/**
+ * String of the current PIXI version.
+ *
+ * @memberof ESSEM
+ */
+export const VERSION: string = "$_VERSION";
 
 if (window.__ESSEM__) {
     throw new Error("essem.js is already imported!");

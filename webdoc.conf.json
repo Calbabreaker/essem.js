@@ -1,0 +1,23 @@
+{
+    "source": {
+        "include": ["src/**/*.ts"],
+        "excludePattern": "(node_modules|build|docs|examples|test)"
+    },
+    "plugins": ["plugins/markdown"],
+    "opts": {
+        "encoding": "utf8",
+        "recurse": true,
+        "destination": "./docs"
+    },
+    "template": {
+        "repository": "https://github.com/Calbabreaker/essem.js",
+        "outputSourceFiles": true,
+        "readme": "./README.md",
+        "meta": {
+            "title": "essem.js API Documentation",
+            "description": "Documentation for essem.js library",
+            "keyword": "docs, documentation, essem, essemjs, library, game, javascript, jsdoc"
+        },
+        "applicationName": "essem.js"
+    }
+}

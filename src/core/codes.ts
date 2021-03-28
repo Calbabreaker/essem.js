@@ -135,7 +135,7 @@ export enum KeyCode {
 
 /**
  * An enum containing most of the mouse button codes from event.button.
- * This is to easily get autocomplete info for mouse button codes.
+ * This is here to easily get autocomplete info for mouse button codes.
  */
 export enum MouseCode {
     Button0 = 0,

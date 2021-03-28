@@ -1,7 +1,16 @@
 import { mapGet } from "../utils/misc";
 import { AnyCtor } from "../utils/types";
 
+/**
+ * Event base class that all events must extend from.
+ *
+ * @memberof ESSEM
+ */
 export abstract class Event {
+    /**
+     * Whether or not the event has been handled. Set this to true to make it handled and stopped
+     * being sent to all other event listeners.
+     */
     handled = false;
 }
 

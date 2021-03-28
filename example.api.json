@@ -1,0 +1,935 @@
+{
+	"name": "",
+	"type": "RootDoc",
+	"members": [
+		{
+			"name": "ESSEM",
+			"type": "NSDoc",
+			"brief": "",
+			"description": "",
+			"members": [
+				{
+					"name": "Application",
+					"type": "ClassDoc",
+					"brief": "<p>Class that is used for everything in essem.js.</p>",
+					"description": "<h2>Example</h2>\n<pre><code class=\"hljs language-js\"><span class=\"hljs-comment\">// Create the application</span>\n<span class=\"hljs-keyword\">const</span> app = <span class=\"hljs-keyword\">new</span> ESSEM.Application();\n\n<span class=\"hljs-comment\">// Add the canvas element to the DOM</span>\n<span class=\"hljs-built_in\">document</span>.body.appendChild(app.canvas.element);\n\n<span class=\"hljs-comment\">// Create scene, add entities, add components ect.</span>\n<span class=\"hljs-keyword\">const</span> scene = app.createScene();\n</code></pre>",
+					"members": [
+						{
+							"name": "constructor",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": ""
+						},
+						{
+							"name": "createScene",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "<p>Creates a new scene.</p>",
+							"description": ""
+						},
+						{
+							"name": "registerSystem",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": "<p>Registers a parameterized array of system classes.\nUse like this: <code>app.registerSystem(System1, System2, ...);</code></p>"
+						},
+						{
+							"name": "shutdown",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "<p>Stops the Application. The canvas is not removed from the DOM so you need to remove it.</p>",
+							"description": ""
+						},
+						{
+							"name": "_onUpdate",
+							"type": "MethodDoc",
+							"access": "private",
+							"scope": "instance",
+							"brief": "<p>The update function that gets called every requestAnimationFrame loop.</p>",
+							"description": ""
+						}
+					]
+				},
+				{
+					"name": "ApplicationInitEvent",
+					"type": "ClassDoc",
+					"brief": "<p>Event that is sent whenever the Application initiates.</p>",
+					"description": "",
+					"members": [
+						{
+							"name": "handled",
+							"type": "PropertyDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": "<p>Whether or not the event has been handled. Set this to true to make it handled and stopped\nbeing sent to all other event listeners.</p>"
+						}
+					]
+				},
+				{
+					"name": "ApplicationUpdateEvent",
+					"type": "ClassDoc",
+					"brief": "<p>Event that is sent whenever the Application updates.</p>",
+					"description": "",
+					"members": [
+						{
+							"name": "delta",
+							"type": "PropertyDoc",
+							"scope": "instance",
+							"brief": "<p>The delta time of the update.</p>",
+							"description": ""
+						},
+						{
+							"name": "handled",
+							"type": "PropertyDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": "<p>Whether or not the event has been handled. Set this to true to make it handled and stopped\nbeing sent to all other event listeners.</p>"
+						},
+						{
+							"name": "constructor",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": ""
+						}
+					]
+				},
+				{
+					"name": "AssertionError",
+					"type": "ClassDoc",
+					"brief": "<p>Error class that is used for {@link ESSEM.assert}.</p>",
+					"description": ""
+				},
+				{
+					"name": "Canvas",
+					"type": "ClassDoc",
+					"brief": "<p>Canvas for canvas element and the input events.</p>",
+					"description": "",
+					"members": [
+						{
+							"name": "constructor",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": ""
+						},
+						{
+							"name": "getMousePosition",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": ""
+						},
+						{
+							"name": "isKeyPressed",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": ""
+						}
+					]
+				},
+				{
+					"name": "Event",
+					"type": "ClassDoc",
+					"brief": "<p>Event base class that all events must extend from.</p>",
+					"description": "",
+					"members": [
+						{
+							"name": "handled",
+							"type": "PropertyDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": "<p>Whether or not the event has been handled. Set this to true to make it handled and stopped\nbeing sent to all other event listeners.</p>"
+						}
+					]
+				},
+				{
+					"name": "VERSION",
+					"type": "PropertyDoc",
+					"brief": "<p>String of the current PIXI version.</p>",
+					"description": ""
+				},
+				{
+					"name": "assert",
+					"type": "FunctionDoc",
+					"brief": "<p>Throws an error if condition is false.</p>",
+					"description": ""
+				},
+				{
+					"name": "isWebGL2Supported",
+					"type": "FunctionDoc",
+					"brief": "<p>Checks to see if WebGL2 is supported in the browser.</p>",
+					"description": ""
+				},
+				{
+					"name": "sayHello",
+					"type": "FunctionDoc",
+					"brief": "<p>Says hello in essem.js style. Gets called once when the application finishes initiating.</p>",
+					"description": ""
+				},
+				{
+					"name": "skipHello",
+					"type": "FunctionDoc",
+					"brief": "<p>Skips the essem.js hello. Don't call this or else you will have bad luck forever.</p>",
+					"description": ""
+				}
+			]
+		},
+		{
+			"name": "AbstractBatchRenderer",
+			"type": "ClassDoc",
+			"brief": "",
+			"description": "",
+			"members": [
+				{
+					"name": "beginScene",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				},
+				{
+					"name": "flush",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				},
+				{
+					"name": "startBatch",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				}
+			]
+		},
+		{
+			"name": "CameraComponent",
+			"type": "ClassDoc",
+			"brief": "",
+			"description": "",
+			"members": [
+				{
+					"name": "constructor",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				},
+				{
+					"name": "getProjectionMatrix",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				},
+				{
+					"name": "setViewportSize",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				}
+			]
+		},
+		{
+			"name": "CameraSystem",
+			"type": "ClassDoc",
+			"brief": "",
+			"description": "",
+			"members": [
+				{
+					"name": "onEntityAdd",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				},
+				{
+					"name": "setComponents",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				}
+			]
+		},
+		{
+			"name": "Entity",
+			"type": "ClassDoc",
+			"brief": "",
+			"description": "",
+			"members": [
+				{
+					"name": "addComponent",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				},
+				{
+					"name": "destroy",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				},
+				{
+					"name": "getComponent",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				},
+				{
+					"name": "hasComponent",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				},
+				{
+					"name": "setActive",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				}
+			]
+		},
+		{
+			"name": "EventManager",
+			"type": "ClassDoc",
+			"brief": "",
+			"description": "",
+			"members": [
+				{
+					"name": "sendEvent",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				}
+			]
+		},
+		{
+			"name": "KeyPressedEvent",
+			"type": "ClassDoc",
+			"brief": "",
+			"description": "",
+			"members": [
+				{
+					"name": "handled",
+					"type": "PropertyDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": "<p>Whether or not the event has been handled. Set this to true to make it handled and stopped\nbeing sent to all other event listeners.</p>"
+				},
+				{
+					"name": "constructor",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				}
+			]
+		},
+		{
+			"name": "KeyTypedEvent",
+			"type": "ClassDoc",
+			"brief": "",
+			"description": "",
+			"members": [
+				{
+					"name": "handled",
+					"type": "PropertyDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": "<p>Whether or not the event has been handled. Set this to true to make it handled and stopped\nbeing sent to all other event listeners.</p>"
+				}
+			]
+		},
+		{
+			"name": "Loader",
+			"type": "ClassDoc",
+			"brief": "",
+			"description": "",
+			"members": [
+				{
+					"name": "loadAll",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				}
+			]
+		},
+		{
+			"name": "Matrix3",
+			"type": "ClassDoc",
+			"brief": "",
+			"description": "<p>xScale|xSkew |xTrans\nySkew |yScale|yTrans\n0     |0     |1</p>",
+			"members": [
+				{
+					"name": "clone",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				},
+				{
+					"name": "constructor",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				},
+				{
+					"name": "identity",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				},
+				{
+					"name": "invert",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				},
+				{
+					"name": "multiply",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				},
+				{
+					"name": "multiplyFront",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				},
+				{
+					"name": "projection",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				},
+				{
+					"name": "rotate",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				},
+				{
+					"name": "scale",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				},
+				{
+					"name": "toArray",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				},
+				{
+					"name": "toString",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				},
+				{
+					"name": "transform",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				},
+				{
+					"name": "translate",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				}
+			]
+		},
+		{
+			"name": "MouseChangedEvent",
+			"type": "ClassDoc",
+			"brief": "",
+			"description": "",
+			"members": [
+				{
+					"name": "handled",
+					"type": "PropertyDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": "<p>Whether or not the event has been handled. Set this to true to make it handled and stopped\nbeing sent to all other event listeners.</p>"
+				},
+				{
+					"name": "constructor",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				}
+			]
+		},
+		{
+			"name": "MousePressedEvent",
+			"type": "ClassDoc",
+			"brief": "",
+			"description": "",
+			"members": [
+				{
+					"name": "handled",
+					"type": "PropertyDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": "<p>Whether or not the event has been handled. Set this to true to make it handled and stopped\nbeing sent to all other event listeners.</p>"
+				}
+			]
+		},
+		{
+			"name": "MouseScrolledEvent",
+			"type": "ClassDoc",
+			"brief": "",
+			"description": "",
+			"members": [
+				{
+					"name": "handled",
+					"type": "PropertyDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": "<p>Whether or not the event has been handled. Set this to true to make it handled and stopped\nbeing sent to all other event listeners.</p>"
+				}
+			]
+		},
+		{
+			"name": "Scene",
+			"type": "ClassDoc",
+			"brief": "",
+			"description": "",
+			"members": [
+				{
+					"name": "createEntity",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				},
+				{
+					"name": "reserveEntities",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				}
+			]
+		},
+		{
+			"name": "Shader",
+			"type": "ClassDoc",
+			"brief": "",
+			"description": "",
+			"members": [
+				{
+					"name": "_compileGLShader",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				},
+				{
+					"name": "bind",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				},
+				{
+					"name": "constructor",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				},
+				{
+					"name": "dispose",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				},
+				{
+					"name": "getUniformLocation",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				},
+				{
+					"name": "init",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				},
+				{
+					"name": "setFloat1",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				},
+				{
+					"name": "setFloat2",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				},
+				{
+					"name": "setInt1",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				},
+				{
+					"name": "setIntArray",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				},
+				{
+					"name": "setMatrix3",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				}
+			]
+		},
+		{
+			"name": "SpriteRendererSystem",
+			"type": "ClassDoc",
+			"brief": "",
+			"description": "",
+			"members": [
+				{
+					"name": "onEntityAdd",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				},
+				{
+					"name": "onUpdate",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				},
+				{
+					"name": "setComponents",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				},
+				{
+					"name": "setup",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				}
+			]
+		},
+		{
+			"name": "System",
+			"type": "ClassDoc",
+			"brief": "",
+			"description": "",
+			"members": [
+				{
+					"name": "onEntityAdd",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				},
+				{
+					"name": "setComponents",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				}
+			]
+		},
+		{
+			"name": "Texture",
+			"type": "ClassDoc",
+			"brief": "",
+			"description": "",
+			"members": [
+				{
+					"name": "dispose",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				},
+				{
+					"name": "init",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				}
+			]
+		},
+		{
+			"name": "TransformComponent",
+			"type": "ClassDoc",
+			"brief": "",
+			"description": "",
+			"members": [
+				{
+					"name": "_getGlobalVector",
+					"type": "MethodDoc",
+					"scope": "static",
+					"brief": "",
+					"description": ""
+				},
+				{
+					"name": "getGlobalPosition",
+					"type": "MethodDoc",
+					"scope": "static",
+					"brief": "",
+					"description": ""
+				},
+				{
+					"name": "getGlobalRotation",
+					"type": "MethodDoc",
+					"scope": "static",
+					"brief": "",
+					"description": ""
+				},
+				{
+					"name": "getGlobalScale",
+					"type": "MethodDoc",
+					"scope": "static",
+					"brief": "",
+					"description": ""
+				},
+				{
+					"name": "getGlobalTransformMatrix",
+					"type": "MethodDoc",
+					"scope": "static",
+					"brief": "",
+					"description": ""
+				},
+				{
+					"name": "constructor",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				},
+				{
+					"name": "getTransformMatrix",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				}
+			]
+		},
+		{
+			"name": "Vector2",
+			"type": "ClassDoc",
+			"brief": "",
+			"description": "",
+			"members": [
+				{
+					"name": "angle",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				},
+				{
+					"name": "approxEquals",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				},
+				{
+					"name": "clone",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				},
+				{
+					"name": "distance",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				},
+				{
+					"name": "divide",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				},
+				{
+					"name": "dot",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				},
+				{
+					"name": "magnitude",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				},
+				{
+					"name": "random",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				},
+				{
+					"name": "set",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				},
+				{
+					"name": "subtract",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				},
+				{
+					"name": "toArray",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				}
+			]
+		},
+		{
+			"name": "VertexArray",
+			"type": "ClassDoc",
+			"brief": "",
+			"description": "",
+			"members": [
+				{
+					"name": "addVertexBuffer",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				},
+				{
+					"name": "bind",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				},
+				{
+					"name": "constructor",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				},
+				{
+					"name": "dispose",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				},
+				{
+					"name": "setIndexBuffer",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				}
+			]
+		},
+		{
+			"name": "ECSManager",
+			"type": "ClassDoc",
+			"access": "private",
+			"brief": "<p>Helper class to make ecs work.</p>",
+			"description": "",
+			"members": [
+				{
+					"name": "entityComponentAdd",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				}
+			]
+		},
+		{
+			"name": "KeyCode",
+			"type": "EnumDoc",
+			"brief": "",
+			"description": "<p>An enum containing most of the key codes from event.code.\nThis is here to easily get autocomplete info for all keycodes.</p>"
+		},
+		{
+			"name": "MouseCode",
+			"type": "EnumDoc",
+			"brief": "",
+			"description": "<p>An enum containing most of the mouse button codes from event.button.\nThis is here to easily get autocomplete info for mouse button codes.</p>"
+		},
+		{
+			"name": "mapGet",
+			"type": "FunctionDoc",
+			"brief": "",
+			"description": ""
+		},
+		{
+			"name": "toRadians",
+			"type": "FunctionDoc",
+			"brief": "",
+			"description": ""
+		}
+	]
+}
