@@ -34,8 +34,13 @@
             document.body.appendChild(app.canvas.element);
 
             const scene = app.createScene();
-            const entityA = scene.createEntity();
-            const entityTransform = entityA.addComponent(new ESSEM.TransformComponent());
+            const entity = scene.createEntity();
+            const entityTransform = entity.addComponent(new ESSEM.TransformComponent());
+            const childEntity = scene.createEntity(entity);
+            const childEntityTransform = childEntity.addComponent(
+                new ESSEM.TransformComponent(new ESSEM.Vector2(2, 0))
+            );
+            childEntity.addComponent(new ESSEM.SpriteComponent(ESSEM.Texture.WHITE));
 
             const camera = scene.createEntity();
             camera.addComponent(new ESSEM.CameraComponent(2));
@@ -43,13 +48,14 @@
             ESSEM.CameraSystem.mainCamera = camera;
 
             app.events.addListener(ESSEM.ApplicationInitEvent, () => {
-                entityA.addComponent(
+                entity.addComponent(
                     new ESSEM.SpriteComponent(app.loader.resources["assets/blobfish.jpeg"])
                 );
             });
 
             app.events.addListener(ESSEM.ApplicationUpdateEvent, (event) => {
                 entityTransform.rotation += ESSEM.toRadians(event.delta * 0.25);
+                childEntityTransform.rotation += ESSEM.toRadians(event.delta * 0.5);
             });
         </script>
     </body>

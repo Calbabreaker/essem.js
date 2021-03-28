@@ -17,6 +17,12 @@ export class Vector2 {
         return this;
     }
 
+    setVector(vector: Vector2): this {
+        this.x = vector.x;
+        this.y = vector.y;
+        return this;
+    }
+
     clone(): Vector2 {
         return new Vector2(this.x, this.y);
     }
@@ -126,12 +132,4 @@ export class Vector2 {
         this.y = matrix.ySkew * x + matrix.yScale * this.y + matrix.yTrans;
         return this;
     }
-
-    sub = this.subtract;
-    mult = this.multiply;
-    div = this.divide;
-    dist = this.distance;
-    distSqr = this.distanceSquared;
-    mag = this.magnitude;
-    magSqr = this.magnitudeSquared;
 }

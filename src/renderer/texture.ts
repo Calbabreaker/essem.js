@@ -63,4 +63,17 @@ export class Texture {
             image.onerror = (event) => reject(event);
         });
     }
+
+    static readonly WHITE = createWhiteTexture();
+}
+
+function createWhiteTexture(): Texture {
+    const canvas = document.createElement("canvas");
+    canvas.width = 16;
+    canvas.height = 16;
+
+    const context = canvas.getContext("2d") as CanvasRenderingContext2D;
+    context.fillStyle = "white";
+    context.fillRect(0, 0, 16, 16);
+    return new Texture(canvas);
 }

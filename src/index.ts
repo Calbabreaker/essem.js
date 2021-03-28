@@ -4,13 +4,15 @@ import { isEmpty } from "./utils/misc";
 export * from "./core/application";
 export * from "./core/canvas";
 
-export * from "./ecs/systems/sprite_renderer_system";
-export * from "./ecs/systems/camera_system";
-export * from "./ecs/components";
+export * from "./ecs/components/camera_component";
+export * from "./ecs/components/sprite_component";
+export * from "./ecs/components/transform_component";
 export * from "./ecs/ecs_manager";
 export * from "./ecs/entity";
 export * from "./ecs/scene";
 export * from "./ecs/system";
+export * from "./ecs/systems/camera_system";
+export * from "./ecs/systems/sprite_renderer_system";
 
 export * from "./renderer/abstract_batch_renderer";
 export * from "./renderer/renderer";

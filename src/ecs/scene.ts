@@ -1,5 +1,6 @@
 import { Entity } from "./entity";
 import { ECSManager } from "./ecs_manager";
+import { swapRemove } from "../utils/misc";
 
 export class Scene {
     private _ecsManager: ECSManager;
@@ -12,7 +13,7 @@ export class Scene {
         this.reserveEntities(100);
     }
 
-    createEntity(): Entity {
+    createEntity(parent?: Entity): Entity {
         if (this._availableEntities.length === 0) {
             // resize by 20%
             const totalEntities = this.entities.length;
@@ -20,15 +21,21 @@ export class Scene {
         }
 
         const entity = this._availableEntities.pop() as Entity;
-        entity._setup(this.entities.length);
-        this.entities.push(entity);
+        entity._setup(parent);
+        if (parent === undefined) {
+            entity._arrayIndex = this.entities.length;
+            this.entities.push(entity);
+        }
+
         return entity;
     }
 
     destroyEntity(entity: Entity): void {
-        const lastEntity = this.entities[this.entities.length - 1];
-        this.entities[entity._arrayIndex] = lastEntity;
-        this.entities.pop();
+        if (entity.parent === undefined) {
+            const lastEntity = swapRemove(this.entities, entity._arrayIndex);
+            lastEntity._arrayIndex = entity._arrayIndex;
+        }
+
         entity.destroy();
     }
 

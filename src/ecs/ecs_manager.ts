@@ -1,4 +1,4 @@
-import { mapGet } from "../utils/misc";
+import { mapGet, swapRemove } from "../utils/misc";
 import { Entity } from "./entity";
 import { System } from "./system";
 
@@ -38,11 +38,9 @@ export class ECSManager {
             if (entityIndex === undefined) return;
 
             // swap last element to avoid shifting entities
-            const lastEntity = system.entities[system.entities.length - 1];
-            system.entities[entityIndex] = lastEntity;
+            const lastEntity = swapRemove(system.entities, entityIndex);
             lastEntity._systemIndexMap.set(system.constructor.name, entityIndex);
             entity._systemIndexMap.delete(system.constructor.name);
-            system.entities.pop();
         });
     }
 }

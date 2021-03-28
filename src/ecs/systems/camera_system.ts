@@ -1,8 +1,9 @@
 import { Application } from "../../core/application";
 import { Canvas, CanvasResizedEvent } from "../../core/canvas";
-import { CameraComponent, TransformComponent } from "../components";
 import { Entity } from "../entity";
 import { System } from "../system";
+import { CameraComponent } from "../components/camera_component";
+import { TransformComponent } from "../components/transform_component";
 
 export class CameraSystem extends System {
     canvas!: Canvas;

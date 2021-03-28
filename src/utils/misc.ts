@@ -19,3 +19,10 @@ export function mapGet<K, V>(map: Map<K, V>, key: K, defaultClass: AnyCtor<V>): 
     if (!map.has(key)) map.set(key, new defaultClass());
     return map.get(key) as V;
 }
+
+export function swapRemove<T>(array: T[], index: number): T {
+    const lastItem = array[array.length - 1];
+    array[index] = lastItem;
+    array.pop();
+    return lastItem;
+}

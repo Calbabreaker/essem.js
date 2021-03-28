@@ -58,7 +58,7 @@ export abstract class AbstractBatchRenderer {
         this.textureShader = new Shader(textureVertexSrc, textureFragmentSrc, "Sprite");
         this.textureShader.bind(gl);
 
-        const samplers = new Int32Array(renderer.maxTextureSlots).map((i) => i);
+        const samplers = new Int32Array(renderer.maxTextureSlots).map((_, i) => i);
         this.textureShader.setIntArray(gl, "u_textures", samplers);
 
         this.textureSlots = new Array(renderer.maxTextureSlots).fill(undefined);

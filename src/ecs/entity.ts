@@ -1,5 +1,5 @@
 import { Component, ECSManager } from "./ecs_manager";
-import { assert } from "../utils/misc";
+import { assert, swapRemove } from "../utils/misc";
 import { AnyCtor } from "../utils/types";
 
 export class Entity {
@@ -10,6 +10,9 @@ export class Entity {
 
     active = false;
     destroyed = true;
+
+    parent: Entity | null = null;
+    children: Entity[] = [];
 
     constructor(manager: ECSManager) {
         this._ecsManager = manager;
@@ -25,6 +28,13 @@ export class Entity {
         }
 
         this.active = active;
+    }
+
+    forEachParent(func: (child: Entity) => void) {
+        if (this.parent !== null) {
+            func(this.parent);
+            this.parent.forEachParent(func);
+        }
     }
 
     addComponent<T extends Component>(component: T): T {
@@ -64,12 +74,17 @@ export class Entity {
         return component as T;
     }
 
-    _setup(arrayIndex: number): void {
+    _setup(parent?: Entity): void {
         if (!this.destroyed) return;
 
         this.setActive(true);
         this.destroyed = false;
-        this._arrayIndex = arrayIndex;
+
+        if (parent !== undefined) {
+            this._arrayIndex = parent.children.length;
+            parent.children.push(this);
+            this.parent = parent;
+        }
     }
 
     destroy(): void {
@@ -78,5 +93,10 @@ export class Entity {
         this.setActive(false);
         this._componentMap.clear();
         this.destroyed = true;
+
+        if (this.parent !== null) {
+            const lastEntity = swapRemove(this.parent.children, this._arrayIndex);
+            lastEntity._arrayIndex = this._arrayIndex;
+        }
     }
 }

@@ -1,3 +1,5 @@
+import { Vector2 } from "./vector2";
+
 /**
  * xScale|xSkew |xTrans
  * ySkew |yScale|yTrans
@@ -169,6 +171,17 @@ export class Matrix3 {
         this.yScale = xSkew * sin + this.yScale * cos;
         this.xTrans = xTrans * cos - this.yTrans * sin;
         this.yTrans = xTrans * sin + this.yTrans * cos;
+        return this;
+    }
+
+    // TODO: perhaps make this not matrix funcions?
+    transform(position: Vector2, scale: Vector2, rotation: number): this {
+        this.identity();
+        if (rotation !== 0) {
+            this.rotate(rotation);
+        }
+
+        this.translate(position.x, position.y).scale(scale.x, scale.y);
         return this;
     }
 

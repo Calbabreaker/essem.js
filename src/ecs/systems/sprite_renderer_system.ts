@@ -1,10 +1,13 @@
-import { System } from "../system";
-import { Application, ApplicationUpdateEvent } from "../../core/application";
-import { CameraComponent, SpriteComponent, TransformComponent } from "../components";
 import { AbstractBatchRenderer } from "../../renderer/abstract_batch_renderer";
+import { Application, ApplicationUpdateEvent } from "../../core/application";
 import { CameraSystem } from "./camera_system";
-import { assert } from "../../utils/misc";
+import { System } from "../system";
 import { Vector2 } from "../../math/vector2";
+import { assert } from "../../utils/misc";
+import { CameraComponent } from "../components/camera_component";
+import { SpriteComponent } from "../components/sprite_component";
+import { TransformComponent } from "../components/transform_component";
+import { Entity } from "../entity";
 
 export class SpriteRenderer extends AbstractBatchRenderer {
     // prettier-ignore
@@ -24,9 +27,10 @@ export class SpriteRenderer extends AbstractBatchRenderer {
 
     private _cacheVector: Vector2 = new Vector2();
 
-    drawSprite(sprite: SpriteComponent, transform: TransformComponent): void {
+    drawSprite(entity: Entity): void {
         if (this.indicesCount >= AbstractBatchRenderer.maxIndices) this.nextBatch();
-        const matrix = transform.getTransformMatrix();
+        const matrix = TransformComponent.getGlobalTransformMatrix(entity);
+        const sprite = entity.getComponent(SpriteComponent);
 
         for (let i = 0; i < 4; i++) {
             const index = i * 2;
@@ -43,7 +47,6 @@ export class SpriteRenderer extends AbstractBatchRenderer {
             this.vertices[this.verticesIndex++] = this.getTextureSlot(sprite.texture);
         }
 
-        transform;
         this.indicesCount += 6;
     }
 }
@@ -68,10 +71,7 @@ export class SpriteRendererSystem extends System {
 
         this.spriteRenderer.beginScene(viewProjection);
         this.entities.forEach((entity) => {
-            this.spriteRenderer.drawSprite(
-                entity.getComponent(SpriteComponent),
-                entity.getComponent(TransformComponent)
-            );
+            this.spriteRenderer.drawSprite(entity);
         });
 
         this.spriteRenderer.endScene();
