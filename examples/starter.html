@@ -53,6 +53,12 @@
                 );
             });
 
+            app.events.addListener(ESSEM.KeyPressedEvent, (event) => {
+                if (app.canvas.isKeyPressed("ControlLeft")) {
+                    console.log(event);
+                }
+            });
+
             app.events.addListener(ESSEM.ApplicationUpdateEvent, (event) => {
                 entityTransform.rotation += ESSEM.toRadians(event.delta * 0.25);
                 childEntityTransform.rotation += ESSEM.toRadians(event.delta * 0.5);

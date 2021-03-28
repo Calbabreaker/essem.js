@@ -1,6 +1,6 @@
-import { Matrix3 } from "../math/matrix3";
-import { Vector2 } from "../math/vector2";
-import { assert } from "../utils/misc";
+import { Matrix3 } from "math/matrix3";
+import { Vector2 } from "math/vector2";
+import { assert } from "utils/misc";
 
 export class Shader {
     vertexSrc: string;

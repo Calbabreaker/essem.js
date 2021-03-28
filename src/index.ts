@@ -1,8 +1,8 @@
-import { sayHello } from "./utils/browser";
-import { isEmpty } from "./utils/misc";
-
 export * from "./core/application";
 export * from "./core/canvas";
+export * from "./core/codes";
+export * from "./core/event_manager";
+export * from "./core/loader";
 
 export * from "./ecs/components/camera_component";
 export * from "./ecs/components/sprite_component";
@@ -29,8 +29,8 @@ export * from "./utils/misc";
 
 export const VERSION = "$_VERSION";
 
-window.addEventListener("load", () => {
-    sayHello();
-});
-
-if (!isEmpty(window.ESSEM)) throw new Error("essem.js is already imported!");
+if (window.__ESSEM__) {
+    throw new Error("essem.js is already imported!");
+} else {
+    window.__ESSEM__ = true;
+}

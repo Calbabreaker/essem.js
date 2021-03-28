@@ -5,6 +5,7 @@ import { System } from "../ecs/system";
 import { Canvas, CanvasResizedEvent, ICanvasOptions } from "./canvas";
 import { Event, EventManager } from "./event_manager";
 import { Loader } from "./loader";
+import { sayHello } from "../utils/browser";
 
 export class ApplicationInitEvent extends Event {}
 
@@ -43,6 +44,8 @@ export class Application {
             this.events.addListener(CanvasResizedEvent, (event: CanvasResizedEvent) => {
                 this.renderer.gl.viewport(0, 0, event.width, event.height);
             });
+
+            sayHello();
 
             const loop = () => {
                 if (this.running) {

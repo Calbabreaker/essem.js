@@ -1,4 +1,4 @@
-import { Matrix3 } from "../../math/matrix3";
+import { Matrix3 } from "math/matrix3";
 
 export class CameraComponent {
     aspectRatio = 0;

@@ -2,7 +2,7 @@ import { Component, ECSManager } from "./ecs_manager";
 import { AnyCtor } from "../utils/types";
 import { Entity } from "./entity";
 import { mapGet } from "../utils/misc";
-import { Application } from "../core/application";
+import { Application } from "core/application";
 
 export abstract class System {
     entities: Entity[] = [];

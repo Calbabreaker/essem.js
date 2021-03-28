@@ -1,9 +1,9 @@
-import { Application } from "../../core/application";
-import { Canvas, CanvasResizedEvent } from "../../core/canvas";
+import { Application } from "core/application";
+import { Canvas, CanvasResizedEvent } from "core/canvas";
 import { Entity } from "../entity";
 import { System } from "../system";
-import { CameraComponent } from "../components/camera_component";
-import { TransformComponent } from "../components/transform_component";
+import { CameraComponent } from "ecs/components/camera_component";
+import { TransformComponent } from "ecs/components/transform_component";
 
 export class CameraSystem extends System {
     canvas!: Canvas;

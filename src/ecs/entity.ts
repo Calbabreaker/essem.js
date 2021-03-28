@@ -1,6 +1,6 @@
 import { Component, ECSManager } from "./ecs_manager";
-import { assert, swapRemove } from "../utils/misc";
-import { AnyCtor } from "../utils/types";
+import { assert, swapRemove } from "utils/misc";
+import { AnyCtor } from "utils/types";
 
 export class Entity {
     _componentMap: Map<string, Component> = new Map();
@@ -30,7 +30,7 @@ export class Entity {
         this.active = active;
     }
 
-    forEachParent(func: (child: Entity) => void) {
+    forEachParent(func: (child: Entity) => void): void {
         if (this.parent !== null) {
             func(this.parent);
             this.parent.forEachParent(func);

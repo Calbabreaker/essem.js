@@ -1,12 +1,12 @@
-import { AbstractBatchRenderer } from "../../renderer/abstract_batch_renderer";
-import { Application, ApplicationUpdateEvent } from "../../core/application";
+import { AbstractBatchRenderer } from "renderer/abstract_batch_renderer";
+import { Application, ApplicationUpdateEvent } from "core/application";
 import { CameraSystem } from "./camera_system";
 import { System } from "../system";
-import { Vector2 } from "../../math/vector2";
-import { assert } from "../../utils/misc";
-import { CameraComponent } from "../components/camera_component";
-import { SpriteComponent } from "../components/sprite_component";
-import { TransformComponent } from "../components/transform_component";
+import { Vector2 } from "math/vector2";
+import { assert } from "utils/misc";
+import { CameraComponent } from "ecs/components/camera_component";
+import { SpriteComponent } from "ecs/components/sprite_component";
+import { TransformComponent } from "ecs/components/transform_component";
 import { Entity } from "../entity";
 
 export class SpriteRenderer extends AbstractBatchRenderer {

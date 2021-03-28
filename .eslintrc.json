@@ -4,33 +4,18 @@
         "browser": true,
         "node": true
     },
-    "ignorePatterns": [
-        "node_modules",
-        "build",
-        "docs"
-    ],
+    "ignorePatterns": ["node_modules", "build", "docs"],
     "root": true,
     "parser": "@typescript-eslint/parser",
-    "plugins": [
-        "@typescript-eslint",
-        "prettier"
-    ],
-    "extends": [
-        "eslint:recommended",
-        "prettier"
-    ],
-    "rules": {
-        "prettier/prettier": "error"
+    "parserOptions": {
+        "sourceType": "module"
     },
+    "plugins": ["@typescript-eslint"],
+    "extends": ["eslint:recommended", "plugin:prettier/recommended"],
     "overrides": [
         {
-            "files": [
-                "*.ts"
-            ],
-            "extends": [
-                "plugin:@typescript-eslint/recommended",
-                "prettier/@typescript-eslint"
-            ],
+            "files": ["*.ts"],
+            "extends": ["plugin:@typescript-eslint/recommended"],
             "rules": {
                 "no-unused-vars": "off",
                 "@typescript-eslint/no-explicit-any": [

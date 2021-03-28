@@ -1,5 +1,5 @@
-import { assert } from "../utils/misc";
-import { isWebGL2Supported } from "../utils/browser";
+import { assert } from "utils/misc";
+import { isWebGL2Supported } from "utils/browser";
 
 export class Renderer {
     readonly gl: WebGL2RenderingContext;

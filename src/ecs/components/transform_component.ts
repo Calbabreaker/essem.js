@@ -1,6 +1,6 @@
 import { Entity } from "../entity";
-import { Matrix3 } from "../../math/matrix3";
-import { Vector2 } from "../../math/vector2";
+import { Matrix3 } from "math/matrix3";
+import { Vector2 } from "math/vector2";
 
 export class TransformComponent {
     position: Vector2;

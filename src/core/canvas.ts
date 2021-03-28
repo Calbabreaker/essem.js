@@ -1,8 +1,59 @@
+import { Vector2 } from "../math/vector2";
+import { KeyCode, MouseCode } from "./codes";
 import { Event, EventManager } from "./event_manager";
 
+abstract class KeyboardEvent extends Event {
+    readonly key: string;
+
+    constructor(key: string) {
+        super();
+        this.key = key;
+    }
+}
+
+export class KeyPressedEvent extends KeyboardEvent {
+    readonly repeated: boolean;
+
+    constructor(key: string, repeated: boolean) {
+        super(key);
+        this.repeated = repeated;
+    }
+}
+
+export class KeyReleasedEvent extends KeyboardEvent {}
+
+export class KeyTypedEvent extends KeyboardEvent {}
+
+abstract class MouseButtonEvent extends Event {
+    readonly button: number;
+
+    constructor(button: number) {
+        super();
+        this.button = button;
+    }
+}
+
+export class MousePressedEvent extends MouseButtonEvent {}
+export class MouseReleasedEvent extends MouseButtonEvent {}
+
+abstract class MouseChangedEvent extends Event {
+    readonly offsetX: number;
+    readonly offsetY: number;
+
+    constructor(x: number, y: number) {
+        super();
+        this.offsetX = x;
+        this.offsetY = y;
+    }
+}
+
+export class MouseMovedEvent extends MouseChangedEvent {}
+export class MouseScrolledEvent extends MouseChangedEvent {}
+
 export class CanvasResizedEvent extends Event {
-    width: number;
-    height: number;
+    readonly width: number;
+    readonly height: number;
+
     constructor(width: number, height: number) {
         super();
         this.width = width;
@@ -26,6 +77,9 @@ export class Canvas {
     height!: number;
 
     private _eventManager: EventManager;
+    private _pressedKeys: Map<KeyCode, boolean> = new Map();
+    private _pressedMouseButtons: Map<MouseCode, boolean> = new Map();
+    private _mousePosition: Vector2 = new Vector2();
 
     constructor(options: ICanvasOptions = {}, eventManager: EventManager) {
         this.fixedSize = options.fixedSize ?? true;
@@ -39,6 +93,39 @@ export class Canvas {
         } else {
             this.resizeCanvas(options.width ?? 400, options.height ?? 400);
         }
+
+        window.addEventListener("keydown", (event) => {
+            this._pressedKeys.set(event.code as KeyCode, true);
+            this._eventManager.sendEvent(new KeyPressedEvent(event.code, event.repeat));
+        });
+
+        window.addEventListener("keyup", (event) => {
+            this._pressedKeys.set(event.code as KeyCode, false);
+            this._eventManager.sendEvent(new KeyReleasedEvent(event.code));
+        });
+
+        window.addEventListener("keypress", (event) => {
+            this._eventManager.sendEvent(new KeyTypedEvent(event.key));
+        });
+
+        window.addEventListener("mousedown", (event) => {
+            this._eventManager.sendEvent(new MousePressedEvent(event.button));
+            this._pressedMouseButtons.set(event.button, true);
+        });
+
+        window.addEventListener("mouseup", (event) => {
+            this._eventManager.sendEvent(new MouseReleasedEvent(event.button));
+            this._pressedMouseButtons.set(event.button, false);
+        });
+
+        window.addEventListener("mousemove", (event) => {
+            this._eventManager.sendEvent(new MouseMovedEvent(event.offsetX, event.offsetY));
+            this._mousePosition.set(event.clientX, event.clientY);
+        });
+
+        window.addEventListener("wheel", (event) => {
+            this._eventManager.sendEvent(new MouseScrolledEvent(event.offsetX, event.offsetY));
+        });
 
         window.addEventListener("resize", () => {
             if (!this.fixedSize) {
@@ -56,6 +143,18 @@ export class Canvas {
         if (sendEvent) {
             this._eventManager.sendEvent(new CanvasResizedEvent(width, height));
         }
+    }
+
+    isKeyPressed(key: KeyCode | string): boolean {
+        return this._pressedKeys.get(key as KeyCode) ?? false;
+    }
+
+    isMousePressed(button: MouseCode | string): boolean {
+        return this._pressedMouseButtons.get(button as MouseCode) ?? false;
+    }
+
+    getMousePosition(): Vector2 {
+        return this._mousePosition.clone();
     }
 
     // resizes with accordence to aspect ratio

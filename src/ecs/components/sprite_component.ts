@@ -1,4 +1,4 @@
-import { Texture } from "../../renderer/texture";
+import { Texture } from "renderer/texture";
 
 export class SpriteComponent {
     texture: Texture;

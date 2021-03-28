@@ -1,6 +1,6 @@
 import { Entity } from "./entity";
 import { ECSManager } from "./ecs_manager";
-import { swapRemove } from "../utils/misc";
+import { swapRemove } from "utils/misc";
 
 export class Scene {
     private _ecsManager: ECSManager;

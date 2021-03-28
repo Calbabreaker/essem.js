@@ -1,4 +1,4 @@
-import { mapGet, swapRemove } from "../utils/misc";
+import { mapGet, swapRemove } from "utils/misc";
 import { Entity } from "./entity";
 import { System } from "./system";
 

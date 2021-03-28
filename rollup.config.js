@@ -73,7 +73,11 @@ export default () => {
                 file: path.join(__dirname, "build/essem.min.js"),
                 format: "umd",
             },
-            plugins: [...baseBundle.plugins, terser()],
+            plugins: [
+                ...baseBundle.plugins,
+                // this is to remove weird Microsoft copyright notice but keep our own
+                terser({ format: { comments: /^!(?![\s\S]+Microsoft)/ } }),
+            ],
         });
 
         // for modules
@@ -96,7 +100,7 @@ export default () => {
                 format: "es",
                 sourcemap: false,
             },
-            plugins: [dts()],
+            plugins: [dts({ compilerOptions: { baseUrl: "src" } })],
         });
     }
 
