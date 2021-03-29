@@ -1,6 +1,8 @@
 /**
  * An enum containing most of the key codes from event.code.
  * This is here to easily get autocomplete info for all keycodes.
+ *
+ * @memberof ESSEM
  */
 export enum KeyCode {
     Unidentified = "Unidentified",
@@ -136,6 +138,8 @@ export enum KeyCode {
 /**
  * An enum containing most of the mouse button codes from event.button.
  * This is here to easily get autocomplete info for mouse button codes.
+ *
+ * @memberof ESSEM
  */
 export enum MouseCode {
     Button0 = 0,

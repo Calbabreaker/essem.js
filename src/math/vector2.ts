@@ -1,9 +1,25 @@
 import { approxEquals } from "./common";
 import { Matrix3 } from "./matrix3";
 
+/**
+ * A 2 component vector with x and y.
+ *
+ * @memberof ESSEM
+ */
 export class Vector2 {
+    /**
+     * The x component of the vector.
+     */
     x: number;
+
+    /**
+     * The y component of the vector.
+     */
     y: number;
+
+    /**
+     * The cache for toArray.
+     */
     private _array: Float32Array | null = null;
 
     constructor(x = 0, y = 0) {
@@ -122,8 +138,18 @@ export class Vector2 {
         return this.x === vector.x && this.y === vector.y;
     }
 
-    approxEquals(vector: Vector2, epsilon = 0.0001): boolean {
-        return approxEquals(this.x, vector.x, epsilon) && approxEquals(this.y, vector.y, epsilon);
+    /**
+     * Checks to see if this vector is approximately equal to the input vector
+     * according to tolerance.
+     *
+     * @param vector - The input vector to compare.
+     * @param {number} [tolerance=0.001] - The range to check in.
+     * @return Whether or not the vectors are approximately equal.
+     */
+    approxEquals(vector: Vector2, tolerance = 0.001): boolean {
+        return (
+            approxEquals(this.x, vector.x, tolerance) && approxEquals(this.y, vector.y, tolerance)
+        );
     }
 
     transformMatrix3(matrix: Matrix3): this {

@@ -1,5 +1,11 @@
 import { Texture } from "../renderer/texture";
 
+/**
+ * Used for loading resources such as images. It is automatically created when creating
+ * {@link ESSEM.Application} and it can be accesed from `app.loader`.
+ *
+ * @memberof ESSEM
+ */
 export class Loader {
     imagePaths: string[] = [];
     resources: { [key: string]: Texture } = {};

@@ -9,7 +9,7 @@ export type Component = Object;
 /**
  * Helper class to make ecs work.
  *
- * @private
+ * @ignore
  */
 export class ECSManager {
     systems: System[] = [];

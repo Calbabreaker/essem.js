@@ -27,6 +27,7 @@ let saidHello = false;
  */
 export function sayHello(): void {
     if (!saidHello) {
+        // TODO: make this look better
         console.log("---\n--- essem.js v$_VERSION\n---");
         saidHello = true;
     }

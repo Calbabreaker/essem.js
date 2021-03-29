@@ -96,6 +96,7 @@ export class Application {
             requestAnimationFrame(loop);
         });
     }
+
     /**
      * The update function that gets called every requestAnimationFrame loop.
      *

@@ -6,6 +6,7 @@ export * from "./core/application";
 export * from "./core/canvas";
 export * from "./core/codes";
 export * from "./core/event_manager";
+export * from "./core/input_events";
 export * from "./core/loader";
 
 export * from "./ecs/components/camera_component";
@@ -32,11 +33,12 @@ export * from "./utils/browser";
 export * from "./utils/misc";
 
 /**
- * String of the current PIXI version.
+ * String of the current essem.js version.
  *
  * @memberof ESSEM
+ * @type string
  */
-export const VERSION: string = "$_VERSION";
+export const VERSION = "$_VERSION";
 
 if (window.__ESSEM__) {
     throw new Error("essem.js is already imported!");

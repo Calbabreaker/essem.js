@@ -63,7 +63,7 @@
 							"type": "PropertyDoc",
 							"scope": "instance",
 							"brief": "",
-							"description": "<p>Whether or not the event has been handled. Set this to true to make it handled and stopped\nbeing sent to all other event listeners.</p>"
+							"description": "<p>Whether or not the event has been handled. Set this to true to make stopped\nbeing sent to all other event listeners.</p>"
 						}
 					]
 				},
@@ -85,7 +85,7 @@
 							"type": "PropertyDoc",
 							"scope": "instance",
 							"brief": "",
-							"description": "<p>Whether or not the event has been handled. Set this to true to make it handled and stopped\nbeing sent to all other event listeners.</p>"
+							"description": "<p>Whether or not the event has been handled. Set this to true to make stopped\nbeing sent to all other event listeners.</p>"
 						},
 						{
 							"name": "constructor",
@@ -105,9 +105,44 @@
 				{
 					"name": "Canvas",
 					"type": "ClassDoc",
-					"brief": "<p>Canvas for canvas element and the input events.</p>",
-					"description": "",
+					"brief": "",
+					"description": "<p>Used for the canvas element and input events. It is automatically created when creating\n{@link ESSEM.Application} and it can be accesed from <code>app.canvas</code>.</p>",
 					"members": [
+						{
+							"name": "aspectRatio",
+							"type": "PropertyDoc",
+							"scope": "instance",
+							"brief": "<p>The aspect ratio that the canvas will fit to if it resizes.</p>",
+							"description": ""
+						},
+						{
+							"name": "element",
+							"type": "PropertyDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": "<p>The DOM element of the canvas. Add this into your page by doing\n<code>document.body.appendChild(canvas)</code> in order to see yourr graphics.</p>"
+						},
+						{
+							"name": "fixedSize",
+							"type": "PropertyDoc",
+							"scope": "instance",
+							"brief": "<p>Whether or not the canvas is fixed and cannot resize to fit window.</p>",
+							"description": ""
+						},
+						{
+							"name": "height",
+							"type": "PropertyDoc",
+							"scope": "instance",
+							"brief": "<p>The current height of the canvas.</p>",
+							"description": ""
+						},
+						{
+							"name": "width",
+							"type": "PropertyDoc",
+							"scope": "instance",
+							"brief": "<p>The current width of the canvas.</p>",
+							"description": ""
+						},
 						{
 							"name": "constructor",
 							"type": "MethodDoc",
@@ -119,14 +154,64 @@
 							"name": "getMousePosition",
 							"type": "MethodDoc",
 							"scope": "instance",
-							"brief": "",
+							"brief": "<p>Gets the current mouse position.</p>",
 							"description": ""
 						},
 						{
 							"name": "isKeyPressed",
 							"type": "MethodDoc",
 							"scope": "instance",
+							"brief": "<p>Checks if the specified key is held down.</p>",
+							"description": ""
+						},
+						{
+							"name": "isMousePressed",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "<p>Checks if the specified mouse button is held down.</p>",
+							"description": ""
+						},
+						{
+							"name": "resizeCanvas",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "<p>Resizes the canvas to the specified width and height.</p>",
+							"description": ""
+						},
+						{
+							"name": "resizeFull",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "<p>Resizes the canvas to fit the window with accordence to the aspect ratio.</p>",
+							"description": ""
+						}
+					]
+				},
+				{
+					"name": "CanvasResizedEvent",
+					"type": "ClassDoc",
+					"brief": "",
+					"description": "<p>Event that gets sent whenever the canvas resizes.\nThis won't get called if just the window does though.</p>",
+					"members": [
+						{
+							"name": "handled",
+							"type": "PropertyDoc",
+							"scope": "instance",
 							"brief": "",
+							"description": "<p>Whether or not the event has been handled. Set this to true to make stopped\nbeing sent to all other event listeners.</p>"
+						},
+						{
+							"name": "height",
+							"type": "PropertyDoc",
+							"scope": "instance",
+							"brief": "<p>The current height of the canvas.</p>",
+							"description": ""
+						},
+						{
+							"name": "width",
+							"type": "PropertyDoc",
+							"scope": "instance",
+							"brief": "<p>The current width of the canvas.</p>",
 							"description": ""
 						}
 					]
@@ -142,14 +227,387 @@
 							"type": "PropertyDoc",
 							"scope": "instance",
 							"brief": "",
-							"description": "<p>Whether or not the event has been handled. Set this to true to make it handled and stopped\nbeing sent to all other event listeners.</p>"
+							"description": "<p>Whether or not the event has been handled. Set this to true to make stopped\nbeing sent to all other event listeners.</p>"
 						}
 					]
 				},
 				{
+					"name": "EventManager",
+					"type": "ClassDoc",
+					"brief": "",
+					"description": "<p>Used to add listeners and send events. It is automatically created when creating\n{@link ESSEM.Application} and it can be accesed from <code>app.events</code>.</p>",
+					"members": [
+						{
+							"name": "addListener",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "<p>Adds a listener to listen and receive the specified event.</p>",
+							"description": ""
+						},
+						{
+							"name": "sendEvent",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "<p>Send a event for all the listener to get.</p>",
+							"description": ""
+						}
+					]
+				},
+				{
+					"name": "KeyPressedEvent",
+					"type": "ClassDoc",
+					"brief": "<p>Event that is sent whenever a key is pressed.</p>",
+					"description": "",
+					"members": [
+						{
+							"name": "code",
+							"type": "PropertyDoc",
+							"scope": "instance",
+							"brief": "<p>The key code of the event. Take a look at {@link ESSEM.KeyCode} for all of them.</p>",
+							"description": ""
+						},
+						{
+							"name": "handled",
+							"type": "PropertyDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": "<p>Whether or not the event has been handled. Set this to true to make stopped\nbeing sent to all other event listeners.</p>"
+						},
+						{
+							"name": "repeated",
+							"type": "PropertyDoc",
+							"scope": "instance",
+							"brief": "<p>If the key was repeated.</p>",
+							"description": ""
+						}
+					]
+				},
+				{
+					"name": "KeyReleasedEvent",
+					"type": "ClassDoc",
+					"brief": "<p>Event that is sent whenever a key is released.</p>",
+					"description": "",
+					"members": [
+						{
+							"name": "code",
+							"type": "PropertyDoc",
+							"scope": "instance",
+							"brief": "<p>The key code of the event. Take a look at {@link ESSEM.KeyCode} for all of them.</p>",
+							"description": ""
+						},
+						{
+							"name": "handled",
+							"type": "PropertyDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": "<p>Whether or not the event has been handled. Set this to true to make stopped\nbeing sent to all other event listeners.</p>"
+						}
+					]
+				},
+				{
+					"name": "KeyTypedEvent",
+					"type": "ClassDoc",
+					"brief": "",
+					"description": "<p>Event that is sent whenever a key is typed.\nThis uses the actual key that the user types.</p>",
+					"members": [
+						{
+							"name": "handled",
+							"type": "PropertyDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": "<p>Whether or not the event has been handled. Set this to true to make stopped\nbeing sent to all other event listeners.</p>"
+						},
+						{
+							"name": "key",
+							"type": "PropertyDoc",
+							"scope": "instance",
+							"brief": "<p>The key of the event as in what the user actually typed. Eg shift + x with be X.</p>",
+							"description": ""
+						}
+					]
+				},
+				{
+					"name": "Loader",
+					"type": "ClassDoc",
+					"brief": "",
+					"description": "<p>Used for loading resources such as images. It is automatically created when creating\n{@link ESSEM.Application} and it can be accesed from <code>app.loader</code>.</p>",
+					"members": [
+						{
+							"name": "loadAll",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": ""
+						}
+					]
+				},
+				{
+					"name": "Matrix3",
+					"type": "ClassDoc",
+					"brief": "<p>The matrix as this class make it a lot faster since there are less values to work with.</p>",
+					"description": "<p>Here's a representation of it:</p>\n<pre><code class=\"hljs language-js\">| xScale | xSkew | xTrans |\n| ySkew  | yScale| yTrans |\n| <span class=\"hljs-number\">0</span>      | <span class=\"hljs-number\">0</span>     | <span class=\"hljs-number\">1</span>      |\n</code></pre>",
+					"members": [
+						{
+							"name": "clone",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": ""
+						},
+						{
+							"name": "identity",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": ""
+						},
+						{
+							"name": "multiplyFront",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": ""
+						},
+						{
+							"name": "scale",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": ""
+						},
+						{
+							"name": "toArray",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": ""
+						},
+						{
+							"name": "transform",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": ""
+						}
+					]
+				},
+				{
+					"name": "MouseMovedEvent",
+					"type": "ClassDoc",
+					"brief": "<p>Event that is sent whenever a the mouse is moved.</p>",
+					"description": "",
+					"members": [
+						{
+							"name": "handled",
+							"type": "PropertyDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": "<p>Whether or not the event has been handled. Set this to true to make stopped\nbeing sent to all other event listeners.</p>"
+						},
+						{
+							"name": "offsetX",
+							"type": "PropertyDoc",
+							"scope": "instance",
+							"brief": "<p>How much the mouse has moved on the x axis.</p>",
+							"description": ""
+						},
+						{
+							"name": "offsetY",
+							"type": "PropertyDoc",
+							"scope": "instance",
+							"brief": "<p>How much the mouse has moved on the y axis.</p>",
+							"description": ""
+						}
+					]
+				},
+				{
+					"name": "MousePressedEvent",
+					"type": "ClassDoc",
+					"brief": "<p>Event that is sent whenever a the mouse is pressed.</p>",
+					"description": "",
+					"members": [
+						{
+							"name": "handled",
+							"type": "PropertyDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": "<p>Whether or not the event has been handled. Set this to true to make stopped\nbeing sent to all other event listeners.</p>"
+						}
+					]
+				},
+				{
+					"name": "MouseReleasedEvent",
+					"type": "ClassDoc",
+					"brief": "<p>Event that is sent whenever a the mouse is released.</p>",
+					"description": "",
+					"members": [
+						{
+							"name": "handled",
+							"type": "PropertyDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": "<p>Whether or not the event has been handled. Set this to true to make stopped\nbeing sent to all other event listeners.</p>"
+						}
+					]
+				},
+				{
+					"name": "MouseScrolledEvent",
+					"type": "ClassDoc",
+					"brief": "<p>Event that is sent whenever a the mouse wheel is scrolled.</p>",
+					"description": "",
+					"members": [
+						{
+							"name": "handled",
+							"type": "PropertyDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": "<p>Whether or not the event has been handled. Set this to true to make stopped\nbeing sent to all other event listeners.</p>"
+						},
+						{
+							"name": "offsetX",
+							"type": "PropertyDoc",
+							"scope": "instance",
+							"brief": "<p>How much the mouse wheel has scrolled on the x axis.</p>",
+							"description": ""
+						},
+						{
+							"name": "offsetY",
+							"type": "PropertyDoc",
+							"scope": "instance",
+							"brief": "<p>How much the mouse wheel has scrolled on the y axis.</p>",
+							"description": ""
+						}
+					]
+				},
+				{
+					"name": "Vector2",
+					"type": "ClassDoc",
+					"brief": "<p>A 2 component vector with x and y.</p>",
+					"description": "",
+					"members": [
+						{
+							"name": "x",
+							"type": "PropertyDoc",
+							"scope": "instance",
+							"brief": "<p>The x component of the vector.</p>",
+							"description": ""
+						},
+						{
+							"name": "y",
+							"type": "PropertyDoc",
+							"scope": "instance",
+							"brief": "<p>The y component of the vector.</p>",
+							"description": ""
+						},
+						{
+							"name": "_array",
+							"type": "PropertyDoc",
+							"access": "private",
+							"scope": "instance",
+							"brief": "<p>The cache for toArray.</p>",
+							"description": ""
+						},
+						{
+							"name": "angle",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": ""
+						},
+						{
+							"name": "approxEquals",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": "<p>Checks to see if this vector is approximately equal to the input vector\naccording to tolerance.</p>"
+						},
+						{
+							"name": "clone",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": ""
+						},
+						{
+							"name": "distance",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": ""
+						},
+						{
+							"name": "divide",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": ""
+						},
+						{
+							"name": "dot",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": ""
+						},
+						{
+							"name": "magnitude",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": ""
+						},
+						{
+							"name": "random",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": ""
+						},
+						{
+							"name": "set",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": ""
+						},
+						{
+							"name": "subtract",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": ""
+						},
+						{
+							"name": "toArray",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": ""
+						}
+					]
+				},
+				{
+					"name": "KeyCode",
+					"type": "EnumDoc",
+					"brief": "",
+					"description": "<p>An enum containing most of the key codes from event.code.\nThis is here to easily get autocomplete info for all keycodes.</p>"
+				},
+				{
+					"name": "MouseCode",
+					"type": "EnumDoc",
+					"brief": "",
+					"description": "<p>An enum containing most of the mouse button codes from event.button.\nThis is here to easily get autocomplete info for mouse button codes.</p>"
+				},
+				{
 					"name": "VERSION",
 					"type": "PropertyDoc",
-					"brief": "<p>String of the current PIXI version.</p>",
+					"brief": "<p>String of the current essem.js version.</p>",
+					"description": ""
+				},
+				{
+					"name": "approxEquals",
+					"type": "FunctionDoc",
+					"brief": "<p>Checks to see if a and b are approximately equal according to the tolerance.</p>",
 					"description": ""
 				},
 				{
@@ -214,20 +672,6 @@
 			"description": "",
 			"members": [
 				{
-					"name": "constructor",
-					"type": "MethodDoc",
-					"scope": "instance",
-					"brief": "",
-					"description": ""
-				},
-				{
-					"name": "getProjectionMatrix",
-					"type": "MethodDoc",
-					"scope": "instance",
-					"brief": "",
-					"description": ""
-				},
-				{
 					"name": "setViewportSize",
 					"type": "MethodDoc",
 					"scope": "instance",
@@ -265,7 +709,21 @@
 			"description": "",
 			"members": [
 				{
+					"name": "_setup",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				},
+				{
 					"name": "addComponent",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				},
+				{
+					"name": "constructor",
 					"type": "MethodDoc",
 					"scope": "instance",
 					"brief": "",
@@ -279,7 +737,21 @@
 					"description": ""
 				},
 				{
+					"name": "forEachParent",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				},
+				{
 					"name": "getComponent",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				},
+				{
+					"name": "hasAllComponents",
 					"type": "MethodDoc",
 					"scope": "instance",
 					"brief": "",
@@ -293,229 +765,18 @@
 					"description": ""
 				},
 				{
+					"name": "removeComponent",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				},
+				{
 					"name": "setActive",
 					"type": "MethodDoc",
 					"scope": "instance",
 					"brief": "",
 					"description": ""
-				}
-			]
-		},
-		{
-			"name": "EventManager",
-			"type": "ClassDoc",
-			"brief": "",
-			"description": "",
-			"members": [
-				{
-					"name": "sendEvent",
-					"type": "MethodDoc",
-					"scope": "instance",
-					"brief": "",
-					"description": ""
-				}
-			]
-		},
-		{
-			"name": "KeyPressedEvent",
-			"type": "ClassDoc",
-			"brief": "",
-			"description": "",
-			"members": [
-				{
-					"name": "handled",
-					"type": "PropertyDoc",
-					"scope": "instance",
-					"brief": "",
-					"description": "<p>Whether or not the event has been handled. Set this to true to make it handled and stopped\nbeing sent to all other event listeners.</p>"
-				},
-				{
-					"name": "constructor",
-					"type": "MethodDoc",
-					"scope": "instance",
-					"brief": "",
-					"description": ""
-				}
-			]
-		},
-		{
-			"name": "KeyTypedEvent",
-			"type": "ClassDoc",
-			"brief": "",
-			"description": "",
-			"members": [
-				{
-					"name": "handled",
-					"type": "PropertyDoc",
-					"scope": "instance",
-					"brief": "",
-					"description": "<p>Whether or not the event has been handled. Set this to true to make it handled and stopped\nbeing sent to all other event listeners.</p>"
-				}
-			]
-		},
-		{
-			"name": "Loader",
-			"type": "ClassDoc",
-			"brief": "",
-			"description": "",
-			"members": [
-				{
-					"name": "loadAll",
-					"type": "MethodDoc",
-					"scope": "instance",
-					"brief": "",
-					"description": ""
-				}
-			]
-		},
-		{
-			"name": "Matrix3",
-			"type": "ClassDoc",
-			"brief": "",
-			"description": "<p>xScale|xSkew |xTrans\nySkew |yScale|yTrans\n0     |0     |1</p>",
-			"members": [
-				{
-					"name": "clone",
-					"type": "MethodDoc",
-					"scope": "instance",
-					"brief": "",
-					"description": ""
-				},
-				{
-					"name": "constructor",
-					"type": "MethodDoc",
-					"scope": "instance",
-					"brief": "",
-					"description": ""
-				},
-				{
-					"name": "identity",
-					"type": "MethodDoc",
-					"scope": "instance",
-					"brief": "",
-					"description": ""
-				},
-				{
-					"name": "invert",
-					"type": "MethodDoc",
-					"scope": "instance",
-					"brief": "",
-					"description": ""
-				},
-				{
-					"name": "multiply",
-					"type": "MethodDoc",
-					"scope": "instance",
-					"brief": "",
-					"description": ""
-				},
-				{
-					"name": "multiplyFront",
-					"type": "MethodDoc",
-					"scope": "instance",
-					"brief": "",
-					"description": ""
-				},
-				{
-					"name": "projection",
-					"type": "MethodDoc",
-					"scope": "instance",
-					"brief": "",
-					"description": ""
-				},
-				{
-					"name": "rotate",
-					"type": "MethodDoc",
-					"scope": "instance",
-					"brief": "",
-					"description": ""
-				},
-				{
-					"name": "scale",
-					"type": "MethodDoc",
-					"scope": "instance",
-					"brief": "",
-					"description": ""
-				},
-				{
-					"name": "toArray",
-					"type": "MethodDoc",
-					"scope": "instance",
-					"brief": "",
-					"description": ""
-				},
-				{
-					"name": "toString",
-					"type": "MethodDoc",
-					"scope": "instance",
-					"brief": "",
-					"description": ""
-				},
-				{
-					"name": "transform",
-					"type": "MethodDoc",
-					"scope": "instance",
-					"brief": "",
-					"description": ""
-				},
-				{
-					"name": "translate",
-					"type": "MethodDoc",
-					"scope": "instance",
-					"brief": "",
-					"description": ""
-				}
-			]
-		},
-		{
-			"name": "MouseChangedEvent",
-			"type": "ClassDoc",
-			"brief": "",
-			"description": "",
-			"members": [
-				{
-					"name": "handled",
-					"type": "PropertyDoc",
-					"scope": "instance",
-					"brief": "",
-					"description": "<p>Whether or not the event has been handled. Set this to true to make it handled and stopped\nbeing sent to all other event listeners.</p>"
-				},
-				{
-					"name": "constructor",
-					"type": "MethodDoc",
-					"scope": "instance",
-					"brief": "",
-					"description": ""
-				}
-			]
-		},
-		{
-			"name": "MousePressedEvent",
-			"type": "ClassDoc",
-			"brief": "",
-			"description": "",
-			"members": [
-				{
-					"name": "handled",
-					"type": "PropertyDoc",
-					"scope": "instance",
-					"brief": "",
-					"description": "<p>Whether or not the event has been handled. Set this to true to make it handled and stopped\nbeing sent to all other event listeners.</p>"
-				}
-			]
-		},
-		{
-			"name": "MouseScrolledEvent",
-			"type": "ClassDoc",
-			"brief": "",
-			"description": "",
-			"members": [
-				{
-					"name": "handled",
-					"type": "PropertyDoc",
-					"scope": "instance",
-					"brief": "",
-					"description": "<p>Whether or not the event has been handled. Set this to true to make it handled and stopped\nbeing sent to all other event listeners.</p>"
 				}
 			]
 		},
@@ -764,91 +1025,6 @@
 			]
 		},
 		{
-			"name": "Vector2",
-			"type": "ClassDoc",
-			"brief": "",
-			"description": "",
-			"members": [
-				{
-					"name": "angle",
-					"type": "MethodDoc",
-					"scope": "instance",
-					"brief": "",
-					"description": ""
-				},
-				{
-					"name": "approxEquals",
-					"type": "MethodDoc",
-					"scope": "instance",
-					"brief": "",
-					"description": ""
-				},
-				{
-					"name": "clone",
-					"type": "MethodDoc",
-					"scope": "instance",
-					"brief": "",
-					"description": ""
-				},
-				{
-					"name": "distance",
-					"type": "MethodDoc",
-					"scope": "instance",
-					"brief": "",
-					"description": ""
-				},
-				{
-					"name": "divide",
-					"type": "MethodDoc",
-					"scope": "instance",
-					"brief": "",
-					"description": ""
-				},
-				{
-					"name": "dot",
-					"type": "MethodDoc",
-					"scope": "instance",
-					"brief": "",
-					"description": ""
-				},
-				{
-					"name": "magnitude",
-					"type": "MethodDoc",
-					"scope": "instance",
-					"brief": "",
-					"description": ""
-				},
-				{
-					"name": "random",
-					"type": "MethodDoc",
-					"scope": "instance",
-					"brief": "",
-					"description": ""
-				},
-				{
-					"name": "set",
-					"type": "MethodDoc",
-					"scope": "instance",
-					"brief": "",
-					"description": ""
-				},
-				{
-					"name": "subtract",
-					"type": "MethodDoc",
-					"scope": "instance",
-					"brief": "",
-					"description": ""
-				},
-				{
-					"name": "toArray",
-					"type": "MethodDoc",
-					"scope": "instance",
-					"brief": "",
-					"description": ""
-				}
-			]
-		},
-		{
 			"name": "VertexArray",
 			"type": "ClassDoc",
 			"brief": "",
@@ -892,41 +1068,13 @@
 			]
 		},
 		{
-			"name": "ECSManager",
-			"type": "ClassDoc",
-			"access": "private",
-			"brief": "<p>Helper class to make ecs work.</p>",
-			"description": "",
-			"members": [
-				{
-					"name": "entityComponentAdd",
-					"type": "MethodDoc",
-					"scope": "instance",
-					"brief": "",
-					"description": ""
-				}
-			]
-		},
-		{
-			"name": "KeyCode",
-			"type": "EnumDoc",
-			"brief": "",
-			"description": "<p>An enum containing most of the key codes from event.code.\nThis is here to easily get autocomplete info for all keycodes.</p>"
-		},
-		{
-			"name": "MouseCode",
-			"type": "EnumDoc",
-			"brief": "",
-			"description": "<p>An enum containing most of the mouse button codes from event.button.\nThis is here to easily get autocomplete info for mouse button codes.</p>"
-		},
-		{
-			"name": "mapGet",
+			"name": "swapRemove",
 			"type": "FunctionDoc",
 			"brief": "",
 			"description": ""
 		},
 		{
-			"name": "toRadians",
+			"name": "toDegrees",
 			"type": "FunctionDoc",
 			"brief": "",
 			"description": ""
