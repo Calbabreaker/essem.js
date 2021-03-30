@@ -13,7 +13,6 @@
             body {
                 overflow: hidden;
             }
-
             canvas {
                 right: 50%;
                 bottom: 50%;
@@ -40,7 +39,7 @@
             const childEntityTransform = childEntity.addComponent(
                 new ESSEM.TransformComponent(new ESSEM.Vector2(2, 0))
             );
-            childEntity.addComponent(new ESSEM.SpriteComponent(ESSEM.Texture.WHITE));
+            childEntity.addComponent(new ESSEM.SpriteComponent(ESSEM.Texture.WHITE, 0xff1100));
 
             const camera = scene.createEntity();
             camera.addComponent(new ESSEM.CameraComponent(2));
@@ -59,9 +58,12 @@
                 }
             });
 
+            let backgroundColor = 0x000000;
             app.events.addListener(ESSEM.ApplicationUpdateEvent, (event) => {
                 entityTransform.rotation += ESSEM.toRadians(event.delta * 0.25);
                 childEntityTransform.rotation += ESSEM.toRadians(event.delta * 0.5);
+                backgroundColor += 3 - 0x000100 + 0x020000;
+                app.renderer.backgroundColor = backgroundColor;
             });
         </script>
     </body>

@@ -7,7 +7,7 @@ import { Texture } from "./texture";
 import { Matrix3 } from "math/matrix3";
 
 export abstract class AbstractBatchRenderer {
-    static readonly vertexSize = 5; // position (2) + texCoord (2) + texture index (1)
+    static readonly vertexSize = 9; // position (2) + texCoord (2) + texture index (1) + color (4)
     static readonly maxDraws = 1000;
     static readonly maxVertices =
         AbstractBatchRenderer.maxDraws * 4 * AbstractBatchRenderer.vertexSize;
@@ -53,6 +53,8 @@ export abstract class AbstractBatchRenderer {
         gl.vertexAttribPointer(1, 2, gl.FLOAT, false, stride, 2 * Float32Array.BYTES_PER_ELEMENT);
         gl.enableVertexAttribArray(2);
         gl.vertexAttribPointer(2, 1, gl.FLOAT, false, stride, 4 * Float32Array.BYTES_PER_ELEMENT);
+        gl.enableVertexAttribArray(3);
+        gl.vertexAttribPointer(3, 4, gl.FLOAT, false, stride, 5 * Float32Array.BYTES_PER_ELEMENT);
 
         // TODO: abstract shader
         this.textureShader = new Shader(textureVertexSrc, textureFragmentSrc, "Sprite");

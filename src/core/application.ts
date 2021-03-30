@@ -106,10 +106,7 @@ export class Application {
         const now = performance.now();
         const delta = now - this.lastFrameTime;
 
-        const gl = this.renderer.gl;
-        gl.clearColor(0, 0, 0, 1);
-        gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-
+        this.renderer.update();
         this.events.sendEvent(new ApplicationUpdateEvent(delta));
 
         this.lastFrameTime = now;

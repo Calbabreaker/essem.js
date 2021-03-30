@@ -45,6 +45,10 @@ export class SpriteRenderer extends AbstractBatchRenderer {
             this.vertices[this.verticesIndex++] = SpriteRenderer.texCoords[index];
             this.vertices[this.verticesIndex++] = SpriteRenderer.texCoords[index + 1];
             this.vertices[this.verticesIndex++] = this.getTextureSlot(sprite.texture);
+            this.vertices[this.verticesIndex++] = sprite.rgbaColor[0];
+            this.vertices[this.verticesIndex++] = sprite.rgbaColor[1];
+            this.vertices[this.verticesIndex++] = sprite.rgbaColor[2];
+            this.vertices[this.verticesIndex++] = sprite.rgbaColor[3];
         }
 
         this.indicesCount += 6;

@@ -6,14 +6,13 @@ layout(location = 0) out vec4 color;
 
 in vec2 v_texCoord;
 in float v_texIndex;
-//in vec4 v_color;
-//in float v_tilingFactor;
+in vec4 v_color;
 
 uniform sampler2D u_textures[32];
 
 void main() 
 {
-    vec4 texColor = vec4(1.0, 1.0, 1.0, 1.0);
+    vec4 texColor = v_color;
     vec2 coordinate = v_texCoord;
 
     // have to use switch because WebGL doesn't support dynamic sampler indexing

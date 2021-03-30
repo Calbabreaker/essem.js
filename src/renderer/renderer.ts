@@ -1,9 +1,10 @@
 import { assert } from "utils/misc";
 import { isWebGL2Supported } from "utils/browser";
+import { hexToRGBA } from "utils/colors";
 
 export class Renderer {
     readonly gl: WebGL2RenderingContext;
-    maxTextureSlots: number;
+    readonly maxTextureSlots: number;
 
     constructor(canvasElement: HTMLCanvasElement) {
         if (isWebGL2Supported()) {
@@ -16,5 +17,15 @@ export class Renderer {
             alert("WebGL2 is not supported in your browser!");
             throw new Error("WebGL2 not supported!");
         }
+    }
+
+    update() {
+        const gl = this.gl;
+        gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+    }
+
+    set backgroundColor(hexColor: number) {
+        const rgbColor = hexToRGBA(hexColor);
+        this.gl.clearColor(rgbColor[0], rgbColor[1], rgbColor[2], rgbColor[3]);
     }
 }

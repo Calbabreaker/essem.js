@@ -30,7 +30,9 @@ export * from "./math/vector2";
 export * from "./math/matrix3";
 
 export * from "./utils/browser";
+export * from "./utils/colors";
 export * from "./utils/misc";
+export * from "./utils/types";
 
 /**
  * String of the current essem.js version.

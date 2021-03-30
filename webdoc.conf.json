@@ -8,7 +8,7 @@
         "encoding": "utf8",
         "recurse": true,
         "destination": "./docs",
-        "export": "./dist/essem.api.json"
+        "export": "./docs/essem.api.json"
     },
     "template": {
         "repository": "https://github.com/Calbabreaker/essem.js",
