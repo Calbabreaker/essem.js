@@ -45,7 +45,7 @@ export class Entity {
     /**
      * Adds a new component to the entity.
      *
-     * @param component - Any object that is an instance of a class. Same name classes will be
+     * @param component - Any object that is an instance of a class. Same named classes will be
      *                    considered as the same component.
      * @return The component that was added.
      */

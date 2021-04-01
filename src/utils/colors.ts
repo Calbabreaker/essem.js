@@ -1,6 +1,7 @@
 /**
  * Converts hexadecimal number to a rbga array.
  *
+ * @memberof ESSEM
  * @param hex - Hexadecimal number. Alpha channel is default to 1.
  * @return RGBA array with values from 0 to 1.
  */
