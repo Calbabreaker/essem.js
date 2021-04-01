@@ -2,10 +2,19 @@ import { Entity } from "./entity";
 import { ECSManager } from "./ecs_manager";
 import { swapRemove } from "utils/misc";
 
+/**
+ * Handles all the entities.
+ * Use the application to create the scene.
+ *
+ * @memberof ESSEM
+ */
 export class Scene {
     private _ecsManager: ECSManager;
     private _availableEntities: Entity[] = [];
 
+    /**
+     * The entities that are currently active and not destroyed.
+     */
     entities: Entity[] = [];
 
     constructor(manager: ECSManager) {
@@ -21,7 +30,7 @@ export class Scene {
         }
 
         const entity = this._availableEntities.pop() as Entity;
-        entity._setup(parent);
+        entity.setup(parent);
         if (parent === undefined) {
             entity._arrayIndex = this.entities.length;
             this.entities.push(entity);

@@ -4,6 +4,11 @@ import { Entity } from "./entity";
 import { mapGet } from "../utils/misc";
 import { Application } from "core/application";
 
+/**
+ * System base class to extend to collect all the wanted entities and do stuff to them.
+ *
+ * @memberof ESSEM
+ */
 export abstract class System {
     entities: Entity[] = [];
     typeNames: string[] = [];

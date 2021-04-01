@@ -70,7 +70,7 @@ export class SpriteRendererSystem extends System {
 
         const viewProjection = mainCamera.getComponent(CameraComponent).getProjectionMatrix();
         viewProjection.multiply(
-            mainCamera.getComponent(TransformComponent).getTransformMatrix().invert()
+            mainCamera.getComponent(TransformComponent).transformMatrix.invert()
         );
 
         this.spriteRenderer.beginScene(viewProjection);

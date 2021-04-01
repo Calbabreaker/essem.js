@@ -2,8 +2,13 @@ import { Component, ECSManager } from "./ecs_manager";
 import { assert, swapRemove } from "utils/misc";
 import { AnyCtor } from "utils/types";
 
+/**
+ * Entity class to handle components in ecs.
+ *
+ * @memberof ESSEM
+ */
 export class Entity {
-    _componentMap: Map<string, Component> = new Map();
+    private _componentMap: Map<string, Component> = new Map();
     _systemIndexMap: Map<string, number> = new Map();
     _arrayIndex = 0;
     private _ecsManager: ECSManager;
@@ -37,6 +42,13 @@ export class Entity {
         }
     }
 
+    /**
+     * Adds a new component to the entity.
+     *
+     * @param component - Any object that is an instance of a class. Same name classes will be
+     *                    considered as the same component.
+     * @return The component that was added.
+     */
     addComponent<T extends Component>(component: T): T {
         const typeName = component.constructor.name;
         assert(!this._componentMap.has(typeName), `Component '${typeName}' already exists!`);
@@ -74,7 +86,13 @@ export class Entity {
         return component as T;
     }
 
-    _setup(parent?: Entity): void {
+    /**
+     * Setups the entity. Makes the entity active an not destroyed.
+     * Use the scene create entity function unless you are managing entities yourselves.
+     *
+     * @param parent - The entity for the entity to parent to.
+     */
+    setup(parent?: Entity): void {
         if (!this.destroyed) return;
 
         this.setActive(true);
@@ -87,6 +105,10 @@ export class Entity {
         }
     }
 
+    /**
+     * Destroys the entity. Removes all components and sets it unactive.
+     * Use the scene destroy function unless you are managing entities yourselves.
+     */
     destroy(): void {
         if (this.destroyed) return;
 
