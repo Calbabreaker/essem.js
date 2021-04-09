@@ -12,15 +12,16 @@ export type Component = Object;
  * @memberof ESSEM
  */
 export class Entity {
-    active = false;
-    destroyed = true;
-
     parent: Entity | null = null;
     children: Entity[] = [];
 
+    private _active = false;
+    private _activeSelf = false;
+    private _destroyed = true;
+
     _systemIndexMap: Map<string, number> = new Map();
     _parentArrayIndex = 0;
-    private _tagToIndexMap: Map<string, number> = new Map();
+    _tagIndexMap: Map<string, number> = new Map();
     private _componentMap: Map<string, Component> = new Map();
     private _scene: Scene;
 
@@ -28,46 +29,33 @@ export class Entity {
         this._scene = manager;
     }
 
-    setActive(active: boolean): void {
-        if (this._componentMap.size !== 0 && this.active !== active) {
-            for (const [typeName] of this._componentMap) {
-                active
-                    ? this._scene._entityComponentAdd(this, typeName)
-                    : this._scene._entityComponentRemove(this, typeName);
-            }
-        }
-
-        this.active = active;
-    }
-
-    forEachParent(func: (child: Entity) => void): void {
-        if (this.parent !== null) {
-            func(this.parent);
-            this.parent.forEachParent(func);
-        }
-    }
-
     /**
      * Adds a new component to the entity.
      *
-     * @param component - Any object that is an instance of a class. Same named classes will be
-     *                    considered as the same component.
-     * @return The component that was added.
+     * @param {Component} component - Any object that is an instance of a class. Same named classes
+     *        will be considered as the same component.
+     * @return {Component} The component that was added.
      */
     addComponent<T extends Component>(component: T): T {
         const typeName = component.constructor.name;
         assert(!this._componentMap.has(typeName), `Component '${typeName}' already exists!`);
         this._componentMap.set(typeName, component);
 
-        this._scene._entityComponentAdd(this, typeName);
+        if (this._active) this._scene._entityComponentAdd(this, typeName);
         return component as T;
     }
 
+    /**
+     * Removes a component from the entity.
+     *
+     * @param {ComponentClass | string} componentType - The component name or class to remove.
+     *        Same named classes will be considered as the same component.
+     */
     removeComponent(componentType: AnyCtor<Component> | string): void {
         const typeName = (componentType as AnyCtor<Component>).name ?? componentType;
         assert(this._componentMap.has(typeName), `Component '${typeName}' does not exist!`);
 
-        this._scene._entityComponentRemove(this, typeName);
+        if (this._active) this._scene._entityComponentRemove(this, typeName);
         this._componentMap.delete(typeName);
     }
 
@@ -92,23 +80,93 @@ export class Entity {
     }
 
     addTag(tag: string): void {
-        const entities = mapGet(this._scene._tagToEntities, tag, Array);
-        this._tagToIndexMap.set(tag, entities.length);
-        entities.push(this);
+        if (this._active) {
+            const entities = mapGet(this._scene._tagToEntities, tag, Array) as Entity[];
+            entities.push(this);
+            this._tagIndexMap.set(tag, entities.length - 1);
+        } else {
+            this._tagIndexMap.set(tag, 0);
+        }
     }
 
     hasTag(tag: string): boolean {
-        return this._tagToIndexMap.has(tag);
+        return this._tagIndexMap.has(tag);
     }
 
     removeTag(tag: string): void {
-        const entities = mapGet(this._scene._tagToEntities, tag, Array) as Entity[];
-        const index = this._tagToIndexMap.get(tag);
-        assert(index !== undefined, `Tag ${tag} does not exist!`);
+        if (this._active) this._scene._entityTagRemove(this, tag);
+        this._tagIndexMap.delete(tag);
+    }
 
-        const lastEntity = swapRemove(entities, index);
-        lastEntity._tagToIndexMap.set(tag, index);
-        this._tagToIndexMap.delete(tag);
+    /**
+     * Sets the entity and all it's children to be active or not.
+     * It will not make a child active if it's activeSelf state is false.
+     * Will remove entity from systems if inactive and add back when active.
+     *
+     * @param active - Whether or not the entity should be active.
+     */
+    setActive(active: boolean) {
+        if (this._active === active || (this.parent !== null && !this.parent.active)) return;
+        this._setActive(active);
+        this._activeSelf = active;
+
+        // go through all the children and sets unactive
+        this.forEachChildren((child) => {
+            child._setActive(active && child.activeSelf);
+        });
+    }
+
+    /**
+     * Whether or not the entity is active.
+     *
+     * @readonly
+     */
+    get active() {
+        return this._active;
+    }
+
+    /**
+     * The local active state.
+     * This will be regardless of it's parents.
+     *
+     * @readonly
+     */
+    get activeSelf() {
+        return this._activeSelf;
+    }
+
+    private _setActive(active: boolean): void {
+        if (this._active === active) return;
+        this._active = active;
+
+        // remove entity listing from components and tags
+        if (this._componentMap.size !== 0) {
+            for (const [typeName] of this._componentMap) {
+                active
+                    ? this._scene._entityComponentAdd(this, typeName)
+                    : this._scene._entityComponentRemove(this, typeName);
+            }
+        }
+
+        if (this._tagIndexMap.size !== 0) {
+            for (const [tag] of this._tagIndexMap) {
+                active ? this.addTag(tag) : this._scene._entityTagRemove(this, tag);
+            }
+        }
+    }
+
+    forEachParent(func: (parent: Entity) => void): void {
+        if (this.parent !== null) {
+            func(this.parent);
+            this.parent.forEachParent(func);
+        }
+    }
+
+    forEachChildren(func: (child: Entity) => void): void {
+        this.children.forEach((child) => {
+            func(child);
+            child.forEachChildren(func);
+        });
     }
 
     /**
@@ -121,7 +179,7 @@ export class Entity {
         if (!this.destroyed) return;
 
         this.setActive(true);
-        this.destroyed = false;
+        this._destroyed = false;
 
         if (parent !== undefined) {
             this._parentArrayIndex = parent.children.length;
@@ -132,18 +190,33 @@ export class Entity {
 
     /**
      * Destroys the entity. Removes all components and sets it unactive.
-     * Use the scene destroy function unless you are managing entities yourselves.
+     * Use the scene destroy entity function unless you are managing entities yourselves.
      */
     destroy(): void {
         if (this.destroyed) return;
 
-        this.setActive(false);
+        this.setActive(true);
+        this._destroyed = false;
         this._componentMap.clear();
-        this.destroyed = true;
+        this._tagIndexMap.clear();
+        this._destroyed = true;
 
         if (this.parent !== null) {
             const lastEntity = swapRemove(this.parent.children, this._parentArrayIndex);
             lastEntity._parentArrayIndex = this._parentArrayIndex;
         }
+
+        this.children.forEach((child) => {
+            child.destroy();
+        });
+    }
+
+    /**
+     * Whether or not the entity is destroyed.
+     *
+     * @readonly
+     */
+    get destroyed(): boolean {
+        return this._destroyed;
     }
 }

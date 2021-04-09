@@ -1,5 +1,5 @@
 import { Entity } from "./entity";
-import { mapGet, swapRemove } from "utils/misc";
+import { assert, mapGet, swapRemove } from "utils/misc";
 import { System } from "./system";
 
 /**
@@ -19,8 +19,8 @@ export class Scene {
      */
     entities: Entity[] = [];
 
-    _tagToEntities: Map<string, Entity[]> = new Map();
     _typeNameToSystem: Map<string, System[]> = new Map();
+    _tagToEntities: Map<string, Entity[]> = new Map();
     private _availableEntities: Entity[] = [];
 
     /**
@@ -68,8 +68,12 @@ export class Scene {
         }
     }
 
+    getEntitesByTag(tag: string): Entity[] {
+        return mapGet(this._tagToEntities, tag, Array) as Entity[];
+    }
+
     /**
-     * Gets called whenever a component gets added.
+     * Gets called whenever a component gets added to an entity.
      *
      * @private
      */
@@ -88,12 +92,8 @@ export class Scene {
         });
     }
 
-    getEntitesByTag(tag: string): Entity[] {
-        return mapGet(this._tagToEntities, tag, Array) as Entity[];
-    }
-
     /**
-     * Gets called whenever a component gets removed.
+     * Gets called whenever a component gets removed from an entity.
      *
      * @private
      */
@@ -108,5 +108,19 @@ export class Scene {
             lastEntity._systemIndexMap.set(system.constructor.name, entityIndex);
             entity._systemIndexMap.delete(system.constructor.name);
         });
+    }
+
+    /**
+     * Gets called whenever a tag gets removed from an entity.
+     *
+     * @private
+     */
+    _entityTagRemove(entity: Entity, tag: string): void {
+        const entities = mapGet(this._tagToEntities, tag, Array) as Entity[];
+        const index = entity._tagIndexMap.get(tag);
+        assert(index !== undefined, `Tag ${tag} does not exist!`);
+
+        const lastEntity = swapRemove(entities, index);
+        lastEntity._tagIndexMap.set(tag, index);
     }
 }
