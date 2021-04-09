@@ -1,7 +1,6 @@
 import { Renderer } from "../renderer/renderer";
-import { ECSManager } from "../ecs/ecs_manager";
 import { Scene } from "../ecs/scene";
-import { System } from "../ecs/system";
+import { System, SystemClass } from "../ecs/system";
 import { Canvas, CanvasResizedEvent, ICanvasOptions } from "./canvas";
 import { Event, EventManager } from "./event_manager";
 import { Loader } from "./loader";
@@ -56,7 +55,6 @@ export interface IApplicationOptions {
  * @memberof ESSEM
  */
 export class Application {
-    private _ecsManager: ECSManager;
     events: EventManager;
     canvas: Canvas;
     renderer: Renderer;
@@ -65,12 +63,14 @@ export class Application {
     lastFrameTime = 0;
     running = true;
 
+    private _systemClasses: SystemClass[] = [];
+
     /**
      * @param {object} [options={}] - Optional parameters for Application.
-     * @param {object} [options.canvasOptions={}] - Optional parameters for the canvas. See {@link ESSEM.Canvas}
+     * @param {object} [options.canvasOptions={}] - Optional parameters for the canvas.
+     *                                              See {@link ESSEM.Canvas}
      */
     constructor(options: IApplicationOptions = {}) {
-        this._ecsManager = new ECSManager();
         this.events = new EventManager();
         this.canvas = new Canvas(options.canvasOptions, this.events);
         this.renderer = new Renderer(this.canvas.element);
@@ -123,16 +123,11 @@ export class Application {
      * Registers a parameterized array of system classes.
      * Use like this: `app.registerSystem(System1, System2, ...);`
      *
-     * @param {SystemClass[]} systemClasses - An parameterized array of classes that extends {@link ESSEM.System}
-     * @return {Application} This Application. Good for chaining calls.
+     * @param {...SystemClass[]} systemClasses - An parameterized array of classes that extends
+     *                                           {@link ESSEM.System}
      */
-    registerSystem(...systemClasses: { new (manager: ECSManager): System }[]): this {
-        for (const systemClass of systemClasses) {
-            const system = this._ecsManager.registerSystem(systemClass);
-            system.setup(this);
-        }
-
-        return this;
+    registerSystem(...systemClasses: SystemClass[]): void {
+        this._systemClasses.push(...systemClasses);
     }
 
     /**
@@ -141,7 +136,15 @@ export class Application {
      * @return A new Scene.
      */
     createScene(): Scene {
-        const scene = new Scene(this._ecsManager);
+        const scene = new Scene();
+        const systems: System[] = [];
+        this._systemClasses.forEach((systemClass) => {
+            const system = new systemClass(scene);
+            system.setup(this);
+            systems.push(system);
+        });
+
+        scene.systems = systems;
         return scene;
     }
 }

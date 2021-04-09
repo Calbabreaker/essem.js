@@ -1,8 +1,10 @@
-import { Component, ECSManager } from "./ecs_manager";
 import { AnyCtor } from "../utils/types";
-import { Entity } from "./entity";
+import { Component, Entity } from "./entity";
 import { mapGet } from "../utils/misc";
 import { Application } from "core/application";
+import { Scene } from "./scene";
+
+export type SystemClass = { new (scene: Scene): System };
 
 /**
  * System base class to extend to collect all the wanted entities and do stuff to them.
@@ -12,7 +14,7 @@ import { Application } from "core/application";
 export abstract class System {
     entities: Entity[] = [];
     typeNames: string[] = [];
-    private _ecsManager: ECSManager;
+    private _scene: Scene;
 
     setup(_app: Application): void {
         // to override
@@ -22,15 +24,15 @@ export abstract class System {
         // to override (optional)
     }
 
-    constructor(manager: ECSManager) {
-        this._ecsManager = manager;
+    constructor(scene: Scene) {
+        this._scene = scene;
     }
 
     setComponents(...componentTypes: AnyCtor<Component>[] | string[]): void {
         this.typeNames = [];
         for (const componentType of componentTypes) {
             const typeName = (componentType as AnyCtor<Component>).name ?? componentType;
-            const systems = mapGet(this._ecsManager.typeNameToSystem, typeName, Array);
+            const systems = mapGet(this._scene._typeNameToSystem, typeName, Array);
             systems.push(this);
             this.typeNames.push(typeName);
         }

@@ -1,6 +1,10 @@
-import { Component, ECSManager } from "./ecs_manager";
 import { assert, swapRemove } from "utils/misc";
 import { AnyCtor } from "utils/types";
+import { Scene } from "./scene";
+
+// basically any object
+// eslint-disable-next-line @typescript-eslint/ban-types
+export type Component = Object;
 
 /**
  * Entity class to handle components in ecs.
@@ -8,27 +12,27 @@ import { AnyCtor } from "utils/types";
  * @memberof ESSEM
  */
 export class Entity {
-    private _componentMap: Map<string, Component> = new Map();
-    _systemIndexMap: Map<string, number> = new Map();
-    _arrayIndex = 0;
-    private _ecsManager: ECSManager;
-
     active = false;
     destroyed = true;
 
     parent: Entity | null = null;
     children: Entity[] = [];
 
-    constructor(manager: ECSManager) {
-        this._ecsManager = manager;
+    _systemIndexMap: Map<string, number> = new Map();
+    _arrayIndex = 0;
+    private _componentMap: Map<string, Component> = new Map();
+    private _scene: Scene;
+
+    constructor(manager: Scene) {
+        this._scene = manager;
     }
 
     setActive(active: boolean): void {
         if (this._componentMap.size !== 0 && this.active !== active) {
             for (const [typeName] of this._componentMap) {
                 active
-                    ? this._ecsManager.entityComponentAdd(this, typeName)
-                    : this._ecsManager.entityComponentRemove(this, typeName);
+                    ? this._scene._entityComponentAdd(this, typeName)
+                    : this._scene._entityComponentRemove(this, typeName);
             }
         }
 
@@ -54,7 +58,7 @@ export class Entity {
         assert(!this._componentMap.has(typeName), `Component '${typeName}' already exists!`);
         this._componentMap.set(typeName, component);
 
-        this._ecsManager.entityComponentAdd(this, typeName);
+        this._scene._entityComponentAdd(this, typeName);
         return component as T;
     }
 
@@ -62,7 +66,7 @@ export class Entity {
         const typeName = (componentType as AnyCtor<Component>).name ?? componentType;
         assert(this._componentMap.has(typeName), `Component '${typeName}' does not exist!`);
 
-        this._ecsManager.entityComponentRemove(this, typeName);
+        this._scene._entityComponentRemove(this, typeName);
         this._componentMap.delete(typeName);
     }
 

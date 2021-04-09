@@ -181,7 +181,7 @@ export class Matrix3 {
         return this;
     }
 
-    // TODO: perhaps make this not matrix funcions?
+    // TODO: perhaps make this not use matrix funcions?
     transform(position: Vector2, scale: Vector2, rotation: number): this {
         this.identity();
         if (rotation !== 0) {

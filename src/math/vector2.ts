@@ -146,7 +146,7 @@ export class Vector2 {
      * @param {number} [tolerance=0.001] - The range to check in.
      * @return Whether or not the vectors are approximately equal.
      */
-    approxEquals(vector: Vector2, tolerance = 0.001): boolean {
+    approxEquals(vector: Vector2, tolerance: number = 0.001): boolean {
         return (
             approxEquals(this.x, vector.x, tolerance) && approxEquals(this.y, vector.y, tolerance)
         );
