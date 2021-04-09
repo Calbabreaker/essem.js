@@ -16,8 +16,9 @@ export function approxEquals(a: number, b: number, tolerance: number = 0.001): b
  * Use the essem.js provided functions to convert instead.
  *
  * @memberof ESSEM
+ * @type number
  */
-export const DEG_TO_RAD = Math.PI / 180;
+export const DEG_TO_RAD: number = Math.PI / 180;
 
 /**
  * Converts degrees to radians.
@@ -35,8 +36,9 @@ export function toRadians(degrees: number): number {
  * Use the essem.js provided functions to convert instead.
  *
  * @memberof ESSEM
+ * @type number
  */
-export const RAD_TO_DEG = 180 / Math.PI;
+export const RAD_TO_DEG: number = 180 / Math.PI;
 
 /**
  * Converts radians to degrees.

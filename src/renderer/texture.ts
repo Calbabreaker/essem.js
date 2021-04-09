@@ -2,6 +2,11 @@ import { assert } from "utils/misc";
 
 export type TextureSource = HTMLImageElement | HTMLCanvasElement;
 
+/**
+ * Class that is used to render images.
+ *
+ * @memberof ESSEM
+ */
 export class Texture {
     source: TextureSource;
     glTexture: WebGLTexture | null = null;
@@ -12,6 +17,11 @@ export class Texture {
         this.aspectRatio = this.source.width / this.source.height;
     }
 
+    /**
+     * Inits the texture. This will get automatically called when binding the texture.
+     *
+     * @param gl - An WebGL2 rendering context for the texture to use.
+     */
     init(gl: WebGL2RenderingContext): void {
         this.glTexture = gl.createTexture();
         assert(this.glTexture !== null, "Could not create glTexture!");
@@ -34,6 +44,12 @@ export class Texture {
         );
     }
 
+    /**
+     * Binds the texture.
+     *
+     * @param gl - An WebGL2 rendering context for the texture to use.
+     * @param slot - The texture slot for the texture to be binded to (optional).
+     */
     bind(gl: WebGL2RenderingContext, slot?: number): void {
         if (slot) {
             gl.activeTexture(gl.TEXTURE0 + slot);

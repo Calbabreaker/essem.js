@@ -16,7 +16,7 @@ export class SpriteComponent {
         this.rgbaColor = hexToRGBA(hex);
     }
 
-    get color() {
+    get color(): number {
         return this._hexColor;
     }
 }

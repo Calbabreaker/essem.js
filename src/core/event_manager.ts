@@ -8,7 +8,7 @@ import { AnyCtor } from "../utils/types";
  */
 export abstract class Event {
     /**
-     * Whether or not the event has been handled. Set this to true to make stopped
+     * Whether or not the event has been handled. Set this to true to make it stopped
      * being sent to all other event listeners.
      */
     handled = false;
@@ -26,7 +26,7 @@ export class EventManager {
     eventListenersMap: Map<string, EventListenerFunc[]> = new Map();
 
     /**
-     * Adds a listener to listen and receive the specified event.
+     * Adds a function to act as a listener to listen and receive the specified event.
      *
      * @param eventType - The event class or name for the listener to listen to.
      * @param listenerFunc - The function that will receive the events.
@@ -41,7 +41,7 @@ export class EventManager {
     }
 
     /**
-     * Send a event for all the listener to get.
+     * Send a event for all event's listeners to get.
      *
      * @param event - An instance of the event to send. Same named classes will be considered as
      *                the same event.

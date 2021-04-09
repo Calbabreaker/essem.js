@@ -19,7 +19,7 @@ export class Renderer {
         }
     }
 
-    update() {
+    update(): void {
         const gl = this.gl;
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
     }

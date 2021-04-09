@@ -36,7 +36,8 @@ app.events.addListener(ESSEM.ApplicationInitEvent, () => {
 
 ### Documentation
 
-There is documentation but it is not hosted anywhere yet.
+There is documentation but it is not hosted anywhere yet. 
+You can build the documentation by doing `npm run docs` and viewing the `/docs/` directory.
 
 ## Contributing
 

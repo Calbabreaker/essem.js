@@ -35,12 +35,12 @@ export * from "./utils/misc";
 export * from "./utils/types";
 
 /**
- * String of the current essem.js version.
+ * The version of the essem.js library being used.
  *
  * @memberof ESSEM
  * @type string
  */
-export const VERSION = "$_VERSION";
+export const VERSION: string = "$_VERSION";
 
 if (window.__ESSEM__) {
     throw new Error("essem.js is already imported!");
