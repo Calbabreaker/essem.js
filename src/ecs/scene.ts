@@ -19,6 +19,7 @@ export class Scene {
      */
     entities: Entity[] = [];
 
+    _tagToEntities: Map<string, Entity[]> = new Map();
     _typeNameToSystem: Map<string, System[]> = new Map();
     private _availableEntities: Entity[] = [];
 
@@ -45,7 +46,7 @@ export class Scene {
         const entity = this._availableEntities.pop() as Entity;
         entity.setup(parent);
         if (parent === undefined) {
-            entity._arrayIndex = this.entities.length;
+            entity._parentArrayIndex = this.entities.length;
             this.entities.push(entity);
         }
 
@@ -54,8 +55,8 @@ export class Scene {
 
     destroyEntity(entity: Entity): void {
         if (entity.parent === undefined) {
-            const lastEntity = swapRemove(this.entities, entity._arrayIndex);
-            lastEntity._arrayIndex = entity._arrayIndex;
+            const lastEntity = swapRemove(this.entities, entity._parentArrayIndex);
+            lastEntity._parentArrayIndex = entity._parentArrayIndex;
         }
 
         entity.destroy();
@@ -85,6 +86,10 @@ export class Scene {
                 }
             }
         });
+    }
+
+    getEntitesByTag(tag: string): Entity[] {
+        return mapGet(this._tagToEntities, tag, Array) as Entity[];
     }
 
     /**

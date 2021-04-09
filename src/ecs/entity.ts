@@ -1,4 +1,4 @@
-import { assert, swapRemove } from "utils/misc";
+import { assert, mapGet, swapRemove } from "utils/misc";
 import { AnyCtor } from "utils/types";
 import { Scene } from "./scene";
 
@@ -19,7 +19,8 @@ export class Entity {
     children: Entity[] = [];
 
     _systemIndexMap: Map<string, number> = new Map();
-    _arrayIndex = 0;
+    _parentArrayIndex = 0;
+    private _tagToIndexMap: Map<string, number> = new Map();
     private _componentMap: Map<string, Component> = new Map();
     private _scene: Scene;
 
@@ -90,6 +91,26 @@ export class Entity {
         return component as T;
     }
 
+    addTag(tag: string): void {
+        const entities = mapGet(this._scene._tagToEntities, tag, Array);
+        this._tagToIndexMap.set(tag, entities.length);
+        entities.push(this);
+    }
+
+    hasTag(tag: string): boolean {
+        return this._tagToIndexMap.has(tag);
+    }
+
+    removeTag(tag: string): void {
+        const entities = mapGet(this._scene._tagToEntities, tag, Array) as Entity[];
+        const index = this._tagToIndexMap.get(tag);
+        assert(index !== undefined, `Tag ${tag} does not exist!`);
+
+        const lastEntity = swapRemove(entities, index);
+        lastEntity._tagToIndexMap.set(tag, index);
+        this._tagToIndexMap.delete(tag);
+    }
+
     /**
      * Setups the entity. Makes the entity active an not destroyed.
      * Use the scene create entity function unless you are managing entities yourselves.
@@ -103,7 +124,7 @@ export class Entity {
         this.destroyed = false;
 
         if (parent !== undefined) {
-            this._arrayIndex = parent.children.length;
+            this._parentArrayIndex = parent.children.length;
             parent.children.push(this);
             this.parent = parent;
         }
@@ -121,8 +142,8 @@ export class Entity {
         this.destroyed = true;
 
         if (this.parent !== null) {
-            const lastEntity = swapRemove(this.parent.children, this._arrayIndex);
-            lastEntity._arrayIndex = this._arrayIndex;
+            const lastEntity = swapRemove(this.parent.children, this._parentArrayIndex);
+            lastEntity._parentArrayIndex = this._parentArrayIndex;
         }
     }
 }

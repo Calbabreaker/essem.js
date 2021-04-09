@@ -30,7 +30,7 @@ app.events.addListener(ESSEM.ApplicationInitEvent, () => {
     const camera = scene.createEntity();
     entity.addComponent(new TransformComponent());
     entity.addComponent(new CameraComponent());
-    CameraSystem.mainCamera = camera;
+    entity.addTag("MainCamera");
 });
 ```
 

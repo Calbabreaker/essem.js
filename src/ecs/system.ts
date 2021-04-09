@@ -14,7 +14,7 @@ export type SystemClass = { new (scene: Scene): System };
 export abstract class System {
     entities: Entity[] = [];
     typeNames: string[] = [];
-    private _scene: Scene;
+    protected _scene: Scene;
 
     setup(_app: Application): void {
         // to override

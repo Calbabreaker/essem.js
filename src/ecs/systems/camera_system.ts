@@ -29,6 +29,4 @@ export class CameraSystem extends System {
             }
         });
     }
-
-    static mainCamera: Entity | null = null;
 }
