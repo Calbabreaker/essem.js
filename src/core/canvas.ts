@@ -1,5 +1,4 @@
 import { Vector2 } from "../math/vector2";
-import { KeyCode, MouseCode } from "./codes";
 import { Event, EventManager } from "./event_manager";
 import {
     KeyPressedEvent,
@@ -77,7 +76,7 @@ export class Canvas {
 
     private _eventManager: EventManager;
     private _pressedKeys: Map<string, boolean> = new Map();
-    private _pressedMouseButtons: Map<MouseCode, boolean> = new Map();
+    private _pressedMouseButtons: Map<number, boolean> = new Map();
     private _mousePosition: Vector2 = new Vector2();
 
     /**
@@ -161,20 +160,20 @@ export class Canvas {
     /**
      * Checks if the specified key is held down.
      *
-     * @param keyCode - The key code to check. See {@link ESSEM.KeyCode} for them.
+     * @param keyCode - The key code (from window.KeyboardEvent) to check.
      * @return Whether or not the key was held down.
      */
-    isKeyPressed(keyCode: KeyCode | string): boolean {
+    isKeyPressed(keyCode: string): boolean {
         return this._pressedKeys.get(keyCode) ?? false;
     }
 
     /**
      * Checks if the specified mouse button is held down.
      *
-     * @param button - The mouse button to check. See {@link ESSEM.MouseCode} for them.
+     * @param button - The mouse button code (from window.MouseEvent) to check.
      * @return Whether or not the mouse button was held down.
      */
-    isMousePressed(button: MouseCode | number): boolean {
+    isMousePressed(button: number): boolean {
         return this._pressedMouseButtons.get(button) ?? false;
     }
 

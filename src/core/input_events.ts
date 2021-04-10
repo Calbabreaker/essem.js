@@ -1,4 +1,3 @@
-import { KeyCode, MouseCode } from "./codes";
 import { Event } from "./event_manager";
 
 /**
@@ -8,16 +7,16 @@ import { Event } from "./event_manager";
  */
 export class KeyPressedEvent extends Event {
     /**
-     * The key code of the event. Take a look at {@link ESSEM.KeyCode} for all of them.
+     * The key code (from window.KeyboardEvent) of the event.
      */
-    readonly code: KeyCode | string;
+    readonly code: string;
 
     /**
      * If the key was repeated.
      */
     readonly repeated: boolean;
 
-    constructor(code: KeyCode | string, repeated: boolean) {
+    constructor(code: string, repeated: boolean) {
         super();
         this.code = code;
         this.repeated = repeated;
@@ -31,11 +30,11 @@ export class KeyPressedEvent extends Event {
  */
 export class KeyReleasedEvent extends Event {
     /**
-     * The key code of the event. Take a look at {@link ESSEM.KeyCode} for all of them.
+     * The key code (from window.KeyboardEvent) of the event.
      */
-    readonly code: KeyCode | string;
+    readonly code: string;
 
-    constructor(code: KeyCode | string) {
+    constructor(code: string) {
         super();
         this.code = code;
     }
@@ -49,11 +48,11 @@ export class KeyReleasedEvent extends Event {
  */
 export class KeyTypedEvent extends Event {
     /**
-     * The key of the event as in what the user actually typed. Eg shift + x with be X.
+     * The key of the event as in what the user actually typed. Eg: shift + x with be X.
      */
-    readonly key: KeyCode | string;
+    readonly key: string;
 
-    constructor(key: KeyCode | string) {
+    constructor(key: string) {
         super();
         this.key = key;
     }
@@ -66,11 +65,11 @@ export class KeyTypedEvent extends Event {
  */
 export class MousePressedEvent extends Event {
     /*
-     * Which button was used to click.
+     * Which mouse button code (from window.MouseEvent) was used to click.
      */
-    readonly button: MouseCode | number;
+    readonly button: number;
 
-    constructor(button: MouseCode | number) {
+    constructor(button: number) {
         super();
         this.button = button;
     }
@@ -83,11 +82,11 @@ export class MousePressedEvent extends Event {
  */
 export class MouseReleasedEvent extends Event {
     /*
-     * Which mouse button was released.
+     * Which mouse button code (from window.MouseEvent) was released.
      */
-    readonly button: MouseCode | string;
+    readonly button: number;
 
-    constructor(button: MouseCode | string) {
+    constructor(button: number) {
         super();
         this.button = button;
     }
