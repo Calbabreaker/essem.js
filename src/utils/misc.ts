@@ -14,6 +14,7 @@ export class AssertionError extends Error {
 
 /**
  * Throws an error if condition is false.
+ * All uses if this in the essem.js code will get removed in minified files.
  *
  * @memberof ESSEM
  * @param condition - The condition to assert.

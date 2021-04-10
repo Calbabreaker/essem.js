@@ -5,6 +5,12 @@
     "main": "build/essem.js",
     "module": "build/essem.module.js",
     "types": "build/essem.d.ts",
+    "files": [
+        "build/",
+        "README.md",
+        "package.json",
+        "LICENSE"
+    ],
     "scripts": {
         "start": "npm run dev",
         "dev": "rollup -cw --environment DEV,SERVER",
@@ -46,7 +52,7 @@
         "rollup": "^2.44.0",
         "rollup-plugin-dts": "^3.0.1",
         "rollup-plugin-glsl": "^1.3.0",
-        "rollup-plugin-jscc": "^2.0.0",
+        "rollup-plugin-re": "^1.0.7",
         "rollup-plugin-serve": "^1.1.0",
         "rollup-plugin-sourcemaps": "^0.6.3",
         "rollup-plugin-terser": "^7.0.2",

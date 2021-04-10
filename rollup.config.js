@@ -1,10 +1,10 @@
-import jscc from "rollup-plugin-jscc";
 import dts from "rollup-plugin-dts";
-import typescript from "rollup-plugin-typescript2";
-import sourcemaps from "rollup-plugin-sourcemaps";
-import serve from "rollup-plugin-serve";
-import { terser } from "rollup-plugin-terser";
 import glsl from "rollup-plugin-glsl";
+import replace from "rollup-plugin-re";
+import serve from "rollup-plugin-serve";
+import sourcemaps from "rollup-plugin-sourcemaps";
+import typescript from "rollup-plugin-typescript2";
+import { terser } from "rollup-plugin-terser";
 
 import path from "path";
 import pkg from "./package.json";
@@ -31,11 +31,10 @@ export default () => {
             name: "ESSEM",
         },
         plugins: [
-            jscc({
-                values: {
-                    _DEBUG: isDev,
-                    _RELEASE: !isDev,
-                    _VERSION: pkg.version,
+            replace({
+                include: "src/**/*.ts",
+                replaces: {
+                    $_VERSION: pkg.version,
                 },
             }),
             glsl({
@@ -43,6 +42,24 @@ export default () => {
             }),
             sourcemaps(),
             typescript(),
+        ],
+    };
+
+    const minifiedBundle = {
+        ...baseBundle,
+        plugins: [
+            ...baseBundle.plugins,
+            // this is to remove weird Microsoft copyright notice but keep our own
+            terser({ format: { comments: /^!(?![\s\S]+Microsoft)/ } }),
+            // removes all assert functions
+            replace({
+                patterns: [
+                    {
+                        test: /^[ \t]*assert.*\(.*\)[ \t]*(;|$)/gm,
+                        replace: "",
+                    },
+                ],
+            }),
         ],
     };
 
@@ -67,20 +84,15 @@ export default () => {
     } else {
         // minified for browser
         bundles.push({
-            ...baseBundle,
+            ...minifiedBundle,
             output: {
-                ...baseBundle.output,
+                ...minifiedBundle.output,
                 file: path.join(__dirname, "build/essem.min.js"),
                 format: "umd",
             },
-            plugins: [
-                ...baseBundle.plugins,
-                // this is to remove weird Microsoft copyright notice but keep our own
-                terser({ format: { comments: /^!(?![\s\S]+Microsoft)/ } }),
-            ],
         });
 
-        // for modules
+        // unminified for modules
         bundles.push({
             ...baseBundle,
             output: {
@@ -88,6 +100,16 @@ export default () => {
                 file: path.join(__dirname, "build/essem.module.js"),
                 format: "esm",
                 sourcemap: false,
+            },
+        });
+
+        // minified for modules
+        bundles.push({
+            ...minifiedBundle,
+            output: {
+                ...minifiedBundle.output,
+                file: path.join(__dirname, "build/essem.module.min.js"),
+                format: "esm",
             },
         });
 
