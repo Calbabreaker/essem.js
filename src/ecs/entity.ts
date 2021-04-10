@@ -20,8 +20,8 @@ export class Entity {
     private _destroyed = true;
 
     _systemIndexMap: Map<string, number> = new Map();
-    _parentArrayIndex = 0;
     _tagIndexMap: Map<string, number> = new Map();
+    _parentArrayIndex = 0;
     private _componentMap: Map<string, Component> = new Map();
     private _scene: Scene;
 
@@ -99,13 +99,17 @@ export class Entity {
     }
 
     /**
-     * Sets the entity and all it's children to be active or not.
-     * It will not make a child active if it's activeSelf state is false.
-     * Will remove entity from systems if inactive and add back when active.
-     *
-     * @param active - Whether or not the entity should be active.
+     * Whether or not the entity is active.
+     * Setting the value will make all its children be the same active state unless the child is
+     * explicitly set to not active and the parent(s) is set to active.
+     * Making the entity unactive will remove it from systems and the scene tag collection and put
+     * back when active.
      */
-    setActive(active: boolean) {
+    get active() {
+        return this._active;
+    }
+
+    set active(active: boolean) {
         if (this._active === active || (this.parent !== null && !this.parent.active)) return;
         this._setActive(active);
         this._activeSelf = active;
@@ -114,15 +118,6 @@ export class Entity {
         this.forEachChildren((child) => {
             child._setActive(active && child.activeSelf);
         });
-    }
-
-    /**
-     * Whether or not the entity is active.
-     *
-     * @readonly
-     */
-    get active() {
-        return this._active;
     }
 
     /**
@@ -178,8 +173,8 @@ export class Entity {
     setup(parent?: Entity): void {
         if (!this.destroyed) return;
 
-        this.setActive(true);
         this._destroyed = false;
+        this._setActive(true);
 
         if (parent !== undefined) {
             this._parentArrayIndex = parent.children.length;
@@ -195,7 +190,7 @@ export class Entity {
     destroy(): void {
         if (this.destroyed) return;
 
-        this.setActive(true);
+        this._setActive(false);
         this._destroyed = false;
         this._componentMap.clear();
         this._tagIndexMap.clear();

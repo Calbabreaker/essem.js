@@ -4,7 +4,6 @@
 
 export * from "./core/application";
 export * from "./core/canvas";
-export * from "./core/codes";
 export * from "./core/event_manager";
 export * from "./core/input_events";
 export * from "./core/loader";

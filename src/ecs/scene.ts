@@ -31,7 +31,7 @@ export class Scene {
     }
 
     /**
-     * Creates a new entity.
+     * Creates a new entity that is aquired from a pool for efficency.
      *
      * @param parent - The parent for the entity. Default is the scene.
      * @return The entity that was created.
