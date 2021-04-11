@@ -1,5 +1,11 @@
 import { Matrix3 } from "math/matrix3";
 
+/**
+ * Component to handle camera stuff
+ * All render systems will look for a entity tagged 'MainCamera' as the camera to render with.
+ *
+ * @memberof ESSEM
+ */
 export class CameraComponent {
     aspectRatio = 0;
     fixedAspectRatio: boolean;

@@ -124,7 +124,7 @@ export class Application {
      * Use like this: `app.registerSystem(System1, System2, ...);`
      * Do all the registering at the start or the system will not work.
      *
-     * @param {...SystemClass[]} systemClasses - An parameterized array of classes that extends
+     * @param {...SystemClass} systemClasses - An parameterized array of classes that extends
      *        {@link ESSEM.System}
      */
     registerSystem(...systemClasses: SystemClass[]): void {

@@ -53,6 +53,11 @@ export class SpriteRenderer extends AbstractBatchRenderer {
     }
 }
 
+/**
+ * Register this system to render sprites.
+ *
+ * @memberof ESSEM
+ */
 export class SpriteRendererSystem extends System {
     spriteRenderer!: SpriteRenderer;
 
@@ -63,7 +68,7 @@ export class SpriteRendererSystem extends System {
     }
 
     onUpdate(): void {
-        const mainCamera = this._scene.getEntitesByTag("MainCamera")[0];
+        const mainCamera = this.scene.getEntitesByTag("MainCamera")[0];
         if (mainCamera === undefined) return;
 
         const viewProjection = mainCamera.getComponent(CameraComponent).getProjectionMatrix();

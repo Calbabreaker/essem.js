@@ -14,12 +14,23 @@ export class TransformComponent {
     private _transformMatrix: Matrix3 = new Matrix3();
     private _transformValid = false;
 
+    /**
+     * @param position - Starting position.
+     * @param scale - Starting scale.
+     * @param rotation - Starting rotation.
+     */
     constructor(position = new Vector2(), scale = new Vector2(1, 1), rotation = 0) {
         this._position = position;
         this._scale = scale;
         this._rotation = rotation;
     }
 
+    /**
+     * Matrix that holds the transform of the component.
+     * This value will be cached and invalidated when making any changes to the component.
+     *
+     * @readonly
+     */
     get transformMatrix(): Matrix3 {
         if (!this._transformValid) {
             this._transformMatrix.transform(this._position, this._scale, this._rotation);
@@ -29,14 +40,21 @@ export class TransformComponent {
         return this._transformMatrix;
     }
 
+    /**
+     * Rotation of the component.
+     */
     set rotation(rotation: number) {
         this._transformValid = false;
         this._rotation = rotation;
     }
+
     get rotation(): number {
         return this._rotation;
     }
 
+    /**
+     * Position of the component.
+     */
     set position(position: Vector2) {
         this._transformValid = false;
         this._position = position;
@@ -47,6 +65,9 @@ export class TransformComponent {
         return this._position;
     }
 
+    /**
+     * Scale of the component.
+     */
     set scale(scale: Vector2) {
         this._transformValid = false;
         this._scale = scale;

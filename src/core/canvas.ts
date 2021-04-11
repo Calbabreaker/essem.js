@@ -123,6 +123,7 @@ export class Canvas {
             this._eventManager.sendEvent(new MouseReleasedEvent(event.button));
             this._pressedMouseButtons.set(event.button, false);
         });
+
         window.addEventListener("mousemove", (event) => {
             this._eventManager.sendEvent(new MouseMovedEvent(event.offsetX, event.offsetY));
             this._mousePosition.set(event.clientX, event.clientY);

@@ -5,6 +5,11 @@ import { System } from "../system";
 import { CameraComponent } from "ecs/components/camera_component";
 import { TransformComponent } from "ecs/components/transform_component";
 
+/**
+ * Register this system when handling cameras.
+ *
+ * @memberof ESSEM
+ */
 export class CameraSystem extends System {
     canvas!: Canvas;
 

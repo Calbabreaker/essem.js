@@ -1,4 +1,4 @@
-import { assert, mapGet, swapRemove } from "utils/misc";
+import { assert, mapGet } from "utils/misc";
 import { AnyCtor } from "utils/types";
 import { Scene } from "./scene";
 
@@ -13,20 +13,28 @@ export type Component = Object;
  */
 export class Entity {
     parent: Entity | null = null;
-    children: Entity[] = [];
 
+    /**
+     * The child entities of the entity mapped by their name.
+     */
+    children: Map<string, Entity> = new Map();
+
+    id: number;
+
+    // these variables are private and are accessed by getters
     private _active = false;
     private _activeSelf = false;
     private _destroyed = true;
+    private _name = "";
 
     _systemIndexMap: Map<string, number> = new Map();
     _tagIndexMap: Map<string, number> = new Map();
-    _parentArrayIndex = 0;
     private _componentMap: Map<string, Component> = new Map();
     private _scene: Scene;
 
-    constructor(manager: Scene) {
+    constructor(manager: Scene, id: number) {
         this._scene = manager;
+        this.id = id;
     }
 
     /**
@@ -100,17 +108,24 @@ export class Entity {
 
     /**
      * Whether or not the entity is active.
-     * Setting the value will make all its children be the same active state unless the child is
-     * explicitly set to not active and the parent(s) is set to active.
      * Making the entity unactive will remove it from systems and the scene tag collection and put
      * back when active.
+     * Setting the value will make all its children be the same active state unless the child is
+     * explicitly set to be not active and the parent(s) is set to be active.
      */
     get active() {
         return this._active;
     }
 
     set active(active: boolean) {
-        if (this._active === active || (this.parent !== null && !this.parent.active)) return;
+        if (
+            this._destroyed ||
+            this._active === active ||
+            (this.parent !== null && !this.parent.active)
+        ) {
+            return;
+        }
+
         this._setActive(active);
         this._activeSelf = active;
 
@@ -150,6 +165,19 @@ export class Entity {
         }
     }
 
+    get name(): string {
+        return this._name;
+    }
+
+    set name(name: string) {
+        const entityMap = this.parent?.children ?? this._scene.entities;
+
+        assert(!entityMap.has(name), `Name '${name}' already exist!`);
+        entityMap.delete(this._name);
+        entityMap.set(name, this);
+        this._name = name;
+    }
+
     forEachParent(func: (parent: Entity) => void): void {
         if (this.parent !== null) {
             func(this.parent);
@@ -165,53 +193,40 @@ export class Entity {
     }
 
     /**
-     * Setups the entity. Makes the entity active an not destroyed.
-     * Use the scene create entity function unless you are managing entities yourselves.
-     *
-     * @param parent - The entity for the entity to parent to.
-     */
-    setup(parent?: Entity): void {
-        if (!this.destroyed) return;
-
-        this._destroyed = false;
-        this._setActive(true);
-
-        if (parent !== undefined) {
-            this._parentArrayIndex = parent.children.length;
-            parent.children.push(this);
-            this.parent = parent;
-        }
-    }
-
-    /**
-     * Destroys the entity. Removes all components and sets it unactive.
-     * Use the scene destroy entity function unless you are managing entities yourselves.
-     */
-    destroy(): void {
-        if (this.destroyed) return;
-
-        this._setActive(false);
-        this._destroyed = false;
-        this._componentMap.clear();
-        this._tagIndexMap.clear();
-        this._destroyed = true;
-
-        if (this.parent !== null) {
-            const lastEntity = swapRemove(this.parent.children, this._parentArrayIndex);
-            lastEntity._parentArrayIndex = this._parentArrayIndex;
-        }
-
-        this.children.forEach((child) => {
-            child.destroy();
-        });
-    }
-
-    /**
      * Whether or not the entity is destroyed.
      *
      * @readonly
      */
     get destroyed(): boolean {
         return this._destroyed;
+    }
+
+    /**
+     * @private
+     */
+    _setup(name: string, parent: Entity | null): void {
+        if (!this.destroyed) return;
+
+        this._setActive(true);
+        this._destroyed = false;
+        this.parent = parent;
+        this.name = name;
+    }
+
+    /**
+     * @private
+     */
+    _destroy(): void {
+        if (this.destroyed) return;
+
+        this._setActive(false);
+        this._destroyed = true;
+        this._componentMap.clear();
+        this._tagIndexMap.clear();
+
+        const entityMap = this.parent?.children ?? this._scene.entities;
+        entityMap.delete(this._name);
+        this.parent = null;
+        this._scene._availableEntities.push(this);
     }
 }

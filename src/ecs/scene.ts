@@ -15,13 +15,14 @@ export class Scene {
     systems: System[] = [];
 
     /**
-     * The entities that are currently active and not destroyed.
+     * A map containing scene root entities mapped by their entity names.
      */
-    entities: Entity[] = [];
+    entities: Map<string, Entity> = new Map();
 
+    private _totalEntities = 0;
     _typeNameToSystem: Map<string, System[]> = new Map();
     _tagToEntities: Map<string, Entity[]> = new Map();
-    private _availableEntities: Entity[] = [];
+    _availableEntities: Entity[] = [];
 
     /**
      * Don't use constructor for creating. Use `app.createScene` instead.
@@ -33,39 +34,39 @@ export class Scene {
     /**
      * Creates a new entity that is aquired from a pool for efficency.
      *
+     * @param [name=`Unnamed Entity ${entity.id}`] - The name of the entity.
      * @param parent - The parent for the entity. Default is the scene.
      * @return The entity that was created.
      */
-    createEntity(parent?: Entity): Entity {
+    createEntity(name?: string, parent?: Entity): Entity {
         if (this._availableEntities.length === 0) {
             // resize by 20%
-            const totalEntities = this.entities.length;
-            this.reserveEntities(Math.ceil(totalEntities * 1.2) - totalEntities);
+            this.reserveEntities(Math.ceil(this._totalEntities * 1.2) - this._totalEntities);
         }
 
         const entity = this._availableEntities.pop() as Entity;
-        entity.setup(parent);
-        if (parent === undefined) {
-            entity._parentArrayIndex = this.entities.length;
-            this.entities.push(entity);
-        }
-
+        entity._setup(name ?? `Unnamed Entity ${entity.id}`, parent ?? null);
         return entity;
     }
 
+    /**
+     * Destroys the entity and all it's children and release them back to the entity poo.
+     *
+     * @param entity - Entity to destroy.
+     */
     destroyEntity(entity: Entity): void {
-        if (entity.parent === undefined) {
-            const lastEntity = swapRemove(this.entities, entity._parentArrayIndex);
-            lastEntity._parentArrayIndex = entity._parentArrayIndex;
-        }
-
-        entity.destroy();
+        entity._destroy();
+        entity.forEachChildren((child) => {
+            child._destroy();
+        });
     }
 
     reserveEntities(count: number): void {
         for (let i = 0; i < count; i++) {
-            this._availableEntities.push(new Entity(this));
+            this._availableEntities.push(new Entity(this, i + this._totalEntities));
         }
+
+        this._totalEntities += count;
     }
 
     getEntitesByTag(tag: string): Entity[] {
