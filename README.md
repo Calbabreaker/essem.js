@@ -21,7 +21,7 @@ app.loader.add("fish.png");
 
 document.appendChild(app.canvas.element);
 
-app.events.addListener(ESSEM.ApplicationInitEvent, () => {
+app.eventManager.addListener(ESSEM.ApplicationInitEvent, () => {
     const scene = app.createScene();
     const entity = scene.createEntity();
     entity.addComponent(new TransformComponent());

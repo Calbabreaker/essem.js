@@ -1,5 +1,5 @@
-import { mapGet } from "../utils/misc";
-import { AnyCtor } from "../utils/types";
+import { mapGet } from "utils/misc";
+import { AnyCtor } from "utils/types";
 
 /**
  * Event base class that all events must extend from.

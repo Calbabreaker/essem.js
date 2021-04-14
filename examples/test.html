@@ -28,7 +28,8 @@
                 canvasOptions: { fixedSize: false },
             });
 
-            app.loader.add("assets/blobfish.jpeg");
+            app.loader.add(ESSEM.Texture, "assets/blobfish.jpeg");
+            app.loader.add(ESSEM.AudioClip, "assets/shoot.wav");
             app.registerSystem(ESSEM.SpriteRendererSystem, ESSEM.CameraSystem);
             document.body.appendChild(app.canvas.element);
 
@@ -46,20 +47,24 @@
             camera.addComponent(new ESSEM.TransformComponent());
             camera.addTag("MainCamera");
 
-            app.events.addListener(ESSEM.ApplicationInitEvent, () => {
+            app.eventManager.addListener(ESSEM.ApplicationInitEvent, () => {
                 entity.addComponent(
                     new ESSEM.SpriteComponent(app.loader.resources["assets/blobfish.jpeg"])
                 );
             });
 
-            app.events.addListener(ESSEM.KeyPressedEvent, (event) => {
+            app.eventManager.addListener(ESSEM.KeyPressedEvent, (event) => {
                 if (app.canvas.isKeyPressed("ControlLeft")) {
                     console.log(event);
                 }
             });
 
+            app.eventManager.addListener(ESSEM.MousePressedEvent, () => {
+                app.loader.resources["assets/shoot.wav"].play();
+            });
+
             let backgroundColor = 0x000000;
-            app.events.addListener(ESSEM.ApplicationUpdateEvent, (event) => {
+            app.eventManager.addListener(ESSEM.ApplicationUpdateEvent, (event) => {
                 entityTransform.rotation += ESSEM.toRadians(event.delta * 0.25);
                 redSquareTransform.rotation += ESSEM.toRadians(event.delta * 0.5);
                 backgroundColor += 3 - 0x000100 + 0x020000;

@@ -63,7 +63,7 @@ export class SpriteRendererSystem extends System {
 
     setup(app: Application): void {
         this.setComponents(TransformComponent, SpriteComponent);
-        app.events.addListener(ApplicationUpdateEvent, this.onUpdate.bind(this));
+        app.eventManager.addListener(ApplicationUpdateEvent, this.onUpdate.bind(this));
         this.spriteRenderer = new SpriteRenderer(app.renderer);
     }
 

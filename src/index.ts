@@ -3,6 +3,7 @@
  */
 
 export * from "./core/application";
+export * from "./core/audio_clip";
 export * from "./core/canvas";
 export * from "./core/event_manager";
 export * from "./core/input_events";

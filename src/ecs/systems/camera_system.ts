@@ -15,7 +15,7 @@ export class CameraSystem extends System {
 
     setup(app: Application): void {
         this.setComponents(TransformComponent, CameraComponent);
-        app.events.addListener(CanvasResizedEvent, this.onResized.bind(this));
+        app.eventManager.addListener(CanvasResizedEvent, this.onResized.bind(this));
         this.canvas = app.canvas;
     }
 

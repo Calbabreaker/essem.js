@@ -6,8 +6,7 @@ import { Event, EventManager } from "./event_manager";
 import { Loader } from "./loader";
 import { sayHello } from "../utils/browser";
 
-/**
- * Event that is sent whenever the Application initiates.
+/** * Event that is sent whenever the Application initiates.
  *
  * @memberof ESSEM
  */
@@ -55,10 +54,11 @@ export interface IApplicationOptions {
  * @memberof ESSEM
  */
 export class Application {
-    events: EventManager;
+    audioContext: AudioContext = new AudioContext();
     canvas: Canvas;
-    renderer: Renderer;
+    eventManager: EventManager = new EventManager();
     loader: Loader;
+    renderer: Renderer;
 
     lastFrameTime = 0;
     running = true;
@@ -71,16 +71,15 @@ export class Application {
      *        See {@link ESSEM.Canvas}
      */
     constructor(options: IApplicationOptions = {}) {
-        this.events = new EventManager();
-        this.canvas = new Canvas(options.canvasOptions, this.events);
+        this.canvas = new Canvas(options.canvasOptions, this.eventManager);
+        this.loader = new Loader(this.audioContext);
         this.renderer = new Renderer(this.canvas.element);
-        this.loader = new Loader();
 
         window.addEventListener("load", async () => {
             await this.loader.loadAll();
-            this.events.sendEvent(new ApplicationInitEvent());
+            this.eventManager.sendEvent(new ApplicationInitEvent());
 
-            this.events.addListener(CanvasResizedEvent, (event: CanvasResizedEvent) => {
+            this.eventManager.addListener(CanvasResizedEvent, (event: CanvasResizedEvent) => {
                 this.renderer.gl.viewport(0, 0, event.width, event.height);
             });
 
@@ -107,7 +106,7 @@ export class Application {
         const delta = now - this.lastFrameTime;
 
         this.renderer.update();
-        this.events.sendEvent(new ApplicationUpdateEvent(delta));
+        this.eventManager.sendEvent(new ApplicationUpdateEvent(delta));
 
         this.lastFrameTime = now;
     }
