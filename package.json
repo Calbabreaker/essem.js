@@ -13,9 +13,8 @@
     ],
     "scripts": {
         "start": "npm run dev",
-        "dev": "rollup -cw --environment DEV,SERVER",
+        "dev": "rollup -cw --environment SERVER",
         "build": "rollup -c",
-        "build:dev": "rollup -c --environment DEV",
         "lint": "eslint --ext .js,.ts . --max-warnings 0",
         "lint:fix": "npm run lint -- --fix",
         "docs": "webdoc --site-root docs"

@@ -5,6 +5,7 @@ import { Scene } from "./scene";
 // basically any object
 // eslint-disable-next-line @typescript-eslint/ban-types
 export type Component = Object;
+export type ComponentClass = AnyCtor<Component>;
 
 /**
  * Entity class to handle components in ecs.
@@ -12,20 +13,22 @@ export type Component = Object;
  * @memberof ESSEM
  */
 export class Entity {
-    parent: Entity | null = null;
-
     /**
      * The child entities of the entity mapped by their name.
      */
     children: Map<string, Entity> = new Map();
 
-    id: number;
+    /**
+     * Identifier of the entity, only unique to its scene.
+     */
+    readonly id: number;
 
     // these variables are private and are accessed by getters
     private _active = false;
     private _activeSelf = false;
     private _destroyed = true;
     private _name = "";
+    private _parent: Entity | Scene | null = null;
 
     _systemIndexMap: Map<string, number> = new Map();
     _tagIndexMap: Map<string, number> = new Map();
@@ -56,10 +59,10 @@ export class Entity {
     /**
      * Removes a component from the entity.
      *
-     * @param {ComponentClass | string} componentType - The component name or class to remove.
+     * @param componentType - The component name or class to remove.
      *        Same named classes will be considered as the same component.
      */
-    removeComponent(componentType: AnyCtor<Component> | string): void {
+    removeComponent(componentType: ComponentClass | string): void {
         const typeName = (componentType as AnyCtor<Component>).name ?? componentType;
         assert(this._componentMap.has(typeName), `Component '${typeName}' does not exist!`);
 
@@ -67,12 +70,26 @@ export class Entity {
         this._componentMap.delete(typeName);
     }
 
-    hasComponent(componentType: AnyCtor<Component> | string): boolean {
+    /**
+     * Checks to see if the component is on the entity.
+     *
+     * @param componentType - The component name or class to check.
+     *        Same named classes will be considered as the same component.
+     * @return Whether or not the entity has the component.
+     */
+    hasComponent(componentType: ComponentClass | string): boolean {
         const typeName = (componentType as AnyCtor<Component>).name ?? componentType;
         return this._componentMap.has(typeName);
     }
 
-    hasAllComponents(componentTypes: AnyCtor<Component>[] | string[]): boolean {
+    /**
+     * Checks to see if all the components specified are on the entity.
+     *
+     * @param componentType - An array of the component names or classes to check.
+     *        Same named classes will be considered as the same component.
+     * @return Whether or not the entity has all the components.
+     */
+    hasAllComponents(componentTypes: ComponentClass[] | string[]): boolean {
         for (let i = 0; i < componentTypes.length; i++) {
             if (!this.hasComponent(componentTypes[i])) return false;
         }
@@ -80,6 +97,13 @@ export class Entity {
         return true;
     }
 
+    /**
+     * Gets a component from the entity.
+     *
+     * @param {ComponentClass | string} componentType - The component name or class to get.
+     *        Same named classes will be considered as the same component.
+     * @return {Component} The component that was retrieved.
+     */
     getComponent<T extends Component>(componentType: AnyCtor<T> | string): T {
         const typeName = (componentType as AnyCtor<Component>).name ?? componentType;
         const component = this._componentMap.get(typeName);
@@ -113,7 +137,7 @@ export class Entity {
      * Setting the value will make all its children be the same active state unless the child is
      * explicitly set to be not active and the parent(s) is set to be active.
      */
-    get active() {
+    get active(): boolean {
         return this._active;
     }
 
@@ -121,7 +145,7 @@ export class Entity {
         if (
             this._destroyed ||
             this._active === active ||
-            (this.parent !== null && !this.parent.active)
+            (this.parent instanceof Entity && !this.parent.active)
         ) {
             return;
         }
@@ -130,18 +154,18 @@ export class Entity {
         this._activeSelf = active;
 
         // go through all the children and sets unactive
-        this.forEachChildren((child) => {
+        this.forEachChildrenRecursive((child) => {
             child._setActive(active && child.activeSelf);
         });
     }
 
     /**
      * The local active state.
-     * This will be regardless of it's parents.
+     * This will be regardless of its parents` active states.
      *
      * @readonly
      */
-    get activeSelf() {
+    get activeSelf(): boolean {
         return this._activeSelf;
     }
 
@@ -165,30 +189,54 @@ export class Entity {
         }
     }
 
+    /**
+     * Parent of the entity. Could be either another entity, the scene or none at all.
+     */
+    get parent(): Entity | Scene | null {
+        return this._parent;
+    }
+
+    set parent(parent: Entity | Scene | null) {
+        // remove this entity from parent
+        if (this._parent !== null) {
+            this._parent.children.delete(this._name);
+        }
+
+        // add to parent
+        if (parent !== null) {
+            assert(
+                !parent.children.has(this._name),
+                `Other child with name '${this._name}' already exist!`
+            );
+            parent.children.set(this._name, this);
+        }
+
+        this._parent = parent;
+    }
+
+    /**
+     * The name of the entity.
+     */
     get name(): string {
         return this._name;
     }
 
     set name(name: string) {
-        const entityMap = this.parent?.children ?? this._scene.entities;
-
-        assert(!entityMap.has(name), `Name '${name}' already exist!`);
-        entityMap.delete(this._name);
-        entityMap.set(name, this);
         this._name = name;
+        this.parent = this._parent;
     }
 
     forEachParent(func: (parent: Entity) => void): void {
-        if (this.parent !== null) {
-            func(this.parent);
-            this.parent.forEachParent(func);
+        if (this._parent instanceof Entity) {
+            func(this._parent);
+            this._parent.forEachParent(func);
         }
     }
 
-    forEachChildren(func: (child: Entity) => void): void {
+    forEachChildrenRecursive(func: (child: Entity) => void): void {
         this.children.forEach((child) => {
             func(child);
-            child.forEachChildren(func);
+            child.forEachChildrenRecursive(func);
         });
     }
 
@@ -204,12 +252,13 @@ export class Entity {
     /**
      * @private
      */
-    _setup(name: string, parent: Entity | null): void {
+    _setup(name: string, parent: Entity | Scene): void {
         if (!this.destroyed) return;
 
+        this._activeSelf = true;
         this._setActive(true);
         this._destroyed = false;
-        this.parent = parent;
+        this._parent = parent;
         this.name = name;
     }
 
@@ -224,8 +273,6 @@ export class Entity {
         this._componentMap.clear();
         this._tagIndexMap.clear();
 
-        const entityMap = this.parent?.children ?? this._scene.entities;
-        entityMap.delete(this._name);
         this.parent = null;
         this._scene._availableEntities.push(this);
     }

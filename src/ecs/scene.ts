@@ -6,6 +6,18 @@ import { System } from "./system";
  * Handles all the entities.
  * Use the application to create the scene.
  *
+ * ## Example
+ * ```js
+ * // Create application and scene
+ * const app = new ESSEM.Application();
+ * const scene = app.createScene();
+ *
+ * // Create entities, add components
+ * const entity = scene.createEntity("MyEntity");
+ * entity.addComponent(new ESSEM.SpriteRendererComponent(texture));
+ * entity.addComponent(new ESSEM.TransformComponent())
+ * ```
+ *
  * @memberof ESSEM
  */
 export class Scene {
@@ -15,18 +27,15 @@ export class Scene {
     systems: System[] = [];
 
     /**
-     * A map containing scene root entities mapped by their entity names.
+     * A map containing scene entities mapped by their entity names.
      */
-    entities: Map<string, Entity> = new Map();
+    children: Map<string, Entity> = new Map();
 
     private _totalEntities = 0;
     _typeNameToSystem: Map<string, System[]> = new Map();
     _tagToEntities: Map<string, Entity[]> = new Map();
     _availableEntities: Entity[] = [];
 
-    /**
-     * Don't use constructor for creating. Use `app.createScene` instead.
-     */
     constructor() {
         this.reserveEntities(100);
     }
@@ -38,14 +47,14 @@ export class Scene {
      * @param parent - The parent for the entity. Default is the scene.
      * @return The entity that was created.
      */
-    createEntity(name?: string, parent?: Entity): Entity {
+    createEntity(name?: string, parent: Entity | Scene = this): Entity {
         if (this._availableEntities.length === 0) {
             // resize by 20%
             this.reserveEntities(Math.ceil(this._totalEntities * 1.2) - this._totalEntities);
         }
 
         const entity = this._availableEntities.pop() as Entity;
-        entity._setup(name ?? `Unnamed Entity ${entity.id}`, parent ?? null);
+        entity._setup(name ?? `Unnamed Entity ${entity.id}`, parent);
         return entity;
     }
 
@@ -56,7 +65,7 @@ export class Scene {
      */
     destroyEntity(entity: Entity): void {
         entity._destroy();
-        entity.forEachChildren((child) => {
+        entity.forEachChildrenRecursive((child) => {
             child._destroy();
         });
     }

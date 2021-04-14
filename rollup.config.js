@@ -10,7 +10,6 @@ import path from "path";
 import pkg from "./package.json";
 
 export default () => {
-    const isDev = process.env.DEV || false;
     const useServer = process.env.SERVER || false;
 
     const date = new Date().toUTCString();

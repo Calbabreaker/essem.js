@@ -32,28 +32,20 @@ export abstract class System {
     }
 
     /**
-     * Function that gets called when the system is created.
-     * Override this to setup the component types and event listeners instead of the constructor
-     * because constructor does wierd stuff.
+     * Abstract function that gets called when the system is created. This should be overrided to
+     * setup component types and event listeners.
      *
-     * @param _app - The application that the system was registed from. Use this to register event
+     * @param app - The application that the system was registed from. Use this to register event
      *        listeners and other stuff.
-     * @virtual
      */
-    setup(_app: Application): void {
-        // to override
-    }
+    abstract setup(app: Application): void;
 
     /**
-     * Function that gets called when a entity that matches the components gets added.
-     * Optional override.
+     * Optional abstract function that gets called whenever a matching entity gets added.
      *
-     * @param _entity - The entity that was added to this.entites.
-     * @virtual
+     * @param entity - The entity that was added to this.entites.
      */
-    onEntityAdd?(_entity: Entity): void {
-        // to override (optional)
-    }
+    onEntityAdd?(entity: Entity): void;
 
     /**
      * Sets the component types that the system will use to collect entities.

@@ -11,7 +11,7 @@ export abstract class Event {
      * Whether or not the event has been handled. Set this to true to make it stopped
      * being sent to all other event listeners.
      */
-    get handled() {
+    get handled(): boolean {
         return this._handled;
     }
 
