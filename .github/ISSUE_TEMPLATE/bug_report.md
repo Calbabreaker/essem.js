@@ -29,9 +29,9 @@ If applicable, add screenshots to help explain your problem.
 
 #### Environment:
 
--   essem.js version: [e.g. UNRELEASED]
--   OS and version: [e.g. Ubuntu 20.10]
--   Browser and version: [e.g. chrome, safari]
+-   essem.js version: [e.g. 0.0.0]
+-   OS: [e.g. Ubuntu, Windows]
+-   Browser and version: [e.g. Chrome 89.0.4389.114]
 
 #### Additional context
 

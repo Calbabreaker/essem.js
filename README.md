@@ -7,11 +7,22 @@ essem.js is still very much a work in progress but it can render using WebGL fin
 
 ## Setup
 
+#### If using for the browser:
+
 TODO: need to do first release first. cdn will use jsdeliver once have npm package
+
+#### If using as a module:
+
+Run `npm install essem` to install essem.js module. Then import essem.js (supports typescript):
+
+```js
+import * as ESSEM from "essem";
+```
+
 
 ### Basic Example
 
-Texture drawing example: (this is WIP)
+Texture drawing example:
 
 ```js
 const app = new ESSEM.Application();
@@ -42,10 +53,12 @@ TODO: Add github pages.
 
 ## Contributing
 
-We're using `yarn` for this project so make sure it's installed with `npm install -g yarn`. 
-Also make sure to use yarn for every command.
+We're using yarn for this project so make sure it's installed with `npm install -g yarn` and use
+yarn for every command.
 
-To develop the library you should use `yarn run dev` which will setup a development server
+First, run `yarn` to install the dependencies.
+
+Then, to develop the library you should use `yarn run dev` which will setup a development server
 and automatically compiles all the typescript files.
 
 After you made some changes, you should lint and test the code by doing `yarn run test`.
