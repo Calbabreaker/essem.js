@@ -1,6 +1,6 @@
-import { assert } from "utils/misc";
-import { isWebGL2Supported } from "utils/browser";
-import { hexToRGBA } from "utils/colors";
+import { assert } from "src/utils/misc";
+import { isWebGL2Supported } from "src/utils/browser";
+import { hexToRGBA } from "src/utils/colors";
 
 export class Renderer {
     readonly gl: WebGL2RenderingContext;

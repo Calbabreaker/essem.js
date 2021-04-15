@@ -1,4 +1,4 @@
-import { Matrix3 } from "math/matrix3";
+import { Matrix3 } from "src/math/matrix3";
 
 /**
  * Component to handle camera stuff

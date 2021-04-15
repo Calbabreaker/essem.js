@@ -1,10 +1,10 @@
-import { Renderer } from "../renderer/renderer";
-import { Scene } from "../ecs/scene";
-import { System, SystemClass } from "../ecs/system";
+import { Renderer } from "src/renderer/renderer";
+import { Scene } from "src/ecs/scene";
+import { System, SystemClass } from "src/ecs/system";
 import { Canvas, CanvasResizedEvent, ICanvasOptions } from "./canvas";
 import { Event, EventManager } from "./event_manager";
 import { Loader } from "./loader";
-import { sayHello } from "../utils/browser";
+import { sayHello } from "src/utils/browser";
 
 /** * Event that is sent whenever the Application initiates.
  *
@@ -75,7 +75,7 @@ export class Application {
         this.loader = new Loader(this.audioContext);
         this.renderer = new Renderer(this.canvas.element);
 
-        window.addEventListener("load", async () => {
+        setTimeout(async () => {
             await this.loader.loadAll();
             this.eventManager.sendEvent(new ApplicationInitEvent());
 
@@ -109,13 +109,6 @@ export class Application {
         this.eventManager.sendEvent(new ApplicationUpdateEvent(delta));
 
         this.lastFrameTime = now;
-    }
-
-    /**
-     * Stops the Application. The canvas is not removed from the DOM so you need to remove it.
-     */
-    shutdown(): void {
-        this.running = false;
     }
 
     /**

@@ -4,7 +4,7 @@ import { VertexArray } from "./vertex_array";
 import textureVertexSrc from "./shaders/texture_vert.glsl";
 import textureFragmentSrc from "./shaders/texture_frag.glsl";
 import { Texture } from "./texture";
-import { Matrix3 } from "math/matrix3";
+import { Matrix3 } from "src/math/matrix3";
 
 export abstract class AbstractBatchRenderer {
     static readonly vertexSize = 9; // position (2) + texCoord (2) + texture index (1) + color (4)

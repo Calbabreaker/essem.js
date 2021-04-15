@@ -1,4 +1,4 @@
-import { assert } from "utils/misc";
+import { assert } from "src/utils/misc";
 
 export type TextureSource = HTMLImageElement | HTMLCanvasElement;
 

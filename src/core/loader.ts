@@ -1,6 +1,6 @@
-import { AnyCtor } from "utils/types";
-import { Texture } from "renderer/texture";
+import { AnyCtor } from "src/utils/types";
 import { AudioClip } from "./audio_clip";
+import { Texture } from "src/renderer/texture";
 
 type ResourceTypes = Texture | AudioClip;
 type ResourceTypeNames = "Texture" | "AudioClip";

@@ -1,9 +1,9 @@
-import { Application } from "core/application";
-import { Canvas, CanvasResizedEvent } from "core/canvas";
+import { Application } from "src/core/application";
+import { Canvas, CanvasResizedEvent } from "src/core/canvas";
 import { Entity } from "../entity";
 import { System } from "../system";
-import { CameraComponent } from "ecs/components/camera_component";
-import { TransformComponent } from "ecs/components/transform_component";
+import { CameraComponent } from "src/ecs/components/camera_component";
+import { TransformComponent } from "src/ecs/components/transform_component";
 
 /**
  * Register this system when handling cameras.

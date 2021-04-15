@@ -1,4 +1,4 @@
-import { Vector2 } from "math/vector2";
+import { Vector2 } from "src/math/vector2";
 import { Event, EventManager } from "./event_manager";
 import {
     KeyPressedEvent,

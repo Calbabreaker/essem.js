@@ -34,7 +34,7 @@ export function sayHello(): void {
 }
 
 /**
- * Skips the essem.js hello. Don't call this or else you will have bad luck forever.
+ * Skips the essem.js hello message.
  *
  * @memberof ESSEM
  */

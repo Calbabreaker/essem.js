@@ -1,8 +1,8 @@
-import { AnyCtor } from "../utils/types";
+import { AnyCtor } from "src/utils/types";
+import { Application } from "src/core/application";
 import { Component, Entity } from "./entity";
-import { mapGet } from "../utils/misc";
-import { Application } from "core/application";
 import { Scene } from "./scene";
+import { mapGet } from "src/utils/misc";
 
 export type SystemClass = { new (scene: Scene): System };
 

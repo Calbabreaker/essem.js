@@ -1,11 +1,11 @@
-import { AbstractBatchRenderer } from "renderer/abstract_batch_renderer";
-import { Application, ApplicationUpdateEvent } from "core/application";
-import { CameraComponent } from "ecs/components/camera_component";
+import { AbstractBatchRenderer } from "src/renderer/abstract_batch_renderer";
+import { Application, ApplicationUpdateEvent } from "src/core/application";
+import { CameraComponent } from "src/ecs/components/camera_component";
 import { Entity } from "../entity";
-import { SpriteComponent } from "ecs/components/sprite_component";
+import { SpriteComponent } from "src/ecs/components/sprite_component";
 import { System } from "../system";
-import { TransformComponent } from "ecs/components/transform_component";
-import { Vector2 } from "math/vector2";
+import { TransformComponent } from "src/ecs/components/transform_component";
+import { Vector2 } from "src/math/vector2";
 
 export class SpriteRenderer extends AbstractBatchRenderer {
     // prettier-ignore

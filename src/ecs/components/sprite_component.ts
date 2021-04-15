@@ -1,5 +1,5 @@
-import { Texture } from "renderer/texture";
-import { hexToRGBA } from "utils/colors";
+import { Texture } from "src/renderer/texture";
+import { hexToRGBA } from "src/utils/colors";
 
 /**
  * Component that handles sprite info like textures and colours.

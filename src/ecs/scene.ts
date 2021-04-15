@@ -1,5 +1,5 @@
 import { Entity } from "./entity";
-import { assert, mapGet, swapRemove } from "utils/misc";
+import { assert, mapGet, swapRemove } from "src/utils/misc";
 import { System } from "./system";
 
 /**
@@ -22,7 +22,7 @@ import { System } from "./system";
  */
 export class Scene {
     /**
-     * The instances of the systems for the scene that are registed.
+     * The instances of the systems for the scene that are registered.
      */
     systems: System[] = [];
 

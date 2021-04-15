@@ -1,5 +1,5 @@
-import { assert, mapGet } from "utils/misc";
-import { AnyCtor } from "utils/types";
+import { assert, mapGet } from "src/utils/misc";
+import { AnyCtor } from "src/utils/types";
 import { Scene } from "./scene";
 
 // basically any object

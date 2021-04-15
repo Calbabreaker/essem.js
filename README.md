@@ -48,10 +48,8 @@ Also make sure to use yarn for every command.
 To develop the library you should use `yarn run dev` which will setup a development server
 and automatically compiles all the typescript files.
 
-After you made some changes, you should lint the code by doing `yarn run lint:fix` and run
-the test by doing (COMING SOON) `yarn run test`.
-
-You can also compile everything by doing: `yarn run build`
+After you made some changes, you should lint and test the code by doing `yarn run test`.
+This will be with github actions soon.
 
 To build the documentation from jsdoc: `yarn run docs`
 
