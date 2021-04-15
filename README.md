@@ -37,17 +37,21 @@ app.eventManager.addListener(ESSEM.ApplicationInitEvent, () => {
 ### Documentation
 
 There is documentation but it is not hosted anywhere yet. 
-You can build the documentation by doing `npm run docs` and viewing the `/docs/` directory.
+You can build the documentation by doing `yarn run docs` and viewing the `/docs/` directory.
+TODO: Add github pages.
 
 ## Contributing
 
-To develop the library you should use `npm run dev` which will setup a development server
+We're using `yarn` for this project so make sure it's installed with `npm install -g yarn`. 
+Also make sure to use yarn for every command.
+
+To develop the library you should use `yarn run dev` which will setup a development server
 and automatically compiles all the typescript files.
 
-After you made some changes, you should lint the code by doing `npm run lint:fix` and run
-the test by doing (COMING SOON) `npm run test`.
+After you made some changes, you should lint the code by doing `yarn run lint:fix` and run
+the test by doing (COMING SOON) `yarn run test`.
 
-You can also compile everything by doing: `npm run build`
+You can also compile everything by doing: `yarn run build`
 
-To build the documentation from jsdoc: `npm run docs`
+To build the documentation from jsdoc: `yarn run docs`
 
