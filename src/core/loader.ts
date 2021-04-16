@@ -14,7 +14,7 @@ type ResourceTypeNames = "Texture" | "AudioClip";
 export class Loader {
     private _audioContext: AudioContext;
 
-    resourceURLs: Map<ResourceTypeNames, string> = new Map();
+    resourceURLs: [ResourceTypeNames, string][] = [];
     resources: { [key: string]: ResourceTypes } = {};
 
     constructor(audioContext: AudioContext) {
@@ -23,7 +23,7 @@ export class Loader {
 
     add(resourceType: AnyCtor<ResourceTypes> | ResourceTypeNames, url: string): this {
         const resourceTypeName = (resourceType as AnyCtor<ResourceTypes>).name ?? resourceType;
-        this.resourceURLs.set(resourceTypeName as ResourceTypeNames, url);
+        this.resourceURLs.push([resourceTypeName as ResourceTypeNames, url]);
         return this;
     }
 
@@ -37,5 +37,7 @@ export class Loader {
                     this.resources[url] = await Texture.fromURL(url);
             }
         }
+
+        this.resourceURLs = [];
     }
 }

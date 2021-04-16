@@ -23,4 +23,11 @@ describe("ESSEM.Canvas", () => {
         expect(canvas.fixedSize).toBe(options.fixedSize);
         expect(canvas.aspectRatio).toBe(options.aspectRatio);
     });
+
+    test("should rezise to full screen when fixedSize is true", () => {
+        const canvas = new Canvas({ fixedSize: false }, eventManager);
+
+        expect(canvas.width).toBe(window.innerWidth);
+        expect(canvas.height).toBe(window.innerHeight);
+    });
 });

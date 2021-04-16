@@ -12,13 +12,13 @@
         "LICENSE"
     ],
     "scripts": {
-        "start": "npm run dev",
+        "start": "yarn run dev",
         "dev": "rollup -cw --environment SERVER",
         "build": "rollup -c",
         "lint": "eslint --ext .js,.ts . --max-warnings 0",
-        "lint:fix": "npm run lint -- --fix",
+        "lint:fix": "yarn run lint --fix",
         "test": "jest --verbose",
-        "pretest": "npm run lint:fix && npm run build",
+        "pretest": "yarn run lint:fix && yarn run build",
         "docs": "webdoc --site-root docs"
     },
     "repository": {

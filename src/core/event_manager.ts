@@ -11,15 +11,7 @@ export abstract class Event {
      * Whether or not the event has been handled. Set this to true to make it stopped
      * being sent to all other event listeners.
      */
-    get handled(): boolean {
-        return this._handled;
-    }
-
-    set handled(handled: boolean) {
-        this._handled ||= handled;
-    }
-
-    private _handled = false;
+    handled = false;
 }
 
 export type EventListenerFunc<T extends Event = Event> = (event: T) => void;

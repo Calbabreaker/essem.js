@@ -89,7 +89,7 @@ export class Entity {
      *        Same named classes will be considered as the same component.
      * @return Whether or not the entity has all the components.
      */
-    hasAllComponents(componentTypes: ComponentClass[] | string[]): boolean {
+    hasAllComponents(componentTypes: (ComponentClass | string)[]): boolean {
         for (let i = 0; i < componentTypes.length; i++) {
             if (!this.hasComponent(componentTypes[i])) return false;
         }

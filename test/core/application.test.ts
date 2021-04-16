@@ -38,7 +38,7 @@ describe("ESSEM.Application", () => {
         });
     });
 
-    test("registerSystem", () => {
+    test("should register system and system be in scene", () => {
         const app = new Application();
 
         class TestSystem extends System {
@@ -54,7 +54,7 @@ describe("ESSEM.Application", () => {
         expect(scene.systems[0]).toBeInstanceOf(TestSystem);
     });
 
-    test("createScene", () => {
+    test("should create scene with no systems", () => {
         const app = new Application();
         const scene = app.createScene();
 
