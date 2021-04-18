@@ -12,7 +12,7 @@ describe("ESSEM.Loader", () => {
         expect(loader.resourceURLs.length).toBe(0);
     });
 
-    test("should add resource", () => {
+    test("add()", () => {
         const loader = new Loader(audioContext);
 
         loader.add(Texture, "somewhere");
@@ -23,7 +23,7 @@ describe("ESSEM.Loader", () => {
         expect(loader.resourceURLs[1]).toMatchObject(["AudioClip", "somewhere"]);
     });
 
-    test("should load images and sounds", async () => {
+    test("loadAll()", async () => {
         const loader = new Loader(audioContext);
 
         const texturePath = require.resolve("../../examples/assets/blobfish.jpeg");

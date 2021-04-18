@@ -1,4 +1,4 @@
-import { assert, mapGet } from "src/utils/misc";
+import { assert, getTypeName } from "src/utils/misc";
 import { AnyCtor } from "src/utils/types";
 import { Scene } from "./scene";
 
@@ -35,9 +35,9 @@ export class Entity {
     private _componentMap: Map<string, Component> = new Map();
     private _scene: Scene;
 
-    constructor(manager: Scene, id: number) {
-        this._scene = manager;
+    constructor(id: number, scene: Scene) {
         this.id = id;
+        this._scene = scene;
     }
 
     /**
@@ -52,7 +52,7 @@ export class Entity {
         assert(!this._componentMap.has(typeName), `Component '${typeName}' already exists!`);
         this._componentMap.set(typeName, component);
 
-        if (this._active) this._scene._entityComponentAdd(this, typeName);
+        if (this.active) this._scene._entityComponentAdd(this, typeName);
         return component as T;
     }
 
@@ -63,10 +63,10 @@ export class Entity {
      *        Same named classes will be considered as the same component.
      */
     removeComponent(componentType: ComponentClass | string): void {
-        const typeName = (componentType as AnyCtor<Component>).name ?? componentType;
+        const typeName = getTypeName(componentType);
         assert(this._componentMap.has(typeName), `Component '${typeName}' does not exist!`);
 
-        if (this._active) this._scene._entityComponentRemove(this, typeName);
+        if (this.active) this._scene._entityComponentRemove(this, typeName);
         this._componentMap.delete(typeName);
     }
 
@@ -78,7 +78,7 @@ export class Entity {
      * @return Whether or not the entity has the component.
      */
     hasComponent(componentType: ComponentClass | string): boolean {
-        const typeName = (componentType as AnyCtor<Component>).name ?? componentType;
+        const typeName = getTypeName(componentType);
         return this._componentMap.has(typeName);
     }
 
@@ -105,20 +105,18 @@ export class Entity {
      * @return {Component} The component that was retrieved.
      */
     getComponent<T extends Component>(componentType: AnyCtor<T> | string): T {
-        const typeName = (componentType as AnyCtor<Component>).name ?? componentType;
+        const typeName = getTypeName(componentType);
         const component = this._componentMap.get(typeName);
         assert(component !== undefined, `Component '${typeName}' does not exist!`);
         return component as T;
     }
 
     addTag(tag: string): void {
-        if (this._active) {
-            const entities = mapGet(this._scene._tagToEntities, tag, Array) as Entity[];
-            entities.push(this);
-            this._tagIndexMap.set(tag, entities.length - 1);
-        } else {
-            this._tagIndexMap.set(tag, 0);
+        if (this.active) {
+            return this._scene._entityTagAdd(this, tag);
         }
+
+        this._tagIndexMap.set(tag, 0);
     }
 
     hasTag(tag: string): boolean {
@@ -126,8 +124,7 @@ export class Entity {
     }
 
     removeTag(tag: string): void {
-        if (this._active) this._scene._entityTagRemove(this, tag);
-        this._tagIndexMap.delete(tag);
+        if (this.active) this._scene._entityTagRemove(this, tag);
     }
 
     /**
@@ -144,7 +141,7 @@ export class Entity {
     set active(active: boolean) {
         if (
             this._destroyed ||
-            this._active === active ||
+            this.active === active ||
             (this.parent instanceof Entity && !this.parent.active)
         ) {
             return;
@@ -153,7 +150,6 @@ export class Entity {
         this._setActive(active);
         this._activeSelf = active;
 
-        // go through all the children and sets unactive
         this.forEachChildrenRecursive((child) => {
             child._setActive(active && child.activeSelf);
         });
@@ -170,7 +166,7 @@ export class Entity {
     }
 
     private _setActive(active: boolean): void {
-        if (this._active === active) return;
+        if (this.active === active) return;
         this._active = active;
 
         // remove entity listing from components and tags
@@ -236,7 +232,7 @@ export class Entity {
     forEachChildrenRecursive(func: (child: Entity) => void): void {
         this.children.forEach((child) => {
             func(child);
-            child.forEachChildrenRecursive(func);
+            if (child.children.size !== 0) child.forEachChildrenRecursive(func);
         });
     }
 
@@ -250,6 +246,8 @@ export class Entity {
     }
 
     /**
+     * Gets called when creating a new entity from the scene.
+     *
      * @private
      */
     _setup(name: string, parent: Entity | Scene): void {
@@ -263,6 +261,8 @@ export class Entity {
     }
 
     /**
+     * Gets called when deleting the entity from the scene.
+     *
      * @private
      */
     _destroy(): void {
@@ -274,6 +274,5 @@ export class Entity {
         this._tagIndexMap.clear();
 
         this.parent = null;
-        this._scene._availableEntities.push(this);
     }
 }

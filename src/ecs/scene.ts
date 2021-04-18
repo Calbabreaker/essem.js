@@ -1,6 +1,8 @@
 import { Entity } from "./entity";
-import { assert, mapGet, swapRemove } from "src/utils/misc";
+import { assert, mapGet, lastItemSwapRemove } from "src/utils/misc";
 import { System } from "./system";
+import { ObjectPool } from "src/utils/object_pool";
+import { ArrayCtor } from "src/utils/types";
 
 /**
  * Handles all the entities.
@@ -31,15 +33,15 @@ export class Scene {
      */
     children: Map<string, Entity> = new Map();
 
-    private _totalEntities = 0;
-    _typeNameToSystem: Map<string, System[]> = new Map();
-    _tagToEntities: Map<string, Entity[]> = new Map();
-    _availableEntities: Entity[] = [];
+    entityPool: ObjectPool<Entity, Scene>;
+
+    private _typeNameToSystem: Map<string, System[]> = new Map();
+    private _tagToEntities: Map<string, Entity[]> = new Map();
 
     constructor() {
-        this.reserveEntities(100);
+        this.entityPool = new ObjectPool<Entity, Scene>(Entity, this);
+        this.entityPool.reserve(100);
     }
-
     /**
      * Creates a new entity that is aquired from a pool for efficency.
      *
@@ -48,38 +50,34 @@ export class Scene {
      * @return The entity that was created.
      */
     createEntity(name?: string, parent: Entity | Scene = this): Entity {
-        if (this._availableEntities.length === 0) {
-            // resize by 20%
-            this.reserveEntities(Math.ceil(this._totalEntities * 1.2) - this._totalEntities);
-        }
-
-        const entity = this._availableEntities.pop() as Entity;
+        const entity = this.entityPool.aquire();
         entity._setup(name ?? `Unnamed Entity ${entity.id}`, parent);
         return entity;
     }
 
     /**
-     * Destroys the entity and all it's children and release them back to the entity poo.
+     * Destroys the entity and all it's children and release them back to the entity pool.
      *
      * @param entity - Entity to destroy.
      */
     destroyEntity(entity: Entity): void {
         entity._destroy();
+        this.entityPool.release(entity);
+
         entity.forEachChildrenRecursive((child) => {
             child._destroy();
+            this.entityPool.release(child);
         });
     }
 
-    reserveEntities(count: number): void {
-        for (let i = 0; i < count; i++) {
-            this._availableEntities.push(new Entity(this, i + this._totalEntities));
-        }
-
-        this._totalEntities += count;
-    }
-
+    /**
+     * Gets all the entities that tagged with the tag.
+     *
+     * @param tag - The tag to use.
+     * @return An array of entities with the tag.
+     */
     getEntitesByTag(tag: string): Entity[] {
-        return mapGet(this._tagToEntities, tag, Array) as Entity[];
+        return mapGet(this._tagToEntities, tag, Array as ArrayCtor<Entity>);
     }
 
     /**
@@ -88,7 +86,7 @@ export class Scene {
      * @private
      */
     _entityComponentAdd(entity: Entity, typeName: string): void {
-        const systems = mapGet(this._typeNameToSystem, typeName, Array) as System[];
+        const systems = mapGet(this._typeNameToSystem, typeName, Array as ArrayCtor<System>);
         systems.forEach((system) => {
             if (entity._systemIndexMap.has(system.constructor.name)) return;
 
@@ -108,13 +106,13 @@ export class Scene {
      * @private
      */
     _entityComponentRemove(entity: Entity, typeName: string): void {
-        const systems = mapGet(this._typeNameToSystem, typeName, Array) as System[];
+        const systems = mapGet(this._typeNameToSystem, typeName, Array as ArrayCtor<System>);
         systems.forEach((system) => {
             const entityIndex = entity._systemIndexMap.get(system.constructor.name);
             if (entityIndex === undefined) return;
 
             // swap last element to avoid shifting entities
-            const lastEntity = swapRemove(system.entities, entityIndex);
+            const lastEntity = lastItemSwapRemove(system.entities, entityIndex);
             lastEntity._systemIndexMap.set(system.constructor.name, entityIndex);
             entity._systemIndexMap.delete(system.constructor.name);
         });
@@ -126,11 +124,34 @@ export class Scene {
      * @private
      */
     _entityTagRemove(entity: Entity, tag: string): void {
-        const entities = mapGet(this._tagToEntities, tag, Array) as Entity[];
+        const entities = mapGet(this._tagToEntities, tag, Array as ArrayCtor<Entity>);
         const index = entity._tagIndexMap.get(tag);
         assert(index !== undefined, `Tag ${tag} does not exist!`);
 
-        const lastEntity = swapRemove(entities, index);
+        const lastEntity = lastItemSwapRemove(entities, index);
         lastEntity._tagIndexMap.set(tag, index);
+        entity._tagIndexMap.delete(tag);
+    }
+
+    /**
+     * Gets called whenever a tag gets added to an entity.
+     *
+     * @private
+     */
+    _entityTagAdd(entity: Entity, tag: string): void {
+        const entities = mapGet(this._tagToEntities, tag, Array as ArrayCtor<Entity>);
+        entities.push(entity);
+        entity._tagIndexMap.set(tag, entities.length - 1);
+    }
+
+    /**
+     * Gets called whenever a component type gets added to a system.
+     *
+     * @private
+     */
+    _systemTypeNameAdd(system: System, typeName: string): void {
+        const systems = mapGet(this._typeNameToSystem, typeName, Array as ArrayCtor<System>);
+        systems.push(system);
+        system.typeNames.push(typeName);
     }
 }

@@ -1,16 +1,13 @@
-import { AnyCtor } from "src/utils/types";
 import { Application } from "src/core/application";
-import { Component, ComponentClass, Entity } from "./entity";
+import { ComponentClass, Entity } from "./entity";
 import { Scene } from "./scene";
-import { mapGet } from "src/utils/misc";
+import { getTypeName } from "src/utils/misc";
 
-export type SystemClass = { new (scene: Scene): System };
+export type SystemClass = new (scene: Scene) => System;
 
 /**
  * System base class to extend to collect all the wanted entities and do stuff to them.
- *
- * ## Example
- * ```js
+ * * ## Example * ```js
  * // System that logs hello for each entity with a transform component
  * class HelloSystem extends ESSEM.System {
  *     setup(app) {
@@ -75,16 +72,15 @@ export abstract class System {
 
     /**
      * Sets the component types that the system will use to collect entities.
+     * Note that previous sets of component types will not be removed and so new sets will just be
+     * added on top.
      *
      * @param componentTypes - Array of component classes or names.
      */
     setComponents(componentTypes: (ComponentClass | string)[]): void {
-        this.typeNames = [];
         for (const componentType of componentTypes) {
-            const typeName = (componentType as AnyCtor<Component>).name ?? componentType;
-            const systems = mapGet(this.scene._typeNameToSystem, typeName, Array);
-            systems.push(this);
-            this.typeNames.push(typeName);
+            const typeName = getTypeName(componentType);
+            this.scene._systemTypeNameAdd(this, typeName);
         }
     }
 }
