@@ -53,9 +53,9 @@ app.eventManager.addListener(ESSEM.ApplicationInitEvent, () => {
 
 ## Documentation
 
-There is documentation but it is not hosted anywhere yet. 
-You can build the documentation by doing `yarn run docs` and viewing the `/docs/` directory.
-TODO: Add github pages.
+The documentation is [here]("https://calbabreaker.github.io/essem.js/docs/")
+You can also build the documentation from the sources by doing `yarn run docs` and viewing the 
+`/docs/` directory.
 
 ## Contributing
 

@@ -40,7 +40,7 @@
     "bugs": {
         "url": "https://github.com/Calbabreaker/essem.js/issues"
     },
-    "homepage": "https://github.com/Calbabreaker/essem.js#readme",
+    "homepage": "https://calbabreaker.github.io/essem.js/",
     "devDependencies": {
         "@types/jest": "^26.0.22",
         "@typescript-eslint/eslint-plugin": "^4.21.0",
