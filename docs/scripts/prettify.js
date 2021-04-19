@@ -1040,7 +1040,7 @@ var prettyPrint;
                 // A regular expression literal starts with a slash that is
                 // not followed by * or / so that it is not confused with
                 // comments.
-                "/(?=[^/*" +
+                "/essem.js/(?=[^/*" +
                 regexExcls +
                 "])" +
                 // and then contains any number of raw characters,
