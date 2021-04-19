@@ -1,0 +1,611 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>essem.js: Scene</title>
+
+    <link type="text/css" rel="stylesheet" href="/{{ site.baseurl }}/docs/styles/index.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&family=Roboto+Mono&display=swap" />
+    <link type="text/css" rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/styles/googlecode.min.css">
+
+    
+      <meta property="title" content="essem.js API Documentation" />
+    
+      <meta property="description" content="Documentation for essem.js library" />
+    
+      <meta property="keyword" content="docs, documentation, essem, essemjs, library, game, javascript, jsdoc" />
+    
+
+    <script>
+      window.appData = {
+        applicationName: "essem.js",
+        siteRoot: "{{ site.baseurl }}/docs",
+        integrations: JSON.parse(`{}`),
+      };
+    </script>
+    <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    
+    <script src="/{{ site.baseurl }}/docs/scripts/default-template.js"></script>
+  </head>
+  <body class="root">
+    <div class="docs">
+      <article class="page">
+        <div class="page-explorer" id="explorer-mount-point"></div>
+        <div class="header-content-container">
+          <section class="header" id="header-mount-point"></section>
+          <div class="header-content-container__content">
+            
+            
+<div class="page-content">
+  <div class="document">
+    <div class="document__breadcrumb">
+      
+        essem.js
+        &gt;
+      
+      
+        <a href=/%7B%7B%20site.baseurl%20%7D%7D/docs/essem/js/ESSEM.html>ESSEM</a>
+        &gt;
+      
+      <span>Scene</span>
+    </div>
+    <h1 class="document__title">ESSEM.Scene</h1>
+    
+<pre class="signature__container"><code class="signature">class Scene</code></pre>
+
+
+    <div class="document__brief"></div>
+    <div class="document__description"><p>Handles all the entities.
+Use the application to create the scene.</p>
+<h2>Example</h2>
+<pre><code class="hljs language-js"><span class="hljs-comment">// Create application and scene</span>
+<span class="hljs-keyword">const</span> app = <span class="hljs-keyword">new</span> ESSEM.Application();
+<span class="hljs-keyword">const</span> scene = app.createScene();
+
+<span class="hljs-comment">// Create entities, add components</span>
+<span class="hljs-keyword">const</span> entity = scene.createEntity(<span class="hljs-string">&quot;MyEntity&quot;</span>);
+entity.addComponent(<span class="hljs-keyword">new</span> ESSEM.SpriteRendererComponent(texture));
+entity.addComponent(<span class="hljs-keyword">new</span> ESSEM.TransformComponent())
+</code></pre></div>
+
+    
+      
+    
+
+    
+
+<div class="members">
+  <h2 class="members__category">Summary</h2>
+  <hr />
+  
+
+
+  
+  <div class="accordion accordion-active">
+    <section class="accordion__toggle">
+      <button>
+        <img class="accordion__bg-inactive" src="/{{ site.baseurl }}/docs/icons/chevron-down.svg"/>
+        <img class="accordion__bg-active" src="/{{ site.baseurl }}/docs/icons/chevron-up.svg"/>
+      </button>
+      <h3 class="members__subcategory">Properties from Scene</h3>
+    </section>
+    <div class="accordion__content table-wrapper">
+      <table class="summary">
+        <tbody>
+          
+            <tr>
+              <td class="summary__signature">
+                
+                  Map
+                
+              </td>
+              <td>
+                <section class="summary__signature">
+                  <a href="/%7B%7B%20site.baseurl%20%7D%7D/docs/essem/js/ESSEM/Scene.html#children">children</a>
+                </section>
+                <section>
+                  
+                    <p>A map containing scene entities mapped by their entity names.</p>
+                  
+                </section>
+              </td>
+            </tr>
+          
+            <tr>
+              <td class="summary__signature">
+                
+                  System[]
+                
+              </td>
+              <td>
+                <section class="summary__signature">
+                  <a href="/%7B%7B%20site.baseurl%20%7D%7D/docs/essem/js/ESSEM/Scene.html#systems">systems</a>
+                </section>
+                <section>
+                  
+                    <p>The instances of the systems for the scene that are registered.</p>
+                  
+                </section>
+              </td>
+            </tr>
+          
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+
+  
+
+
+  
+  <div class="accordion accordion-active">
+    <section class="accordion__toggle">
+      <button>
+        <img class="accordion__bg-inactive" src="/{{ site.baseurl }}/docs/icons/chevron-down.svg"/>
+        <img class="accordion__bg-active" src="/{{ site.baseurl }}/docs/icons/chevron-up.svg"/>
+      </button>
+      <h3 class="members__subcategory">Methods from Scene</h3>
+    </section>
+    <div class="accordion__content table-wrapper">
+      <table class="summary">
+        <tbody>
+          
+            <tr>
+              <td class="summary__signature">
+                
+                  <a href="/%7B%7B%20site.baseurl%20%7D%7D/docs/essem/js/ESSEM/Entity.html">ESSEM.Entity</a>
+                
+              </td>
+              <td>
+                <section class="summary__signature">
+                  <a href="/%7B%7B%20site.baseurl%20%7D%7D/docs/essem/js/ESSEM/Scene.html#createEntity">createEntity(name: string, parent)</a>
+                </section>
+                <section>
+                  
+                    <p>Creates a new entity that is aquired from a pool for efficency.</p>
+                  
+                </section>
+              </td>
+            </tr>
+          
+            <tr>
+              <td class="summary__signature">
+                
+                  void
+                
+              </td>
+              <td>
+                <section class="summary__signature">
+                  <a href="/%7B%7B%20site.baseurl%20%7D%7D/docs/essem/js/ESSEM/Scene.html#destroyEntity">destroyEntity(entity: <a href="/%7B%7B%20site.baseurl%20%7D%7D/docs/essem/js/ESSEM/Entity.html">ESSEM.Entity</a>)</a>
+                </section>
+                <section>
+                  
+                    <p>Destroys the entity and all it's children and release them back to the entity pool.</p>
+                  
+                </section>
+              </td>
+            </tr>
+          
+            <tr>
+              <td class="summary__signature">
+                
+                  <a href="/%7B%7B%20site.baseurl%20%7D%7D/docs/essem/js/ESSEM/Entity.html">ESSEM.Entity</a>[]
+                
+              </td>
+              <td>
+                <section class="summary__signature">
+                  <a href="/%7B%7B%20site.baseurl%20%7D%7D/docs/essem/js/ESSEM/Scene.html#getEntitesByTag">getEntitesByTag(tag: string)</a>
+                </section>
+                <section>
+                  
+                    <p>Gets all the entities that tagged with the tag.</p>
+                  
+                </section>
+              </td>
+            </tr>
+          
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+
+  
+
+
+
+  
+
+
+
+</div>
+
+
+    
+<div class="members">
+  <h2 class="members__category">Public Properties</h2>
+  <hr />
+
+  
+    
+<div class="member" id="children">
+  
+    <section class="member__title">
+      <a href="/{{ site.baseurl }}/docs/essem/js/ESSEM/Scene.html#children">
+        <img
+          src="/{{ site.baseurl }}/docs/icons/link.svg"
+          width="16px"
+          height="16px"
+        />
+      </a>
+      <span>children</span>
+    </section>
+  
+  
+<pre class="signature__container"><code class="signature">children: Map</code></pre>
+
+
+  <div class="member__brief"><p>A map containing scene entities mapped by their entity names.</p></div>
+  <div class="member__description"></div>
+
+  
+
+  
+</div>
+
+  
+    
+<div class="member" id="systems">
+  
+    <section class="member__title">
+      <a href="/{{ site.baseurl }}/docs/essem/js/ESSEM/Scene.html#systems">
+        <img
+          src="/{{ site.baseurl }}/docs/icons/link.svg"
+          width="16px"
+          height="16px"
+        />
+      </a>
+      <span>systems</span>
+    </section>
+  
+  
+<pre class="signature__container"><code class="signature">systems: System[]</code></pre>
+
+
+  <div class="member__brief"><p>The instances of the systems for the scene that are registered.</p></div>
+  <div class="member__description"></div>
+
+  
+
+  
+</div>
+
+  
+</div>
+
+    
+    
+<div class="members">
+  <h2 class="members__category">Public Methods</h2>
+  <hr />
+
+  
+    
+<div class="member" id="createEntity">
+  
+    <section class="member__title">
+      <a href="/{{ site.baseurl }}/docs/essem/js/ESSEM/Scene.html#createEntity">
+        <img
+          src="/{{ site.baseurl }}/docs/icons/link.svg"
+          width="16px"
+          height="16px"
+        />
+      </a>
+      <span>createEntity</span>
+    </section>
+  
+  
+<pre class="signature__container"><code class="signature">createEntity(name: string, parent) → {<a href="/%7B%7B%20site.baseurl%20%7D%7D/docs/essem/js/ESSEM/Entity.html">ESSEM.Entity</a>}</code></pre>
+
+
+  <div class="member__brief"><p>Creates a new entity that is aquired from a pool for efficency.</p></div>
+  <div class="member__description"></div>
+
+  
+    
+<div class="table-wrapper">
+  <table class="member-parameters">
+    <caption class="member-parameters__caption">Parameters:</caption>
+    <thead class="member-parameters__head">
+      <tr class="member-parameter-header">
+        <th class="member-parameter-header__name">Name</th>
+        <th class="member-parameter-header__type">Type</th>
+        <th class="member-parameter-header__attributes">Attributes</th>
+        <th class="member-parameter-header__default">Default</th>
+        <th class="member-parameter-header__description">Description</th>
+      </tr>
+    </thead>
+    <tbody class="member-parameters__body">
+      <tr class="member-parameter">
+        <td class="member-parameter__name">
+          name
+        </td>
+        <td class="member-parameter__type">
+          string
+        </td>
+        <td class="member-parameter__attributes">
+          <p>&lt;optional&gt;</p>
+          
+          
+        </td>
+        <td class="member-parameter__default">
+          `Unnamed Entity ${entity.id}`
+        </td>
+        <td class="member-parameter__description"><p>The name of the entity.</p></td>
+      </tr><tr class="member-parameter">
+        <td class="member-parameter__name">
+          parent
+        </td>
+        <td class="member-parameter__type">
+          
+        </td>
+        <td class="member-parameter__attributes">
+          
+          
+          
+        </td>
+        <td class="member-parameter__default">
+          
+        </td>
+        <td class="member-parameter__description"><p>The parent for the entity. Default is the scene.</p></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+  
+
+  
+    
+<div class="table-wrapper">
+  <table class="member-returns">
+    <caption class="member-returns__caption">Returns:</caption>
+    <thead class="member-returns__head">
+      <tr class="member-returns-header">
+        <th class="member-returns-header__type">Type</th>
+        <th class="member-returns-header__description">Description</th>
+      </tr>
+    </thead>
+    <tbody class="member-returns__body">
+      <tr class="member-return">
+        <td class="member-return__type">
+          <a href="/%7B%7B%20site.baseurl%20%7D%7D/docs/essem/js/ESSEM/Entity.html">ESSEM.Entity</a>
+        </td>
+        <td class="member-return__description"><p>The entity that was created.</p></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+  
+</div>
+
+  
+    
+<div class="member" id="destroyEntity">
+  
+    <section class="member__title">
+      <a href="/{{ site.baseurl }}/docs/essem/js/ESSEM/Scene.html#destroyEntity">
+        <img
+          src="/{{ site.baseurl }}/docs/icons/link.svg"
+          width="16px"
+          height="16px"
+        />
+      </a>
+      <span>destroyEntity</span>
+    </section>
+  
+  
+<pre class="signature__container"><code class="signature">destroyEntity(entity: <a href="/%7B%7B%20site.baseurl%20%7D%7D/docs/essem/js/ESSEM/Entity.html">ESSEM.Entity</a>) → {void}</code></pre>
+
+
+  <div class="member__brief"><p>Destroys the entity and all it's children and release them back to the entity pool.</p></div>
+  <div class="member__description"></div>
+
+  
+    
+<div class="table-wrapper">
+  <table class="member-parameters">
+    <caption class="member-parameters__caption">Parameters:</caption>
+    <thead class="member-parameters__head">
+      <tr class="member-parameter-header">
+        <th class="member-parameter-header__name">Name</th>
+        <th class="member-parameter-header__type">Type</th>
+        
+        
+        <th class="member-parameter-header__description">Description</th>
+      </tr>
+    </thead>
+    <tbody class="member-parameters__body">
+      <tr class="member-parameter">
+        <td class="member-parameter__name">
+          entity
+        </td>
+        <td class="member-parameter__type">
+          <a href="/%7B%7B%20site.baseurl%20%7D%7D/docs/essem/js/ESSEM/Entity.html">ESSEM.Entity</a>
+        </td>
+        
+        
+        <td class="member-parameter__description"><p>Entity to destroy.</p></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+  
+
+  
+    
+<div class="table-wrapper">
+  <table class="member-returns">
+    <caption class="member-returns__caption">Returns:</caption>
+    <thead class="member-returns__head">
+      <tr class="member-returns-header">
+        <th class="member-returns-header__type">Type</th>
+        <th class="member-returns-header__description">Description</th>
+      </tr>
+    </thead>
+    <tbody class="member-returns__body">
+      <tr class="member-return">
+        <td class="member-return__type">
+          void
+        </td>
+        <td class="member-return__description"></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+  
+</div>
+
+  
+    
+<div class="member" id="getEntitesByTag">
+  
+    <section class="member__title">
+      <a href="/{{ site.baseurl }}/docs/essem/js/ESSEM/Scene.html#getEntitesByTag">
+        <img
+          src="/{{ site.baseurl }}/docs/icons/link.svg"
+          width="16px"
+          height="16px"
+        />
+      </a>
+      <span>getEntitesByTag</span>
+    </section>
+  
+  
+<pre class="signature__container"><code class="signature">getEntitesByTag(tag: string) → {<a href="/%7B%7B%20site.baseurl%20%7D%7D/docs/essem/js/ESSEM/Entity.html">ESSEM.Entity</a>[]}</code></pre>
+
+
+  <div class="member__brief"><p>Gets all the entities that tagged with the tag.</p></div>
+  <div class="member__description"></div>
+
+  
+    
+<div class="table-wrapper">
+  <table class="member-parameters">
+    <caption class="member-parameters__caption">Parameters:</caption>
+    <thead class="member-parameters__head">
+      <tr class="member-parameter-header">
+        <th class="member-parameter-header__name">Name</th>
+        <th class="member-parameter-header__type">Type</th>
+        
+        
+        <th class="member-parameter-header__description">Description</th>
+      </tr>
+    </thead>
+    <tbody class="member-parameters__body">
+      <tr class="member-parameter">
+        <td class="member-parameter__name">
+          tag
+        </td>
+        <td class="member-parameter__type">
+          string
+        </td>
+        
+        
+        <td class="member-parameter__description"><p>The tag to use.</p></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+  
+
+  
+    
+<div class="table-wrapper">
+  <table class="member-returns">
+    <caption class="member-returns__caption">Returns:</caption>
+    <thead class="member-returns__head">
+      <tr class="member-returns-header">
+        <th class="member-returns-header__type">Type</th>
+        <th class="member-returns-header__description">Description</th>
+      </tr>
+    </thead>
+    <tbody class="member-returns__body">
+      <tr class="member-return">
+        <td class="member-return__type">
+          <a href="/%7B%7B%20site.baseurl%20%7D%7D/docs/essem/js/ESSEM/Entity.html">ESSEM.Entity</a>[]
+        </td>
+        <td class="member-return__description"><p>An array of entities with the tag.</p></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+  
+</div>
+
+  
+</div>
+
+    
+  </div>
+  <footer class="footer" id="footer-mount-point"></footer>
+</div>
+
+<hr class="page-r-divider" />
+<nav class="page-members-explorer">
+  <div class="page-members-explorer-category">
+    <section class="page-members-explorer-category__title">
+      Summary
+    </section>
+  </div>
+  
+
+<div class="page-members-explorer-category">
+  <section class="page-members-explorer-category__title">Public Properties</section>
+  <ul class="page-members-explorer-category__items">
+    
+      <li class="page-members-explorer__item"><a href=/%7B%7B%20site.baseurl%20%7D%7D/docs/essem/js/ESSEM/Scene.html#children>children</a></li>
+    
+      <li class="page-members-explorer__item"><a href=/%7B%7B%20site.baseurl%20%7D%7D/docs/essem/js/ESSEM/Scene.html#systems>systems</a></li>
+    
+  </ul>
+</div>
+
+  
+  
+
+<div class="page-members-explorer-category">
+  <section class="page-members-explorer-category__title">Public Methods</section>
+  <ul class="page-members-explorer-category__items">
+    
+      <li class="page-members-explorer__item"><a href=/%7B%7B%20site.baseurl%20%7D%7D/docs/essem/js/ESSEM/Scene.html#createEntity>createEntity</a></li>
+    
+      <li class="page-members-explorer__item"><a href=/%7B%7B%20site.baseurl%20%7D%7D/docs/essem/js/ESSEM/Scene.html#destroyEntity>destroyEntity</a></li>
+    
+      <li class="page-members-explorer__item"><a href=/%7B%7B%20site.baseurl%20%7D%7D/docs/essem/js/ESSEM/Scene.html#getEntitesByTag>getEntitesByTag</a></li>
+    
+  </ul>
+</div>
+
+  
+</nav>
+
+
+
+            <!-- footer in content -->
+          </div>
+        </div>
+      </article>
+      <script src="scripts/linenumber.js"> </script>
+    </body>
+  </div>
+</html>

@@ -36,13 +36,6 @@
 							"description": "<p>Registers a parameterized array of system classes.\nUse like this: <code>app.registerSystem(System1, System2, ...);</code>\nDo all the registering at the start or the system will not work.</p>"
 						},
 						{
-							"name": "shutdown",
-							"type": "MethodDoc",
-							"scope": "instance",
-							"brief": "<p>Stops the Application. The canvas is not removed from the DOM so you need to remove it.</p>",
-							"description": ""
-						},
-						{
 							"name": "_onUpdate",
 							"type": "MethodDoc",
 							"access": "private",
@@ -55,7 +48,7 @@
 				{
 					"name": "ApplicationInitEvent",
 					"type": "ClassDoc",
-					"brief": "<p>Event that is sent whenever the Application initiates.</p>",
+					"brief": "<ul>\n<li>Event that is sent whenever the Application initiates.</li>\n</ul>",
 					"description": "",
 					"members": [
 						{
@@ -157,7 +150,7 @@
 							"type": "MethodDoc",
 							"scope": "instance",
 							"brief": "",
-							"description": "<p>Sets the component types that the system will use to collect entities.\nUse like this: <code>this.setComponents(Component1, Componen2, ...);</code></p>"
+							"description": "<p>Sets the component types that the system will use to collect entities.\nNote that previous sets of component types will not be removed and so new sets will just be\nadded on top.</p>"
 						},
 						{
 							"name": "setup",
@@ -300,7 +293,7 @@
 							"type": "PropertyDoc",
 							"scope": "instance",
 							"brief": "",
-							"description": "<p>The local active state.\nThis will be regardless of it's parents.</p>"
+							"description": "<p>The local active state.\nThis will be regardless of its parents` active states.</p>"
 						},
 						{
 							"name": "children",
@@ -317,10 +310,24 @@
 							"description": ""
 						},
 						{
+							"name": "id",
+							"type": "PropertyDoc",
+							"scope": "instance",
+							"brief": "<p>Identifier of the entity, only unique to its scene.</p>",
+							"description": ""
+						},
+						{
 							"name": "name",
 							"type": "PropertyDoc",
 							"scope": "instance",
-							"brief": "",
+							"brief": "<p>The name of the entity.</p>",
+							"description": ""
+						},
+						{
+							"name": "parent",
+							"type": "PropertyDoc",
+							"scope": "instance",
+							"brief": "<p>Parent of the entity. Could be either another entity, the scene or none at all.</p>",
 							"description": ""
 						},
 						{
@@ -331,21 +338,35 @@
 							"description": ""
 						},
 						{
-							"name": "addTag",
+							"name": "forEachChildrenRecursive",
 							"type": "MethodDoc",
 							"scope": "instance",
 							"brief": "",
 							"description": ""
 						},
 						{
-							"name": "forEachChildren",
+							"name": "getComponent",
 							"type": "MethodDoc",
 							"scope": "instance",
-							"brief": "",
+							"brief": "<p>Gets a component from the entity.</p>",
 							"description": ""
 						},
 						{
 							"name": "hasAllComponents",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "<p>Checks to see if all the components specified are on the entity.</p>",
+							"description": ""
+						},
+						{
+							"name": "hasComponent",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "<p>Checks to see if the component is on the entity.</p>",
+							"description": ""
+						},
+						{
+							"name": "hasTag",
 							"type": "MethodDoc",
 							"scope": "instance",
 							"brief": "",
@@ -359,18 +380,11 @@
 							"description": ""
 						},
 						{
-							"name": "removeTag",
-							"type": "MethodDoc",
-							"scope": "instance",
-							"brief": "",
-							"description": ""
-						},
-						{
 							"name": "_destroy",
 							"type": "MethodDoc",
 							"access": "private",
 							"scope": "instance",
-							"brief": "",
+							"brief": "<p>Gets called when deleting the entity from the scene.</p>",
 							"description": ""
 						},
 						{
@@ -378,7 +392,7 @@
 							"type": "MethodDoc",
 							"access": "private",
 							"scope": "instance",
-							"brief": "",
+							"brief": "<p>Gets called when creating a new entity from the scene.</p>",
 							"description": ""
 						}
 					]
@@ -500,7 +514,7 @@
 					"description": "<p>Used for loading resources such as images. It is automatically created when creating\n{@link ESSEM.Application} and it can be accesed from <code>app.loader</code>.</p>",
 					"members": [
 						{
-							"name": "loadAll",
+							"name": "add",
 							"type": "MethodDoc",
 							"scope": "instance",
 							"brief": "",
@@ -650,20 +664,20 @@
 					"name": "Scene",
 					"type": "ClassDoc",
 					"brief": "",
-					"description": "<p>Handles all the entities.\nUse the application to create the scene.</p>",
+					"description": "<p>Handles all the entities.\nUse the application to create the scene.</p>\n<h2>Example</h2>\n<pre><code class=\"hljs language-js\"><span class=\"hljs-comment\">// Create application and scene</span>\n<span class=\"hljs-keyword\">const</span> app = <span class=\"hljs-keyword\">new</span> ESSEM.Application();\n<span class=\"hljs-keyword\">const</span> scene = app.createScene();\n\n<span class=\"hljs-comment\">// Create entities, add components</span>\n<span class=\"hljs-keyword\">const</span> entity = scene.createEntity(<span class=\"hljs-string\">&quot;MyEntity&quot;</span>);\nentity.addComponent(<span class=\"hljs-keyword\">new</span> ESSEM.SpriteRendererComponent(texture));\nentity.addComponent(<span class=\"hljs-keyword\">new</span> ESSEM.TransformComponent())\n</code></pre>",
 					"members": [
 						{
-							"name": "entities",
+							"name": "children",
 							"type": "PropertyDoc",
 							"scope": "instance",
-							"brief": "<p>A map containing scene root entities mapped by their entity names.</p>",
+							"brief": "<p>A map containing scene entities mapped by their entity names.</p>",
 							"description": ""
 						},
 						{
 							"name": "systems",
 							"type": "PropertyDoc",
 							"scope": "instance",
-							"brief": "<p>The instances of the systems for the scene that are registed.</p>",
+							"brief": "<p>The instances of the systems for the scene that are registered.</p>",
 							"description": ""
 						},
 						{
@@ -677,14 +691,14 @@
 							"name": "destroyEntity",
 							"type": "MethodDoc",
 							"scope": "instance",
-							"brief": "<p>Destroys the entity and all it's children and release them back to the entity poo.</p>",
+							"brief": "<p>Destroys the entity and all it's children and release them back to the entity pool.</p>",
 							"description": ""
 						},
 						{
 							"name": "getEntitesByTag",
 							"type": "MethodDoc",
 							"scope": "instance",
-							"brief": "",
+							"brief": "<p>Gets all the entities that tagged with the tag.</p>",
 							"description": ""
 						},
 						{
@@ -704,11 +718,27 @@
 							"description": ""
 						},
 						{
+							"name": "_entityTagAdd",
+							"type": "MethodDoc",
+							"access": "private",
+							"scope": "instance",
+							"brief": "<p>Gets called whenever a tag gets added to an entity.</p>",
+							"description": ""
+						},
+						{
 							"name": "_entityTagRemove",
 							"type": "MethodDoc",
 							"access": "private",
 							"scope": "instance",
 							"brief": "<p>Gets called whenever a tag gets removed from an entity.</p>",
+							"description": ""
+						},
+						{
+							"name": "_systemTypeNameAdd",
+							"type": "MethodDoc",
+							"access": "private",
+							"scope": "instance",
+							"brief": "<p>Gets called whenever a component type gets added to a system.</p>",
 							"description": ""
 						}
 					]
@@ -796,7 +826,7 @@
 							"type": "MethodDoc",
 							"scope": "instance",
 							"brief": "",
-							"description": "<p>Sets the component types that the system will use to collect entities.\nUse like this: <code>this.setComponents(Component1, Componen2, ...);</code></p>"
+							"description": "<p>Sets the component types that the system will use to collect entities.\nNote that previous sets of component types will not be removed and so new sets will just be\nadded on top.</p>"
 						},
 						{
 							"name": "setup",
@@ -810,8 +840,8 @@
 				{
 					"name": "System",
 					"type": "ClassDoc",
-					"brief": "<p>System base class to extend to collect all the wanted entities and do stuff to them.</p>",
-					"description": "",
+					"brief": "",
+					"description": "<p>System base class to extend to collect all the wanted entities and do stuff to them.</p>\n<ul>\n<li>\n<h2>Example * ```js</h2>\n</li>\n</ul>\n<p>// System that logs hello for each entity with a transform component\nclass HelloSystem extends ESSEM.System {\nsetup(app) {\napp.eventManager.addListener(ESSEM.ApplicationUpdateEvent, this.onUpdate.bind(this));\nthis.setComponents(ESSEM.TransformComponent);\n}</p>\n<pre><code class=\"hljs\"> onUpdate() {\n     for (entity of this.entities) {\n         const transform = entity.getComponent(ESSEM.TransformComponent);\n         console.log(&quot;Hello from: &quot; + tranform.position.toString())\n     }\n }\n</code></pre>\n<p>}</p>\n<p>const app = new ESSEM.Application();\napp.registerSystem(HelloSystem);\nconst scene = app.createScene()</p>\n<p>// Logs &quot;Hello from: Vector2(0, 1)&quot; every frame\nconst entity = scene.createEntity();\nentity.addComponent(new TransformComponent(new ESSEM.Vector2(0, 1)));</p>\n<pre><code class=\"hljs\">\n\n</code></pre>",
 					"members": [
 						{
 							"name": "entities",
@@ -847,7 +877,7 @@
 							"type": "MethodDoc",
 							"scope": "instance",
 							"brief": "",
-							"description": "<p>Sets the component types that the system will use to collect entities.\nUse like this: <code>this.setComponents(Component1, Componen2, ...);</code></p>"
+							"description": "<p>Sets the component types that the system will use to collect entities.\nNote that previous sets of component types will not be removed and so new sets will just be\nadded on top.</p>"
 						},
 						{
 							"name": "setup",
@@ -1108,7 +1138,7 @@
 				{
 					"name": "skipHello",
 					"type": "FunctionDoc",
-					"brief": "<p>Skips the essem.js hello. Don't call this or else you will have bad luck forever.</p>",
+					"brief": "<p>Skips the essem.js hello message.</p>",
 					"description": ""
 				},
 				{
@@ -1147,6 +1177,64 @@
 				},
 				{
 					"name": "startBatch",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				}
+			]
+		},
+		{
+			"name": "AudioClip",
+			"type": "ClassDoc",
+			"brief": "",
+			"description": "",
+			"members": [
+				{
+					"name": "fromURL",
+					"type": "MethodDoc",
+					"scope": "static",
+					"brief": "",
+					"description": ""
+				},
+				{
+					"name": "stop",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				}
+			]
+		},
+		{
+			"name": "ObjectPool",
+			"type": "ClassDoc",
+			"brief": "",
+			"description": "",
+			"members": [
+				{
+					"name": "aquire",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				},
+				{
+					"name": "constructor",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				},
+				{
+					"name": "release",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				},
+				{
+					"name": "reserve",
 					"type": "MethodDoc",
 					"scope": "instance",
 					"brief": "",
@@ -1213,42 +1301,6 @@
 			]
 		},
 		{
-			"name": "SpriteRenderer",
-			"type": "ClassDoc",
-			"brief": "",
-			"description": "",
-			"members": [
-				{
-					"name": "beginScene",
-					"type": "MethodDoc",
-					"scope": "instance",
-					"brief": "",
-					"description": ""
-				},
-				{
-					"name": "drawSprite",
-					"type": "MethodDoc",
-					"scope": "instance",
-					"brief": "",
-					"description": ""
-				},
-				{
-					"name": "flush",
-					"type": "MethodDoc",
-					"scope": "instance",
-					"brief": "",
-					"description": ""
-				},
-				{
-					"name": "startBatch",
-					"type": "MethodDoc",
-					"scope": "instance",
-					"brief": "",
-					"description": ""
-				}
-			]
-		},
-		{
 			"name": "VertexArray",
 			"type": "ClassDoc",
 			"brief": "",
@@ -1292,10 +1344,16 @@
 			]
 		},
 		{
-			"name": "swapRemove",
+			"name": "lastItemSwapRemove",
 			"type": "FunctionDoc",
 			"brief": "",
-			"description": ""
+			"description": "<p>Removes an item from an array by swapping the last element with the removing element and popping\nthe array.</p>"
+		},
+		{
+			"name": "mapGet",
+			"type": "FunctionDoc",
+			"brief": "",
+			"description": "<p>Gets an item from the map using a key and sets it with a new instance of the class of it\ndoesn't  exist.</p>"
 		}
 	]
 }
