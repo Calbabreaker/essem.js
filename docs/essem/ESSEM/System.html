@@ -1,0 +1,640 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>essem.js: System</title>
+
+    <link type="text/css" rel="stylesheet" href="/docs/styles/index.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&family=Roboto+Mono&display=swap" />
+    <link type="text/css" rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/styles/googlecode.min.css">
+
+    
+      <meta property="title" content="essem.js API Documentation" />
+    
+      <meta property="description" content="Documentation for essem.js library" />
+    
+      <meta property="keyword" content="docs, documentation, essem, essemjs, library, game, javascript, jsdoc" />
+    
+
+    <script>
+      window.appData = {
+        applicationName: "essem.js",
+        siteRoot: "docs",
+        integrations: JSON.parse(`{}`),
+      };
+    </script>
+    <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    
+    <script src="/docs/scripts/default-template.js"></script>
+  </head>
+  <body class="root">
+    <div class="docs">
+      <article class="page">
+        <div class="page-explorer" id="explorer-mount-point"></div>
+        <div class="header-content-container">
+          <section class="header" id="header-mount-point"></section>
+          <div class="header-content-container__content">
+            
+            
+<div class="page-content">
+  <div class="document">
+    <div class="document__breadcrumb">
+      
+        essem
+        &gt;
+      
+      
+        <a href=/docs/essem/ESSEM.html>ESSEM</a>
+        &gt;
+      
+      <span>System</span>
+    </div>
+    <h1 class="document__title">ESSEM.System</h1>
+    
+<pre class="signature__container"><code class="signature">class System</code></pre>
+
+
+    <div class="document__brief"><p>System base class to extend to collect all the wanted entities and do stuff to them.</p></div>
+    <div class="document__description"></div>
+
+    
+      
+    
+
+    
+
+<div class="members">
+  <h2 class="members__category">Summary</h2>
+  <hr />
+  
+
+
+  
+  <div class="accordion accordion-active">
+    <section class="accordion__toggle">
+      <button>
+        <img class="accordion__bg-inactive" src="/docs/icons/chevron-down.svg"/>
+        <img class="accordion__bg-active" src="/docs/icons/chevron-up.svg"/>
+      </button>
+      <h3 class="members__subcategory">Properties from System</h3>
+    </section>
+    <div class="accordion__content table-wrapper">
+      <table class="summary">
+        <tbody>
+          
+            <tr>
+              <td class="summary__signature">
+                
+                  Entity[]
+                
+              </td>
+              <td>
+                <section class="summary__signature">
+                  <a href="/docs/essem/ESSEM/System.html#entities">entities</a>
+                </section>
+                <section>
+                  
+                    <p>The entities that have the system's component types.</p>
+                  
+                </section>
+              </td>
+            </tr>
+          
+            <tr>
+              <td class="summary__signature">
+                
+                  string[]
+                
+              </td>
+              <td>
+                <section class="summary__signature">
+                  <a href="/docs/essem/ESSEM/System.html#typeNames">typeNames</a>
+                </section>
+                <section>
+                  
+                    <p>The name of the component types that has been set.</p>
+                  
+                </section>
+              </td>
+            </tr>
+          
+            <tr>
+              <td class="summary__signature">
+                
+                  Scene
+                
+              </td>
+              <td>
+                <section class="summary__signature">
+                  <a href="/docs/essem/ESSEM/System.html#scene">protected scene</a>
+                </section>
+                <section>
+                  
+                    <p>The scene that the system is active on.</p>
+                  
+                </section>
+              </td>
+            </tr>
+          
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+
+  
+
+
+  
+  <div class="accordion accordion-active">
+    <section class="accordion__toggle">
+      <button>
+        <img class="accordion__bg-inactive" src="/docs/icons/chevron-down.svg"/>
+        <img class="accordion__bg-active" src="/docs/icons/chevron-up.svg"/>
+      </button>
+      <h3 class="members__subcategory">Methods from System</h3>
+    </section>
+    <div class="accordion__content table-wrapper">
+      <table class="summary">
+        <tbody>
+          
+            <tr>
+              <td class="summary__signature">
+                
+                  void
+                
+              </td>
+              <td>
+                <section class="summary__signature">
+                  <a href="/docs/essem/ESSEM/System.html#onEntityAdd">onEntityAdd(entity: <a href="/docs/essem/ESSEM/Entity.html">ESSEM.Entity</a>)</a>
+                </section>
+                <section>
+                  
+                    <p>Optional abstract function that gets called whenever a matching entity gets added.</p>
+                  
+                </section>
+              </td>
+            </tr>
+          
+            <tr>
+              <td class="summary__signature">
+                
+                  void
+                
+              </td>
+              <td>
+                <section class="summary__signature">
+                  <a href="/docs/essem/ESSEM/System.html#setComponents">setComponents(componentTypes: ComponentClass | string)</a>
+                </section>
+                <section>
+                  
+                </section>
+              </td>
+            </tr>
+          
+            <tr>
+              <td class="summary__signature">
+                
+                  void
+                
+              </td>
+              <td>
+                <section class="summary__signature">
+                  <a href="/docs/essem/ESSEM/System.html#setup">setup(app: <a href="/docs/essem/ESSEM/Application.html">ESSEM.Application</a>)</a>
+                </section>
+                <section>
+                  
+                </section>
+              </td>
+            </tr>
+          
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+
+  
+
+
+
+  
+
+
+
+</div>
+
+
+    
+<div class="members">
+  <h2 class="members__category">Public Properties</h2>
+  <hr />
+
+  
+    
+<div class="member" id="entities">
+  
+    <section class="member__title">
+      <a href="/docs/essem/ESSEM/System.html#entities">
+        <img
+          src="/docs/icons/link.svg"
+          width="16px"
+          height="16px"
+        />
+      </a>
+      <span>entities</span>
+    </section>
+  
+  
+<pre class="signature__container"><code class="signature">entities: Entity[]</code></pre>
+
+
+  <div class="member__brief"><p>The entities that have the system's component types.</p></div>
+  <div class="member__description"></div>
+
+  
+
+  
+</div>
+
+  
+    
+<div class="member" id="typeNames">
+  
+    <section class="member__title">
+      <a href="/docs/essem/ESSEM/System.html#typeNames">
+        <img
+          src="/docs/icons/link.svg"
+          width="16px"
+          height="16px"
+        />
+      </a>
+      <span>typeNames</span>
+    </section>
+  
+  
+<pre class="signature__container"><code class="signature">typeNames: string[]</code></pre>
+
+
+  <div class="member__brief"><p>The name of the component types that has been set.</p></div>
+  <div class="member__description"></div>
+
+  
+
+  
+</div>
+
+  
+</div>
+
+    
+<div class="members">
+  <h2 class="members__category">Protected Properties</h2>
+  <hr />
+
+  
+    
+<div class="member" id="scene">
+  
+    <section class="member__title">
+      <a href="/docs/essem/ESSEM/System.html#scene">
+        <img
+          src="/docs/icons/link.svg"
+          width="16px"
+          height="16px"
+        />
+      </a>
+      <span>scene</span>
+    </section>
+  
+  
+<pre class="signature__container"><code class="signature">protected scene: Scene</code></pre>
+
+
+  <div class="member__brief"><p>The scene that the system is active on.</p></div>
+  <div class="member__description"></div>
+
+  
+
+  
+</div>
+
+  
+</div>
+
+    
+<div class="members">
+  <h2 class="members__category">Public Methods</h2>
+  <hr />
+
+  
+    
+<div class="member" id="onEntityAdd">
+  
+    <section class="member__title">
+      <a href="/docs/essem/ESSEM/System.html#onEntityAdd">
+        <img
+          src="/docs/icons/link.svg"
+          width="16px"
+          height="16px"
+        />
+      </a>
+      <span>onEntityAdd</span>
+    </section>
+  
+  
+<pre class="signature__container"><code class="signature">onEntityAdd(entity: <a href="/docs/essem/ESSEM/Entity.html">ESSEM.Entity</a>) → {void}</code></pre>
+
+
+  <div class="member__brief"><p>Optional abstract function that gets called whenever a matching entity gets added.</p></div>
+  <div class="member__description"></div>
+
+  
+    
+<div class="table-wrapper">
+  <table class="member-parameters">
+    <caption class="member-parameters__caption">Parameters:</caption>
+    <thead class="member-parameters__head">
+      <tr class="member-parameter-header">
+        <th class="member-parameter-header__name">Name</th>
+        <th class="member-parameter-header__type">Type</th>
+        
+        
+        <th class="member-parameter-header__description">Description</th>
+      </tr>
+    </thead>
+    <tbody class="member-parameters__body">
+      <tr class="member-parameter">
+        <td class="member-parameter__name">
+          entity
+        </td>
+        <td class="member-parameter__type">
+          <a href="/docs/essem/ESSEM/Entity.html">ESSEM.Entity</a>
+        </td>
+        
+        
+        <td class="member-parameter__description"><p>The entity that was added to this.entites.</p></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+  
+
+  
+    
+<div class="table-wrapper">
+  <table class="member-returns">
+    <caption class="member-returns__caption">Returns:</caption>
+    <thead class="member-returns__head">
+      <tr class="member-returns-header">
+        <th class="member-returns-header__type">Type</th>
+        <th class="member-returns-header__description">Description</th>
+      </tr>
+    </thead>
+    <tbody class="member-returns__body">
+      <tr class="member-return">
+        <td class="member-return__type">
+          void
+        </td>
+        <td class="member-return__description"></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+  
+</div>
+
+  
+    
+<div class="member" id="setComponents">
+  
+    <section class="member__title">
+      <a href="/docs/essem/ESSEM/System.html#setComponents">
+        <img
+          src="/docs/icons/link.svg"
+          width="16px"
+          height="16px"
+        />
+      </a>
+      <span>setComponents</span>
+    </section>
+  
+  
+<pre class="signature__container"><code class="signature">setComponents(componentTypes: ComponentClass | string) → {void}</code></pre>
+
+
+  <div class="member__brief"></div>
+  <div class="member__description"><p>Sets the component types that the system will use to collect entities.
+Use like this: <code>this.setComponents(Component1, Componen2, ...);</code></p></div>
+
+  
+    
+<div class="table-wrapper">
+  <table class="member-parameters">
+    <caption class="member-parameters__caption">Parameters:</caption>
+    <thead class="member-parameters__head">
+      <tr class="member-parameter-header">
+        <th class="member-parameter-header__name">Name</th>
+        <th class="member-parameter-header__type">Type</th>
+        
+        
+        <th class="member-parameter-header__description">Description</th>
+      </tr>
+    </thead>
+    <tbody class="member-parameters__body">
+      <tr class="member-parameter">
+        <td class="member-parameter__name">
+          componentTypes
+        </td>
+        <td class="member-parameter__type">
+          ComponentClass | string
+        </td>
+        
+        
+        <td class="member-parameter__description"><p>Parameterised array of component
+classes or component names.</p></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+  
+
+  
+    
+<div class="table-wrapper">
+  <table class="member-returns">
+    <caption class="member-returns__caption">Returns:</caption>
+    <thead class="member-returns__head">
+      <tr class="member-returns-header">
+        <th class="member-returns-header__type">Type</th>
+        <th class="member-returns-header__description">Description</th>
+      </tr>
+    </thead>
+    <tbody class="member-returns__body">
+      <tr class="member-return">
+        <td class="member-return__type">
+          void
+        </td>
+        <td class="member-return__description"></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+  
+</div>
+
+  
+    
+<div class="member" id="setup">
+  
+    <section class="member__title">
+      <a href="/docs/essem/ESSEM/System.html#setup">
+        <img
+          src="/docs/icons/link.svg"
+          width="16px"
+          height="16px"
+        />
+      </a>
+      <span>setup</span>
+    </section>
+  
+  
+<pre class="signature__container"><code class="signature">setup(app: <a href="/docs/essem/ESSEM/Application.html">ESSEM.Application</a>) → {void}</code></pre>
+
+
+  <div class="member__brief"></div>
+  <div class="member__description"><p>Abstract function that gets called when the system is created. This should be overrided to
+setup component types and event listeners.</p></div>
+
+  
+    
+<div class="table-wrapper">
+  <table class="member-parameters">
+    <caption class="member-parameters__caption">Parameters:</caption>
+    <thead class="member-parameters__head">
+      <tr class="member-parameter-header">
+        <th class="member-parameter-header__name">Name</th>
+        <th class="member-parameter-header__type">Type</th>
+        
+        
+        <th class="member-parameter-header__description">Description</th>
+      </tr>
+    </thead>
+    <tbody class="member-parameters__body">
+      <tr class="member-parameter">
+        <td class="member-parameter__name">
+          app
+        </td>
+        <td class="member-parameter__type">
+          <a href="/docs/essem/ESSEM/Application.html">ESSEM.Application</a>
+        </td>
+        
+        
+        <td class="member-parameter__description"><p>The application that the system was registed from. Use this to register event
+listeners and other stuff.</p></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+  
+
+  
+    
+<div class="table-wrapper">
+  <table class="member-returns">
+    <caption class="member-returns__caption">Returns:</caption>
+    <thead class="member-returns__head">
+      <tr class="member-returns-header">
+        <th class="member-returns-header__type">Type</th>
+        <th class="member-returns-header__description">Description</th>
+      </tr>
+    </thead>
+    <tbody class="member-returns__body">
+      <tr class="member-return">
+        <td class="member-return__type">
+          void
+        </td>
+        <td class="member-return__description"></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+  
+</div>
+
+  
+</div>
+
+    
+  </div>
+  <footer class="footer" id="footer-mount-point"></footer>
+</div>
+
+<hr class="page-r-divider" />
+<nav class="page-members-explorer">
+  <div class="page-members-explorer-category">
+    <section class="page-members-explorer-category__title">
+      Summary
+    </section>
+  </div>
+  
+
+<div class="page-members-explorer-category">
+  <section class="page-members-explorer-category__title">Public Properties</section>
+  <ul class="page-members-explorer-category__items">
+    
+      <li class="page-members-explorer__item"><a href=/docs/essem/ESSEM/System.html#entities>entities</a></li>
+    
+      <li class="page-members-explorer__item"><a href=/docs/essem/ESSEM/System.html#typeNames>typeNames</a></li>
+    
+  </ul>
+</div>
+
+  
+
+<div class="page-members-explorer-category">
+  <section class="page-members-explorer-category__title">Protected Properties</section>
+  <ul class="page-members-explorer-category__items">
+    
+      <li class="page-members-explorer__item"><a href=/docs/essem/ESSEM/System.html#scene>scene</a></li>
+    
+  </ul>
+</div>
+
+  
+
+<div class="page-members-explorer-category">
+  <section class="page-members-explorer-category__title">Public Methods</section>
+  <ul class="page-members-explorer-category__items">
+    
+      <li class="page-members-explorer__item"><a href=/docs/essem/ESSEM/System.html#onEntityAdd>onEntityAdd</a></li>
+    
+      <li class="page-members-explorer__item"><a href=/docs/essem/ESSEM/System.html#setComponents>setComponents</a></li>
+    
+      <li class="page-members-explorer__item"><a href=/docs/essem/ESSEM/System.html#setup>setup</a></li>
+    
+  </ul>
+</div>
+
+  
+</nav>
+
+
+
+            <!-- footer in content -->
+          </div>
+        </div>
+      </article>
+      <script src="scripts/linenumber.js"> </script>
+    </body>
+  </div>
+</html>

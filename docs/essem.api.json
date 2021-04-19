@@ -1,0 +1,1301 @@
+{
+	"name": "",
+	"type": "RootDoc",
+	"members": [
+		{
+			"name": "ESSEM",
+			"type": "NSDoc",
+			"brief": "",
+			"description": "",
+			"members": [
+				{
+					"name": "Application",
+					"type": "ClassDoc",
+					"brief": "<p>Class that is used for everything in essem.js.</p>",
+					"description": "<h2>Example</h2>\n<pre><code class=\"hljs language-js\"><span class=\"hljs-comment\">// Create the application</span>\n<span class=\"hljs-keyword\">const</span> app = <span class=\"hljs-keyword\">new</span> ESSEM.Application();\n\n<span class=\"hljs-comment\">// Add the canvas element to the DOM</span>\n<span class=\"hljs-built_in\">document</span>.body.appendChild(app.canvas.element);\n\n<span class=\"hljs-comment\">// Create scene, add entities, add components ect.</span>\n<span class=\"hljs-keyword\">const</span> scene = app.createScene();\n</code></pre>",
+					"members": [
+						{
+							"name": "constructor",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": ""
+						},
+						{
+							"name": "createScene",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "<p>Creates a new scene.</p>",
+							"description": ""
+						},
+						{
+							"name": "registerSystem",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": "<p>Registers a parameterized array of system classes.\nUse like this: <code>app.registerSystem(System1, System2, ...);</code>\nDo all the registering at the start or the system will not work.</p>"
+						},
+						{
+							"name": "shutdown",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "<p>Stops the Application. The canvas is not removed from the DOM so you need to remove it.</p>",
+							"description": ""
+						},
+						{
+							"name": "_onUpdate",
+							"type": "MethodDoc",
+							"access": "private",
+							"scope": "instance",
+							"brief": "<p>The update function that gets called every requestAnimationFrame loop.</p>",
+							"description": ""
+						}
+					]
+				},
+				{
+					"name": "ApplicationInitEvent",
+					"type": "ClassDoc",
+					"brief": "<p>Event that is sent whenever the Application initiates.</p>",
+					"description": "",
+					"members": [
+						{
+							"name": "handled",
+							"type": "PropertyDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": "<p>Whether or not the event has been handled. Set this to true to make it stopped\nbeing sent to all other event listeners.</p>"
+						}
+					]
+				},
+				{
+					"name": "ApplicationUpdateEvent",
+					"type": "ClassDoc",
+					"brief": "<p>Event that is sent whenever the Application updates.</p>",
+					"description": "",
+					"members": [
+						{
+							"name": "delta",
+							"type": "PropertyDoc",
+							"scope": "instance",
+							"brief": "<p>The delta time of the update.</p>",
+							"description": ""
+						},
+						{
+							"name": "handled",
+							"type": "PropertyDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": "<p>Whether or not the event has been handled. Set this to true to make it stopped\nbeing sent to all other event listeners.</p>"
+						},
+						{
+							"name": "constructor",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": ""
+						}
+					]
+				},
+				{
+					"name": "AssertionError",
+					"type": "ClassDoc",
+					"brief": "<p>Error class that is used for {@link ESSEM.assert}.</p>",
+					"description": ""
+				},
+				{
+					"name": "CameraComponent",
+					"type": "ClassDoc",
+					"brief": "",
+					"description": "<p>Component to handle camera stuff\nAll render systems will look for a entity tagged 'MainCamera' as the camera to render with.</p>",
+					"members": [
+						{
+							"name": "setViewportSize",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": ""
+						}
+					]
+				},
+				{
+					"name": "CameraSystem",
+					"type": "ClassDoc",
+					"brief": "<p>Register this system when handling cameras.</p>",
+					"description": "",
+					"members": [
+						{
+							"name": "entities",
+							"type": "PropertyDoc",
+							"scope": "instance",
+							"brief": "<p>The entities that have the system's component types.</p>",
+							"description": ""
+						},
+						{
+							"name": "typeNames",
+							"type": "PropertyDoc",
+							"scope": "instance",
+							"brief": "<p>The name of the component types that has been set.</p>",
+							"description": ""
+						},
+						{
+							"name": "scene",
+							"type": "PropertyDoc",
+							"access": "protected",
+							"scope": "instance",
+							"brief": "<p>The scene that the system is active on.</p>",
+							"description": ""
+						},
+						{
+							"name": "onEntityAdd",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": ""
+						},
+						{
+							"name": "setComponents",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": "<p>Sets the component types that the system will use to collect entities.\nUse like this: <code>this.setComponents(Component1, Componen2, ...);</code></p>"
+						},
+						{
+							"name": "setup",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": "<p>Abstract function that gets called when the system is created. This should be overrided to\nsetup component types and event listeners.</p>"
+						}
+					]
+				},
+				{
+					"name": "Canvas",
+					"type": "ClassDoc",
+					"brief": "",
+					"description": "<p>Used for the canvas element and input events. It is automatically created when creating\n{@link ESSEM.Application} and it can be accesed from <code>app.canvas</code>.</p>",
+					"members": [
+						{
+							"name": "aspectRatio",
+							"type": "PropertyDoc",
+							"scope": "instance",
+							"brief": "<p>The aspect ratio that the canvas will fit to if it resizes.</p>",
+							"description": ""
+						},
+						{
+							"name": "element",
+							"type": "PropertyDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": "<p>The DOM element of the canvas. Add this into your page by doing\n<code>document.body.appendChild(canvas)</code> in order to see yourr graphics.</p>"
+						},
+						{
+							"name": "fixedSize",
+							"type": "PropertyDoc",
+							"scope": "instance",
+							"brief": "<p>Whether or not the canvas is fixed and cannot resize to fit window.</p>",
+							"description": ""
+						},
+						{
+							"name": "height",
+							"type": "PropertyDoc",
+							"scope": "instance",
+							"brief": "<p>The current height of the canvas.</p>",
+							"description": ""
+						},
+						{
+							"name": "width",
+							"type": "PropertyDoc",
+							"scope": "instance",
+							"brief": "<p>The current width of the canvas.</p>",
+							"description": ""
+						},
+						{
+							"name": "constructor",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": ""
+						},
+						{
+							"name": "getMousePosition",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "<p>Gets the current mouse position.</p>",
+							"description": ""
+						},
+						{
+							"name": "isKeyPressed",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "<p>Checks if the specified key is held down.</p>",
+							"description": ""
+						},
+						{
+							"name": "isMousePressed",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "<p>Checks if the specified mouse button is held down.</p>",
+							"description": ""
+						},
+						{
+							"name": "resizeCanvas",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "<p>Resizes the canvas to the specified width and height.</p>",
+							"description": ""
+						},
+						{
+							"name": "resizeFull",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "<p>Resizes the canvas to fit the window with accordence to the aspect ratio.</p>",
+							"description": ""
+						}
+					]
+				},
+				{
+					"name": "CanvasResizedEvent",
+					"type": "ClassDoc",
+					"brief": "",
+					"description": "<p>Event that gets sent whenever the canvas resizes.\nThis won't get called if just the window does though.</p>",
+					"members": [
+						{
+							"name": "handled",
+							"type": "PropertyDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": "<p>Whether or not the event has been handled. Set this to true to make it stopped\nbeing sent to all other event listeners.</p>"
+						},
+						{
+							"name": "height",
+							"type": "PropertyDoc",
+							"scope": "instance",
+							"brief": "<p>The current height of the canvas.</p>",
+							"description": ""
+						},
+						{
+							"name": "width",
+							"type": "PropertyDoc",
+							"scope": "instance",
+							"brief": "<p>The current width of the canvas.</p>",
+							"description": ""
+						}
+					]
+				},
+				{
+					"name": "Entity",
+					"type": "ClassDoc",
+					"brief": "<p>Entity class to handle components in ecs.</p>",
+					"description": "",
+					"members": [
+						{
+							"name": "active",
+							"type": "PropertyDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": "<p>Whether or not the entity is active.\nMaking the entity unactive will remove it from systems and the scene tag collection and put\nback when active.\nSetting the value will make all its children be the same active state unless the child is\nexplicitly set to be not active and the parent(s) is set to be active.</p>"
+						},
+						{
+							"name": "activeSelf",
+							"type": "PropertyDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": "<p>The local active state.\nThis will be regardless of it's parents.</p>"
+						},
+						{
+							"name": "children",
+							"type": "PropertyDoc",
+							"scope": "instance",
+							"brief": "<p>The child entities of the entity mapped by their name.</p>",
+							"description": ""
+						},
+						{
+							"name": "destroyed",
+							"type": "PropertyDoc",
+							"scope": "instance",
+							"brief": "<p>Whether or not the entity is destroyed.</p>",
+							"description": ""
+						},
+						{
+							"name": "name",
+							"type": "PropertyDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": ""
+						},
+						{
+							"name": "addComponent",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "<p>Adds a new component to the entity.</p>",
+							"description": ""
+						},
+						{
+							"name": "addTag",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": ""
+						},
+						{
+							"name": "forEachChildren",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": ""
+						},
+						{
+							"name": "hasAllComponents",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": ""
+						},
+						{
+							"name": "removeComponent",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "<p>Removes a component from the entity.</p>",
+							"description": ""
+						},
+						{
+							"name": "removeTag",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": ""
+						},
+						{
+							"name": "_destroy",
+							"type": "MethodDoc",
+							"access": "private",
+							"scope": "instance",
+							"brief": "",
+							"description": ""
+						},
+						{
+							"name": "_setup",
+							"type": "MethodDoc",
+							"access": "private",
+							"scope": "instance",
+							"brief": "",
+							"description": ""
+						}
+					]
+				},
+				{
+					"name": "Event",
+					"type": "ClassDoc",
+					"brief": "<p>Event base class that all events must extend from.</p>",
+					"description": "",
+					"members": [
+						{
+							"name": "handled",
+							"type": "PropertyDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": "<p>Whether or not the event has been handled. Set this to true to make it stopped\nbeing sent to all other event listeners.</p>"
+						}
+					]
+				},
+				{
+					"name": "EventManager",
+					"type": "ClassDoc",
+					"brief": "",
+					"description": "<p>Used to add listeners and send events. It is automatically created when creating\n{@link ESSEM.Application} and it can be accesed from <code>app.events</code>.</p>",
+					"members": [
+						{
+							"name": "addListener",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "<p>Adds a function to act as a listener to listen and receive the specified event.</p>",
+							"description": ""
+						},
+						{
+							"name": "sendEvent",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "<p>Send a event for all event's listeners to get.</p>",
+							"description": ""
+						}
+					]
+				},
+				{
+					"name": "KeyPressedEvent",
+					"type": "ClassDoc",
+					"brief": "<p>Event that is sent whenever a key is pressed.</p>",
+					"description": "",
+					"members": [
+						{
+							"name": "code",
+							"type": "PropertyDoc",
+							"scope": "instance",
+							"brief": "<p>The key code (from window.KeyboardEvent) of the event.</p>",
+							"description": ""
+						},
+						{
+							"name": "handled",
+							"type": "PropertyDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": "<p>Whether or not the event has been handled. Set this to true to make it stopped\nbeing sent to all other event listeners.</p>"
+						},
+						{
+							"name": "repeated",
+							"type": "PropertyDoc",
+							"scope": "instance",
+							"brief": "<p>If the key was repeated.</p>",
+							"description": ""
+						}
+					]
+				},
+				{
+					"name": "KeyReleasedEvent",
+					"type": "ClassDoc",
+					"brief": "<p>Event that is sent whenever a key is released.</p>",
+					"description": "",
+					"members": [
+						{
+							"name": "code",
+							"type": "PropertyDoc",
+							"scope": "instance",
+							"brief": "<p>The key code (from window.KeyboardEvent) of the event.</p>",
+							"description": ""
+						},
+						{
+							"name": "handled",
+							"type": "PropertyDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": "<p>Whether or not the event has been handled. Set this to true to make it stopped\nbeing sent to all other event listeners.</p>"
+						}
+					]
+				},
+				{
+					"name": "KeyTypedEvent",
+					"type": "ClassDoc",
+					"brief": "",
+					"description": "<p>Event that is sent whenever a key is typed.\nThis uses the actual key that the user types.</p>",
+					"members": [
+						{
+							"name": "handled",
+							"type": "PropertyDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": "<p>Whether or not the event has been handled. Set this to true to make it stopped\nbeing sent to all other event listeners.</p>"
+						},
+						{
+							"name": "key",
+							"type": "PropertyDoc",
+							"scope": "instance",
+							"brief": "<p>The key of the event as in what the user actually typed. Eg: shift + x with be X.</p>",
+							"description": ""
+						}
+					]
+				},
+				{
+					"name": "Loader",
+					"type": "ClassDoc",
+					"brief": "",
+					"description": "<p>Used for loading resources such as images. It is automatically created when creating\n{@link ESSEM.Application} and it can be accesed from <code>app.loader</code>.</p>",
+					"members": [
+						{
+							"name": "loadAll",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": ""
+						}
+					]
+				},
+				{
+					"name": "Matrix3",
+					"type": "ClassDoc",
+					"brief": "<p>The matrix as this class make it a lot faster since there are less values to work with.</p>",
+					"description": "<p>Here's a representation of it:</p>\n<pre><code class=\"hljs language-js\">| xScale | xSkew | xTrans |\n| ySkew  | yScale| yTrans |\n| <span class=\"hljs-number\">0</span>      | <span class=\"hljs-number\">0</span>     | <span class=\"hljs-number\">1</span>      |\n</code></pre>",
+					"members": [
+						{
+							"name": "clone",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": ""
+						},
+						{
+							"name": "identity",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": ""
+						},
+						{
+							"name": "multiplyFront",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": ""
+						},
+						{
+							"name": "scale",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": ""
+						},
+						{
+							"name": "toArray",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": ""
+						},
+						{
+							"name": "transform",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": ""
+						}
+					]
+				},
+				{
+					"name": "MouseMovedEvent",
+					"type": "ClassDoc",
+					"brief": "<p>Event that is sent whenever a the mouse is moved.</p>",
+					"description": "",
+					"members": [
+						{
+							"name": "handled",
+							"type": "PropertyDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": "<p>Whether or not the event has been handled. Set this to true to make it stopped\nbeing sent to all other event listeners.</p>"
+						},
+						{
+							"name": "offsetX",
+							"type": "PropertyDoc",
+							"scope": "instance",
+							"brief": "<p>How much the mouse has moved on the x axis.</p>",
+							"description": ""
+						},
+						{
+							"name": "offsetY",
+							"type": "PropertyDoc",
+							"scope": "instance",
+							"brief": "<p>How much the mouse has moved on the y axis.</p>",
+							"description": ""
+						}
+					]
+				},
+				{
+					"name": "MousePressedEvent",
+					"type": "ClassDoc",
+					"brief": "<p>Event that is sent whenever a the mouse is pressed.</p>",
+					"description": "",
+					"members": [
+						{
+							"name": "handled",
+							"type": "PropertyDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": "<p>Whether or not the event has been handled. Set this to true to make it stopped\nbeing sent to all other event listeners.</p>"
+						}
+					]
+				},
+				{
+					"name": "MouseReleasedEvent",
+					"type": "ClassDoc",
+					"brief": "<p>Event that is sent whenever a the mouse is released.</p>",
+					"description": "",
+					"members": [
+						{
+							"name": "handled",
+							"type": "PropertyDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": "<p>Whether or not the event has been handled. Set this to true to make it stopped\nbeing sent to all other event listeners.</p>"
+						}
+					]
+				},
+				{
+					"name": "MouseScrolledEvent",
+					"type": "ClassDoc",
+					"brief": "<p>Event that is sent whenever a the mouse wheel is scrolled.</p>",
+					"description": "",
+					"members": [
+						{
+							"name": "handled",
+							"type": "PropertyDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": "<p>Whether or not the event has been handled. Set this to true to make it stopped\nbeing sent to all other event listeners.</p>"
+						},
+						{
+							"name": "offsetX",
+							"type": "PropertyDoc",
+							"scope": "instance",
+							"brief": "<p>How much the mouse wheel has scrolled on the x axis.</p>",
+							"description": ""
+						},
+						{
+							"name": "offsetY",
+							"type": "PropertyDoc",
+							"scope": "instance",
+							"brief": "<p>How much the mouse wheel has scrolled on the y axis.</p>",
+							"description": ""
+						}
+					]
+				},
+				{
+					"name": "Scene",
+					"type": "ClassDoc",
+					"brief": "",
+					"description": "<p>Handles all the entities.\nUse the application to create the scene.</p>",
+					"members": [
+						{
+							"name": "entities",
+							"type": "PropertyDoc",
+							"scope": "instance",
+							"brief": "<p>A map containing scene root entities mapped by their entity names.</p>",
+							"description": ""
+						},
+						{
+							"name": "systems",
+							"type": "PropertyDoc",
+							"scope": "instance",
+							"brief": "<p>The instances of the systems for the scene that are registed.</p>",
+							"description": ""
+						},
+						{
+							"name": "createEntity",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "<p>Creates a new entity that is aquired from a pool for efficency.</p>",
+							"description": ""
+						},
+						{
+							"name": "destroyEntity",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "<p>Destroys the entity and all it's children and release them back to the entity poo.</p>",
+							"description": ""
+						},
+						{
+							"name": "getEntitesByTag",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": ""
+						},
+						{
+							"name": "_entityComponentAdd",
+							"type": "MethodDoc",
+							"access": "private",
+							"scope": "instance",
+							"brief": "<p>Gets called whenever a component gets added to an entity.</p>",
+							"description": ""
+						},
+						{
+							"name": "_entityComponentRemove",
+							"type": "MethodDoc",
+							"access": "private",
+							"scope": "instance",
+							"brief": "<p>Gets called whenever a component gets removed from an entity.</p>",
+							"description": ""
+						},
+						{
+							"name": "_entityTagRemove",
+							"type": "MethodDoc",
+							"access": "private",
+							"scope": "instance",
+							"brief": "<p>Gets called whenever a tag gets removed from an entity.</p>",
+							"description": ""
+						}
+					]
+				},
+				{
+					"name": "SpriteComponent",
+					"type": "ClassDoc",
+					"brief": "<p>Component that handles sprite info like textures and colours.</p>",
+					"description": "",
+					"members": [
+						{
+							"name": "color",
+							"type": "PropertyDoc",
+							"scope": "instance",
+							"brief": "<p>Colour of the sprite in hexadecimal.</p>",
+							"description": ""
+						},
+						{
+							"name": "rgbaColor",
+							"type": "PropertyDoc",
+							"scope": "instance",
+							"brief": "<p>The RGBA colour of the sprite as a 4 length Float32Array.</p>",
+							"description": ""
+						},
+						{
+							"name": "texture",
+							"type": "PropertyDoc",
+							"scope": "instance",
+							"brief": "<p>The texture of the sprite in use.</p>",
+							"description": ""
+						},
+						{
+							"name": "constructor",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": ""
+						}
+					]
+				},
+				{
+					"name": "SpriteRendererSystem",
+					"type": "ClassDoc",
+					"brief": "<p>Register this system to render sprites.</p>",
+					"description": "",
+					"members": [
+						{
+							"name": "entities",
+							"type": "PropertyDoc",
+							"scope": "instance",
+							"brief": "<p>The entities that have the system's component types.</p>",
+							"description": ""
+						},
+						{
+							"name": "typeNames",
+							"type": "PropertyDoc",
+							"scope": "instance",
+							"brief": "<p>The name of the component types that has been set.</p>",
+							"description": ""
+						},
+						{
+							"name": "scene",
+							"type": "PropertyDoc",
+							"access": "protected",
+							"scope": "instance",
+							"brief": "<p>The scene that the system is active on.</p>",
+							"description": ""
+						},
+						{
+							"name": "onEntityAdd",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "<p>Optional abstract function that gets called whenever a matching entity gets added.</p>",
+							"description": ""
+						},
+						{
+							"name": "onUpdate",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": ""
+						},
+						{
+							"name": "setComponents",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": "<p>Sets the component types that the system will use to collect entities.\nUse like this: <code>this.setComponents(Component1, Componen2, ...);</code></p>"
+						},
+						{
+							"name": "setup",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": "<p>Abstract function that gets called when the system is created. This should be overrided to\nsetup component types and event listeners.</p>"
+						}
+					]
+				},
+				{
+					"name": "System",
+					"type": "ClassDoc",
+					"brief": "<p>System base class to extend to collect all the wanted entities and do stuff to them.</p>",
+					"description": "",
+					"members": [
+						{
+							"name": "entities",
+							"type": "PropertyDoc",
+							"scope": "instance",
+							"brief": "<p>The entities that have the system's component types.</p>",
+							"description": ""
+						},
+						{
+							"name": "typeNames",
+							"type": "PropertyDoc",
+							"scope": "instance",
+							"brief": "<p>The name of the component types that has been set.</p>",
+							"description": ""
+						},
+						{
+							"name": "scene",
+							"type": "PropertyDoc",
+							"access": "protected",
+							"scope": "instance",
+							"brief": "<p>The scene that the system is active on.</p>",
+							"description": ""
+						},
+						{
+							"name": "onEntityAdd",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "<p>Optional abstract function that gets called whenever a matching entity gets added.</p>",
+							"description": ""
+						},
+						{
+							"name": "setComponents",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": "<p>Sets the component types that the system will use to collect entities.\nUse like this: <code>this.setComponents(Component1, Componen2, ...);</code></p>"
+						},
+						{
+							"name": "setup",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": "<p>Abstract function that gets called when the system is created. This should be overrided to\nsetup component types and event listeners.</p>"
+						}
+					]
+				},
+				{
+					"name": "Texture",
+					"type": "ClassDoc",
+					"brief": "<p>Class that is used to render images.</p>",
+					"description": "",
+					"members": [
+						{
+							"name": "fromURL",
+							"type": "MethodDoc",
+							"scope": "static",
+							"brief": "",
+							"description": ""
+						},
+						{
+							"name": "bind",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "<p>Binds the texture.</p>",
+							"description": ""
+						},
+						{
+							"name": "init",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "<p>Inits the texture. This will get automatically called when binding the texture.</p>",
+							"description": ""
+						}
+					]
+				},
+				{
+					"name": "TransformComponent",
+					"type": "ClassDoc",
+					"brief": "<p>Component that holds the position, scale and rotation of an entity.</p>",
+					"description": "",
+					"members": [
+						{
+							"name": "position",
+							"type": "PropertyDoc",
+							"scope": "instance",
+							"brief": "<p>Position of the component.</p>",
+							"description": ""
+						},
+						{
+							"name": "rotation",
+							"type": "PropertyDoc",
+							"scope": "instance",
+							"brief": "<p>Rotation of the component.</p>",
+							"description": ""
+						},
+						{
+							"name": "scale",
+							"type": "PropertyDoc",
+							"scope": "instance",
+							"brief": "<p>Scale of the component.</p>",
+							"description": ""
+						},
+						{
+							"name": "transformMatrix",
+							"type": "PropertyDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": "<p>Matrix that holds the transform of the component.\nThis value will be cached and invalidated when making any changes to the component.</p>"
+						},
+						{
+							"name": "getGlobalScale",
+							"type": "MethodDoc",
+							"scope": "static",
+							"brief": "",
+							"description": ""
+						},
+						{
+							"name": "getGlobalTransformMatrix",
+							"type": "MethodDoc",
+							"scope": "static",
+							"brief": "<p>Gets the global transform matrix relative to all the entity's parents.</p>",
+							"description": ""
+						},
+						{
+							"name": "constructor",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": ""
+						}
+					]
+				},
+				{
+					"name": "Vector2",
+					"type": "ClassDoc",
+					"brief": "<p>A 2 component vector with x and y.</p>",
+					"description": "",
+					"members": [
+						{
+							"name": "x",
+							"type": "PropertyDoc",
+							"scope": "instance",
+							"brief": "<p>The x component of the vector.</p>",
+							"description": ""
+						},
+						{
+							"name": "y",
+							"type": "PropertyDoc",
+							"scope": "instance",
+							"brief": "<p>The y component of the vector.</p>",
+							"description": ""
+						},
+						{
+							"name": "_array",
+							"type": "PropertyDoc",
+							"access": "private",
+							"scope": "instance",
+							"brief": "<p>The cache for toArray.</p>",
+							"description": ""
+						},
+						{
+							"name": "angle",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": ""
+						},
+						{
+							"name": "approxEquals",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": "<p>Checks to see if this vector is approximately equal to the input vector\naccording to tolerance.</p>"
+						},
+						{
+							"name": "clone",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": ""
+						},
+						{
+							"name": "distance",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": ""
+						},
+						{
+							"name": "divide",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": ""
+						},
+						{
+							"name": "dot",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": ""
+						},
+						{
+							"name": "magnitude",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": ""
+						},
+						{
+							"name": "random",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": ""
+						},
+						{
+							"name": "set",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": ""
+						},
+						{
+							"name": "subtract",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": ""
+						},
+						{
+							"name": "toArray",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": ""
+						}
+					]
+				},
+				{
+					"name": "DEG_TO_RAD",
+					"type": "PropertyDoc",
+					"brief": "",
+					"description": "<p>Constant that converts degrees to radians.\nUse the essem.js provided functions to convert instead.</p>"
+				},
+				{
+					"name": "RAD_TO_DEG",
+					"type": "PropertyDoc",
+					"brief": "",
+					"description": "<p>Constant that converts radians to degrees.\nUse the essem.js provided functions to convert instead.</p>"
+				},
+				{
+					"name": "TWO_PI",
+					"type": "PropertyDoc",
+					"brief": "<p>Constant that is equal to PI * 2.</p>",
+					"description": ""
+				},
+				{
+					"name": "VERSION",
+					"type": "PropertyDoc",
+					"brief": "<p>The version of the essem.js library being used.</p>",
+					"description": ""
+				},
+				{
+					"name": "approxEquals",
+					"type": "FunctionDoc",
+					"brief": "<p>Checks to see if a and b are approximately equal according to the tolerance.</p>",
+					"description": ""
+				},
+				{
+					"name": "assert",
+					"type": "FunctionDoc",
+					"brief": "",
+					"description": "<p>Throws an error if condition is false.\nAll uses if this in the essem.js code will get removed in minified files.</p>"
+				},
+				{
+					"name": "hexToRGBA",
+					"type": "FunctionDoc",
+					"brief": "<p>Converts hexadecimal number to a rbga array.</p>",
+					"description": ""
+				},
+				{
+					"name": "isWebGL2Supported",
+					"type": "FunctionDoc",
+					"brief": "<p>Checks to see if WebGL2 is supported in the browser.</p>",
+					"description": ""
+				},
+				{
+					"name": "sayHello",
+					"type": "FunctionDoc",
+					"brief": "<p>Says hello in essem.js style. Gets called once when the application finishes initiating.</p>",
+					"description": ""
+				},
+				{
+					"name": "skipHello",
+					"type": "FunctionDoc",
+					"brief": "<p>Skips the essem.js hello. Don't call this or else you will have bad luck forever.</p>",
+					"description": ""
+				},
+				{
+					"name": "toDegrees",
+					"type": "FunctionDoc",
+					"brief": "<p>Converts radians to degrees.</p>",
+					"description": ""
+				},
+				{
+					"name": "toRadians",
+					"type": "FunctionDoc",
+					"brief": "<p>Converts degrees to radians.</p>",
+					"description": ""
+				}
+			]
+		},
+		{
+			"name": "AbstractBatchRenderer",
+			"type": "ClassDoc",
+			"brief": "",
+			"description": "",
+			"members": [
+				{
+					"name": "beginScene",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				},
+				{
+					"name": "flush",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				},
+				{
+					"name": "startBatch",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				}
+			]
+		},
+		{
+			"name": "Renderer",
+			"type": "ClassDoc",
+			"brief": "",
+			"description": "",
+			"members": [
+				{
+					"name": "update",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				}
+			]
+		},
+		{
+			"name": "Shader",
+			"type": "ClassDoc",
+			"brief": "",
+			"description": "",
+			"members": [
+				{
+					"name": "dispose",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				},
+				{
+					"name": "init",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				},
+				{
+					"name": "setFloat1",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				},
+				{
+					"name": "setInt1",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				},
+				{
+					"name": "setMatrix3",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				}
+			]
+		},
+		{
+			"name": "SpriteRenderer",
+			"type": "ClassDoc",
+			"brief": "",
+			"description": "",
+			"members": [
+				{
+					"name": "beginScene",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				},
+				{
+					"name": "drawSprite",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				},
+				{
+					"name": "flush",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				},
+				{
+					"name": "startBatch",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				}
+			]
+		},
+		{
+			"name": "VertexArray",
+			"type": "ClassDoc",
+			"brief": "",
+			"description": "",
+			"members": [
+				{
+					"name": "addVertexBuffer",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				},
+				{
+					"name": "bind",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				},
+				{
+					"name": "constructor",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				},
+				{
+					"name": "dispose",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				},
+				{
+					"name": "setIndexBuffer",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				}
+			]
+		},
+		{
+			"name": "swapRemove",
+			"type": "FunctionDoc",
+			"brief": "",
+			"description": ""
+		}
+	]
+}
