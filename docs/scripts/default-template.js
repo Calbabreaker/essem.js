@@ -9645,7 +9645,7 @@ function Search(_ref) {
       width: "240px"
     }
   }), external_React_default.a.createElement("img", {
-    src: getResourceURI("/icons/search.svg"),
+    src: getResourceURI("/essem.js/icons/search.svg"),
     style: {
       alignSelf: "center",
       justifySelf: "end",
