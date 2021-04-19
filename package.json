@@ -18,7 +18,6 @@
         "lint": "eslint --ext .js,.ts . --max-warnings 0",
         "lint:fix": "yarn run lint --fix",
         "test": "jest --verbose",
-        "pretest": "yarn run lint:fix && yarn run build",
         "docs": "webdoc --site-root docs"
     },
     "repository": {

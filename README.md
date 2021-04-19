@@ -45,7 +45,7 @@ app.eventManager.addListener(ESSEM.ApplicationInitEvent, () => {
 });
 ```
 
-### Documentation
+## Documentation
 
 There is documentation but it is not hosted anywhere yet. 
 You can build the documentation by doing `yarn run docs` and viewing the `/docs/` directory.
@@ -61,8 +61,9 @@ First, run `yarn` to install the dependencies.
 Then, to develop the library you should use `yarn run dev` which will setup a development server
 and automatically compiles all the typescript files.
 
-After you made some changes, you should lint and test the code by doing `yarn run test`.
-This will be with github actions soon.
+After you made some changes, you should use `yarn run lint:fix` to lint the code and run 
+`yarn run build && yarn run test` to test the code.
+This will be automatically ran with github actions on every push.
 
 To build the documentation from jsdoc: `yarn run docs`
 
