@@ -9,7 +9,7 @@ on:
 
 jobs:
     test:
-        runs-on: macOS-latest
+        runs-on: ubuntu-latest
         steps:
             - name: Checkout
               uses: actions/checkout@v2
@@ -17,8 +17,8 @@ jobs:
               uses: actions/setup-node@v1
               with: 
                   node-version: 12.x
-            - name: Install yarn
-              run: npm install -g yarn
+            - name: Install yarn and xvfb
+              run: npm install -g yarn && sudo apt-get install xvfb
             - name: Install dependencies
               run: yarn install
             - name: Lint code
@@ -26,4 +26,4 @@ jobs:
             - name: Build library
               run: yarn run build
             - name: Run Unit Tests
-              run: yarn test
+              run: xvfb-run --auto-servernum yarn run test
