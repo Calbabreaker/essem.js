@@ -9,14 +9,20 @@ essem.js is still very much a work in progress but it can render using WebGL fin
 
 #### If using for the browser:
 
-TODO: need to do first release first. cdn will use jsdeliver once have npm package
+Add a script tag to the header (you can swap 0.0.0 for any version):
+
+```html
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/essem.js@0.0.0/build/essem.js"></script>
+</head>
+```
 
 #### If using as a module:
 
-Run `npm install essem` to install essem.js module. Then import essem.js (supports typescript):
+Run `npm install essem.js` to install essem.js module. Then import essem.js (supports typescript):
 
 ```js
-import * as ESSEM from "essem";
+import * as ESSEM from "essem.js";
 ```
 
 
