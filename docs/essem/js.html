@@ -51,7 +51,7 @@ entity component system style manner.</p>
 <h4>If using for the browser:</h4>
 <p>Add a script tag to the header (you can swap 0.0.0 for any version):</p>
 <pre><code class="hljs language-html"><span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;https://cdn.jsdelivr.net/npm/essem.js@0.0.0/build/essem.js&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;https://cdn.jsdelivr.net/npm/essem.js@0.0.1/build/essem.js&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span>
 </code></pre>
 <h4>If using as a module:</h4>
@@ -63,26 +63,26 @@ entity component system style manner.</p>
 <pre><code class="hljs language-js"><span class="hljs-keyword">const</span> app = <span class="hljs-keyword">new</span> ESSEM.Application();
 
 app.registerSystem(ESSEM.CameraSystem, ESSEM.SpriteRendererSystem):
-app.loader.add(<span class="hljs-string">&quot;fish.png&quot;</span>);
+app.loader.add(ESSEM.Texture, <span class="hljs-string">&quot;fish.png&quot;</span>);
 
-<span class="hljs-built_in">document</span>.appendChild(app.canvas.element);
+<span class="hljs-built_in">document</span>.body.appendChild(app.canvas.element);
 
 app.eventManager.addListener(ESSEM.ApplicationInitEvent, <span class="hljs-function">() =&gt;</span> {
     <span class="hljs-keyword">const</span> scene = app.createScene();
     <span class="hljs-keyword">const</span> entity = scene.createEntity();
-    entity.addComponent(<span class="hljs-keyword">new</span> TransformComponent());
-    entity.addComponent(<span class="hljs-keyword">new</span> SpriteRendererComponent(app.loader.resources[<span class="hljs-string">&quot;fish.png&quot;</span>]));
+    entity.addComponent(<span class="hljs-keyword">new</span> ESSEM.TransformComponent());
+    entity.addComponent(<span class="hljs-keyword">new</span> ESSEM.SpriteComponent(app.loader.resources[<span class="hljs-string">&quot;fish.png&quot;</span>]));
 
     <span class="hljs-keyword">const</span> camera = scene.createEntity();
-    entity.addComponent(<span class="hljs-keyword">new</span> TransformComponent());
-    entity.addComponent(<span class="hljs-keyword">new</span> CameraComponent());
+    entity.addComponent(<span class="hljs-keyword">new</span> ESSEM.TransformComponent());
+    entity.addComponent(<span class="hljs-keyword">new</span> ESSEM.CameraComponent());
     entity.addTag(<span class="hljs-string">&quot;MainCamera&quot;</span>);
 });
 </code></pre>
 <h2>Documentation</h2>
 <p>The documentation is <a href="%22https://calbabreaker.github.io/essem.js/docs/%22">here</a>
 You can also build the documentation from the sources by doing <code>yarn run docs</code> and viewing the
-<code>/docs/</code> directory.</p>
+<code>docs/</code> directory.</p>
 <h2>Contributing</h2>
 <p>We're using yarn for this project so make sure it's installed with <code>npm install -g yarn</code> and use
 yarn for every command.</p>
