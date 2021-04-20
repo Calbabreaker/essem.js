@@ -6,6 +6,11 @@ import textureFragmentSrc from "./shaders/texture_frag.glsl";
 import { Texture } from "./texture";
 import { Matrix3 } from "src/math/matrix3";
 
+/**
+ * Base renderer that most renderers extend for batching.
+ *
+ * @memberof ESSEM
+ */
 export abstract class AbstractBatchRenderer {
     static readonly vertexSize = 9; // position (2) + texCoord (2) + texture index (1) + color (4)
     static readonly maxDraws = 1000;

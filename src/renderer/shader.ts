@@ -2,6 +2,11 @@ import { Matrix3 } from "src/math/matrix3";
 import { Vector2 } from "src/math/vector2";
 import { assert } from "src/utils/misc";
 
+/**
+ * Class for interacting with gl shaders.
+ *
+ * @memberof ESSEM
+ */
 export class Shader {
     vertexSrc: string;
     fragmentSrc: string;

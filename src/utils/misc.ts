@@ -29,6 +29,7 @@ export function assert(condition: boolean, message?: string): asserts condition 
  * Gets an item from the map using a key and sets it with a new instance of the class of it
  * doesn't  exist.
  *
+ * @memberof ESSEM
  * @param map - The map to use.
  * @param key - The key of the item.
  * @param defaultClass - The class to create a new instance from.
@@ -43,6 +44,7 @@ export function mapGet<K, V>(map: Map<K, V>, key: K, defaultClass: AnyCtor<V>): 
  * Removes an item from an array by swapping the last element with the removing element and popping
  * the array.
  *
+ * @memberof ESSEM
  * @param array - The array to use.
  * @param index - The index to remove.
  * @return The last item of the array that was swapped to the index.
@@ -54,6 +56,13 @@ export function lastItemSwapRemove<T>(array: T[], index: number): T {
     return lastItem;
 }
 
+/**
+ * Gets the name of the class or just uses string.
+ *
+ * @memberof ESSEM
+ * @param {AnyClass | string} type - Any class or string.
+ * @return The name of the type.
+ */
 export function getTypeName<T>(type: AnyCtor<T> | string): string {
     return (type as AnyCtor<T>).name ?? type;
 }

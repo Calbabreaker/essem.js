@@ -41,19 +41,9 @@ export class TransformComponent {
     }
 
     /**
-     * Rotation of the component.
-     */
-    set rotation(rotation: number) {
-        this._transformValid = false;
-        this._rotation = rotation;
-    }
-
-    get rotation(): number {
-        return this._rotation;
-    }
-
-    /**
      * Position of the component.
+     *
+     * @member {Vector2}
      */
     set position(position: Vector2) {
         this._transformValid = false;
@@ -67,6 +57,8 @@ export class TransformComponent {
 
     /**
      * Scale of the component.
+     *
+     * @member {Vector2}
      */
     set scale(scale: Vector2) {
         this._transformValid = false;
@@ -76,6 +68,20 @@ export class TransformComponent {
     get scale(): Vector2 {
         this._transformValid = false;
         return this._scale;
+    }
+
+    /**
+     * Rotation of the component.
+     *
+     * @member {number}
+     */
+    set rotation(rotation: number) {
+        this._transformValid = false;
+        this._rotation = rotation;
+    }
+
+    get rotation(): number {
+        return this._rotation;
     }
 
     static getGlobalPosition(entity: Entity): Vector2 {
@@ -112,7 +118,7 @@ export class TransformComponent {
      * @return A global transform matrix.
      */
     static getGlobalTransformMatrix(entity: Entity): Matrix3 {
-        const matrix = entity.getComponent(TransformComponent).transformMatrix;
+        const matrix = entity.getComponent(TransformComponent).transformMatrix.clone();
         entity.forEachParent((parent) => {
             matrix.multiplyFront(parent.getComponent(TransformComponent).transformMatrix);
         });

@@ -44,9 +44,9 @@ app.eventManager.addListener(ESSEM.ApplicationInitEvent, () => {
     entity.addComponent(new ESSEM.SpriteComponent(app.loader.resources["fish.png"]));
 
     const camera = scene.createEntity();
-    entity.addComponent(new ESSEM.TransformComponent());
-    entity.addComponent(new ESSEM.CameraComponent());
-    entity.addTag("MainCamera");
+    camera.addComponent(new ESSEM.TransformComponent());
+    camera.addComponent(new ESSEM.CameraComponent());
+    camera.addTag("MainCamera");
 });
 ```
 

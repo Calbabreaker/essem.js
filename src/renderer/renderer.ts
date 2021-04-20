@@ -2,6 +2,13 @@ import { assert } from "src/utils/misc";
 import { isWebGL2Supported } from "src/utils/browser";
 import { hexToRGBA } from "src/utils/colors";
 
+/**
+ * Main renderer class.
+ * It is automatically created when creating {@link ESSEM.Application} and it can be accesed from
+ * `app.renderer`.
+ *
+ * @memberof ESSEM
+ */
 export class Renderer {
     readonly gl: WebGL2RenderingContext;
     readonly maxTextureSlots: number;

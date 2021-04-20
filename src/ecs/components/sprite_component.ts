@@ -21,7 +21,7 @@ export class SpriteComponent {
 
     /**
      * @param texture - Texture to use. This should be resued between other components.
-     * @param color -
+     * @param color - Colour of the sprite in hexadecimal.
      */
     constructor(texture: Texture, color = 0xffffff) {
         this.texture = texture;
@@ -30,6 +30,8 @@ export class SpriteComponent {
 
     /**
      * Colour of the sprite in hexadecimal.
+     *
+     * @member {number}
      */
     set color(hex: number) {
         this._hexColor = hex;

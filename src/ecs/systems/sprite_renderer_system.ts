@@ -7,7 +7,7 @@ import { System } from "../system";
 import { TransformComponent } from "src/ecs/components/transform_component";
 import { Vector2 } from "src/math/vector2";
 
-export class SpriteRenderer extends AbstractBatchRenderer {
+class SpriteRenderer extends AbstractBatchRenderer {
     // prettier-ignore
     static vertexPositions: Float32Array = new Float32Array([
         -0.5, -0.5,   
@@ -71,7 +71,7 @@ export class SpriteRendererSystem extends System {
         const mainCamera = this.scene.getEntitesByTag("MainCamera")[0];
         if (mainCamera === undefined) return;
 
-        const viewProjection = mainCamera.getComponent(CameraComponent).getProjectionMatrix();
+        const viewProjection = mainCamera.getComponent(CameraComponent).projectionMatrix;
         viewProjection.multiply(
             mainCamera.getComponent(TransformComponent).transformMatrix.invert()
         );

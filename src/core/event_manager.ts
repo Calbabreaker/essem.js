@@ -17,8 +17,9 @@ export abstract class Event {
 export type EventListenerFunc<T extends Event = Event> = (event: T) => void;
 
 /**
- * Used to add listeners and send events. It is automatically created when creating
- * {@link ESSEM.Application} and it can be accesed from `app.events`.
+ * Used to add listeners and send events.
+ * It is automatically created when creating {@link ESSEM.Application} and it can be accesed from
+ * `app.events`.
  *
  * @memberof ESSEM
  */

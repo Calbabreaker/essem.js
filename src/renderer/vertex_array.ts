@@ -1,5 +1,8 @@
 import { assert } from "src/utils/misc";
 
+/**
+ * @memberof ESSEM
+ */
 export class VertexArray {
     glVertexArray: WebGLVertexArrayObject;
     glIndexBuffer: WebGLBuffer | null = null;

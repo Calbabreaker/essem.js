@@ -1,5 +1,10 @@
 import { assert } from "src/utils/misc";
 
+/**
+ * Class for handling audio.
+ *
+ * @memberof ESSEM
+ */
 export class AudioClip {
     volume: number = 1;
     loop: boolean = false;

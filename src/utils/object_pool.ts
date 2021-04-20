@@ -1,5 +1,8 @@
 export type ObjectClassType<T, M> = new (id: number, objectManager: M) => T;
 
+/**
+ * @memberof ESSEM
+ */
 export class ObjectPool<T, M = undefined> {
     objectClass: ObjectClassType<T, M>;
     objectManager: M;
