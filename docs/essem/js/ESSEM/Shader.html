@@ -3,7 +3,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>essem.js: VertexArray</title>
+    <title>essem.js: Shader</title>
 
     <link type="text/css" rel="stylesheet" href="/essem.js/docs/styles/index.css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
@@ -47,71 +47,21 @@
         &gt;
       
       
-      <span>VertexArray</span>
+        <a href=/docs/essem/js/ESSEM.html>ESSEM</a>
+        &gt;
+      
+      <span>Shader</span>
     </div>
-    <h1 class="document__title">VertexArray</h1>
+    <h1 class="document__title">ESSEM.Shader</h1>
     
-<pre class="signature__container"><code class="signature">private class VertexArray</code></pre>
+<pre class="signature__container"><code class="signature">class Shader</code></pre>
 
 
-    <div class="document__brief"><p>TEMPERARY</p></div>
+    <div class="document__brief"><p>Class for interacting with gl shaders.</p></div>
     <div class="document__description"></div>
 
     
       
-<div class="members">
-  <h2 class="members__category">Constructor</h2>
-  <hr />
-
-  
-    
-<div class="member" id="constructor">
-  
-  
-<pre class="signature__container"><code class="signature">new VertexArray(gl: WebGL2RenderingContext) → {}</code></pre>
-
-
-  <div class="member__brief"></div>
-  <div class="member__description"></div>
-
-  
-    
-<div class="table-wrapper">
-  <table class="member-parameters">
-    <caption class="member-parameters__caption">Parameters:</caption>
-    <thead class="member-parameters__head">
-      <tr class="member-parameter-header">
-        <th class="member-parameter-header__name">Name</th>
-        <th class="member-parameter-header__type">Type</th>
-        
-        
-        <th class="member-parameter-header__description">Description</th>
-      </tr>
-    </thead>
-    <tbody class="member-parameters__body">
-      <tr class="member-parameter">
-        <td class="member-parameter__name">
-          gl
-        </td>
-        <td class="member-parameter__type">
-          WebGL2RenderingContext
-        </td>
-        
-        
-        <td class="member-parameter__description"></td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-
-  
-
-  
-</div>
-
-  
-</div>
-
     
 
     
@@ -134,7 +84,7 @@
         <img class="accordion__bg-inactive" src="/essem.js/docs/icons/chevron-down.svg"/>
         <img class="accordion__bg-active" src="/essem.js/docs/icons/chevron-up.svg"/>
       </button>
-      <h3 class="members__subcategory">Methods from VertexArray</h3>
+      <h3 class="members__subcategory">Methods from Shader</h3>
     </section>
     <div class="accordion__content table-wrapper">
       <table class="summary">
@@ -143,12 +93,12 @@
             <tr>
               <td class="summary__signature">
                 
-                  WebGLBuffer
+                  void
                 
               </td>
               <td>
                 <section class="summary__signature">
-                  <a href="/essem.js/docs/essem/js/VertexArray.html#addVertexBuffer">addVertexBuffer(gl: WebGL2RenderingContext, vertices: Float32Array | Float64Array, usage)</a>
+                  <a href="/essem.js/docs/essem/js/ESSEM/Shader.html#dispose">dispose(gl: WebGL2RenderingContext)</a>
                 </section>
                 <section>
                   
@@ -164,7 +114,7 @@
               </td>
               <td>
                 <section class="summary__signature">
-                  <a href="/essem.js/docs/essem/js/VertexArray.html#bind">bind(gl: WebGL2RenderingContext)</a>
+                  <a href="/essem.js/docs/essem/js/ESSEM/Shader.html#init">init(gl: WebGL2RenderingContext)</a>
                 </section>
                 <section>
                   
@@ -180,7 +130,7 @@
               </td>
               <td>
                 <section class="summary__signature">
-                  <a href="/essem.js/docs/essem/js/VertexArray.html#dispose">dispose(gl: WebGL2RenderingContext)</a>
+                  <a href="/essem.js/docs/essem/js/ESSEM/Shader.html#setFloat1">setFloat1(gl: WebGL2RenderingContext, name: string, value: number)</a>
                 </section>
                 <section>
                   
@@ -191,12 +141,28 @@
             <tr>
               <td class="summary__signature">
                 
-                  WebGLBuffer
+                  void
                 
               </td>
               <td>
                 <section class="summary__signature">
-                  <a href="/essem.js/docs/essem/js/VertexArray.html#setIndexBuffer">setIndexBuffer(gl: WebGL2RenderingContext, indices: Uint8Array | Uint16Array | Uint32Array)</a>
+                  <a href="/essem.js/docs/essem/js/ESSEM/Shader.html#setInt1">setInt1(gl: WebGL2RenderingContext, name: string, value: number)</a>
+                </section>
+                <section>
+                  
+                </section>
+              </td>
+            </tr>
+          
+            <tr>
+              <td class="summary__signature">
+                
+                  void
+                
+              </td>
+              <td>
+                <section class="summary__signature">
+                  <a href="/essem.js/docs/essem/js/ESSEM/Shader.html#setMatrix3">setMatrix3(gl: WebGL2RenderingContext, name: string, value: <a href="/essem.js/docs/essem/js/ESSEM/Matrix3.html">ESSEM.Matrix3</a>)</a>
                 </section>
                 <section>
                   
@@ -230,188 +196,10 @@
 
   
     
-<div class="member" id="addVertexBuffer">
-  
-    <section class="member__title">
-      <a href="/essem.js/docs/essem/js/VertexArray.html#addVertexBuffer">
-        <img
-          src="/essem.js/docs/icons/link.svg"
-          width="16px"
-          height="16px"
-        />
-      </a>
-      <span>addVertexBuffer</span>
-    </section>
-  
-  
-<pre class="signature__container"><code class="signature">addVertexBuffer(gl: WebGL2RenderingContext, vertices: Float32Array | Float64Array, usage) → {WebGLBuffer}</code></pre>
-
-
-  <div class="member__brief"></div>
-  <div class="member__description"></div>
-
-  
-    
-<div class="table-wrapper">
-  <table class="member-parameters">
-    <caption class="member-parameters__caption">Parameters:</caption>
-    <thead class="member-parameters__head">
-      <tr class="member-parameter-header">
-        <th class="member-parameter-header__name">Name</th>
-        <th class="member-parameter-header__type">Type</th>
-        
-        
-        <th class="member-parameter-header__description">Description</th>
-      </tr>
-    </thead>
-    <tbody class="member-parameters__body">
-      <tr class="member-parameter">
-        <td class="member-parameter__name">
-          gl
-        </td>
-        <td class="member-parameter__type">
-          WebGL2RenderingContext
-        </td>
-        
-        
-        <td class="member-parameter__description"></td>
-      </tr><tr class="member-parameter">
-        <td class="member-parameter__name">
-          vertices
-        </td>
-        <td class="member-parameter__type">
-          Float32Array | Float64Array
-        </td>
-        
-        
-        <td class="member-parameter__description"></td>
-      </tr><tr class="member-parameter">
-        <td class="member-parameter__name">
-          usage
-        </td>
-        <td class="member-parameter__type">
-          
-        </td>
-        
-        
-        <td class="member-parameter__description"></td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-
-  
-
-  
-    
-<div class="table-wrapper">
-  <table class="member-returns">
-    <caption class="member-returns__caption">Returns:</caption>
-    <thead class="member-returns__head">
-      <tr class="member-returns-header">
-        <th class="member-returns-header__type">Type</th>
-        <th class="member-returns-header__description">Description</th>
-      </tr>
-    </thead>
-    <tbody class="member-returns__body">
-      <tr class="member-return">
-        <td class="member-return__type">
-          WebGLBuffer
-        </td>
-        <td class="member-return__description"></td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-
-  
-</div>
-
-  
-    
-<div class="member" id="bind">
-  
-    <section class="member__title">
-      <a href="/essem.js/docs/essem/js/VertexArray.html#bind">
-        <img
-          src="/essem.js/docs/icons/link.svg"
-          width="16px"
-          height="16px"
-        />
-      </a>
-      <span>bind</span>
-    </section>
-  
-  
-<pre class="signature__container"><code class="signature">bind(gl: WebGL2RenderingContext) → {void}</code></pre>
-
-
-  <div class="member__brief"></div>
-  <div class="member__description"></div>
-
-  
-    
-<div class="table-wrapper">
-  <table class="member-parameters">
-    <caption class="member-parameters__caption">Parameters:</caption>
-    <thead class="member-parameters__head">
-      <tr class="member-parameter-header">
-        <th class="member-parameter-header__name">Name</th>
-        <th class="member-parameter-header__type">Type</th>
-        
-        
-        <th class="member-parameter-header__description">Description</th>
-      </tr>
-    </thead>
-    <tbody class="member-parameters__body">
-      <tr class="member-parameter">
-        <td class="member-parameter__name">
-          gl
-        </td>
-        <td class="member-parameter__type">
-          WebGL2RenderingContext
-        </td>
-        
-        
-        <td class="member-parameter__description"></td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-
-  
-
-  
-    
-<div class="table-wrapper">
-  <table class="member-returns">
-    <caption class="member-returns__caption">Returns:</caption>
-    <thead class="member-returns__head">
-      <tr class="member-returns-header">
-        <th class="member-returns-header__type">Type</th>
-        <th class="member-returns-header__description">Description</th>
-      </tr>
-    </thead>
-    <tbody class="member-returns__body">
-      <tr class="member-return">
-        <td class="member-return__type">
-          void
-        </td>
-        <td class="member-return__description"></td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-
-  
-</div>
-
-  
-    
 <div class="member" id="dispose">
   
     <section class="member__title">
-      <a href="/essem.js/docs/essem/js/VertexArray.html#dispose">
+      <a href="/essem.js/docs/essem/js/ESSEM/Shader.html#dispose">
         <img
           src="/essem.js/docs/icons/link.svg"
           width="16px"
@@ -487,21 +275,100 @@
 
   
     
-<div class="member" id="setIndexBuffer">
+<div class="member" id="init">
   
     <section class="member__title">
-      <a href="/essem.js/docs/essem/js/VertexArray.html#setIndexBuffer">
+      <a href="/essem.js/docs/essem/js/ESSEM/Shader.html#init">
         <img
           src="/essem.js/docs/icons/link.svg"
           width="16px"
           height="16px"
         />
       </a>
-      <span>setIndexBuffer</span>
+      <span>init</span>
     </section>
   
   
-<pre class="signature__container"><code class="signature">setIndexBuffer(gl: WebGL2RenderingContext, indices: Uint8Array | Uint16Array | Uint32Array) → {WebGLBuffer}</code></pre>
+<pre class="signature__container"><code class="signature">init(gl: WebGL2RenderingContext) → {void}</code></pre>
+
+
+  <div class="member__brief"></div>
+  <div class="member__description"></div>
+
+  
+    
+<div class="table-wrapper">
+  <table class="member-parameters">
+    <caption class="member-parameters__caption">Parameters:</caption>
+    <thead class="member-parameters__head">
+      <tr class="member-parameter-header">
+        <th class="member-parameter-header__name">Name</th>
+        <th class="member-parameter-header__type">Type</th>
+        
+        
+        <th class="member-parameter-header__description">Description</th>
+      </tr>
+    </thead>
+    <tbody class="member-parameters__body">
+      <tr class="member-parameter">
+        <td class="member-parameter__name">
+          gl
+        </td>
+        <td class="member-parameter__type">
+          WebGL2RenderingContext
+        </td>
+        
+        
+        <td class="member-parameter__description"></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+  
+
+  
+    
+<div class="table-wrapper">
+  <table class="member-returns">
+    <caption class="member-returns__caption">Returns:</caption>
+    <thead class="member-returns__head">
+      <tr class="member-returns-header">
+        <th class="member-returns-header__type">Type</th>
+        <th class="member-returns-header__description">Description</th>
+      </tr>
+    </thead>
+    <tbody class="member-returns__body">
+      <tr class="member-return">
+        <td class="member-return__type">
+          void
+        </td>
+        <td class="member-return__description"></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+  
+</div>
+
+  
+    
+<div class="member" id="setFloat1">
+  
+    <section class="member__title">
+      <a href="/essem.js/docs/essem/js/ESSEM/Shader.html#setFloat1">
+        <img
+          src="/essem.js/docs/icons/link.svg"
+          width="16px"
+          height="16px"
+        />
+      </a>
+      <span>setFloat1</span>
+    </section>
+  
+  
+<pre class="signature__container"><code class="signature">setFloat1(gl: WebGL2RenderingContext, name: string, value: number) → {void}</code></pre>
 
 
   <div class="member__brief"></div>
@@ -534,10 +401,20 @@
         <td class="member-parameter__description"></td>
       </tr><tr class="member-parameter">
         <td class="member-parameter__name">
-          indices
+          name
         </td>
         <td class="member-parameter__type">
-          Uint8Array | Uint16Array | Uint32Array
+          string
+        </td>
+        
+        
+        <td class="member-parameter__description"></td>
+      </tr><tr class="member-parameter">
+        <td class="member-parameter__name">
+          value
+        </td>
+        <td class="member-parameter__type">
+          number
         </td>
         
         
@@ -563,7 +440,205 @@
     <tbody class="member-returns__body">
       <tr class="member-return">
         <td class="member-return__type">
-          WebGLBuffer
+          void
+        </td>
+        <td class="member-return__description"></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+  
+</div>
+
+  
+    
+<div class="member" id="setInt1">
+  
+    <section class="member__title">
+      <a href="/essem.js/docs/essem/js/ESSEM/Shader.html#setInt1">
+        <img
+          src="/essem.js/docs/icons/link.svg"
+          width="16px"
+          height="16px"
+        />
+      </a>
+      <span>setInt1</span>
+    </section>
+  
+  
+<pre class="signature__container"><code class="signature">setInt1(gl: WebGL2RenderingContext, name: string, value: number) → {void}</code></pre>
+
+
+  <div class="member__brief"></div>
+  <div class="member__description"></div>
+
+  
+    
+<div class="table-wrapper">
+  <table class="member-parameters">
+    <caption class="member-parameters__caption">Parameters:</caption>
+    <thead class="member-parameters__head">
+      <tr class="member-parameter-header">
+        <th class="member-parameter-header__name">Name</th>
+        <th class="member-parameter-header__type">Type</th>
+        
+        
+        <th class="member-parameter-header__description">Description</th>
+      </tr>
+    </thead>
+    <tbody class="member-parameters__body">
+      <tr class="member-parameter">
+        <td class="member-parameter__name">
+          gl
+        </td>
+        <td class="member-parameter__type">
+          WebGL2RenderingContext
+        </td>
+        
+        
+        <td class="member-parameter__description"></td>
+      </tr><tr class="member-parameter">
+        <td class="member-parameter__name">
+          name
+        </td>
+        <td class="member-parameter__type">
+          string
+        </td>
+        
+        
+        <td class="member-parameter__description"></td>
+      </tr><tr class="member-parameter">
+        <td class="member-parameter__name">
+          value
+        </td>
+        <td class="member-parameter__type">
+          number
+        </td>
+        
+        
+        <td class="member-parameter__description"></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+  
+
+  
+    
+<div class="table-wrapper">
+  <table class="member-returns">
+    <caption class="member-returns__caption">Returns:</caption>
+    <thead class="member-returns__head">
+      <tr class="member-returns-header">
+        <th class="member-returns-header__type">Type</th>
+        <th class="member-returns-header__description">Description</th>
+      </tr>
+    </thead>
+    <tbody class="member-returns__body">
+      <tr class="member-return">
+        <td class="member-return__type">
+          void
+        </td>
+        <td class="member-return__description"></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+  
+</div>
+
+  
+    
+<div class="member" id="setMatrix3">
+  
+    <section class="member__title">
+      <a href="/essem.js/docs/essem/js/ESSEM/Shader.html#setMatrix3">
+        <img
+          src="/essem.js/docs/icons/link.svg"
+          width="16px"
+          height="16px"
+        />
+      </a>
+      <span>setMatrix3</span>
+    </section>
+  
+  
+<pre class="signature__container"><code class="signature">setMatrix3(gl: WebGL2RenderingContext, name: string, value: <a href="/essem.js/docs/essem/js/ESSEM/Matrix3.html">ESSEM.Matrix3</a>) → {void}</code></pre>
+
+
+  <div class="member__brief"></div>
+  <div class="member__description"></div>
+
+  
+    
+<div class="table-wrapper">
+  <table class="member-parameters">
+    <caption class="member-parameters__caption">Parameters:</caption>
+    <thead class="member-parameters__head">
+      <tr class="member-parameter-header">
+        <th class="member-parameter-header__name">Name</th>
+        <th class="member-parameter-header__type">Type</th>
+        
+        
+        <th class="member-parameter-header__description">Description</th>
+      </tr>
+    </thead>
+    <tbody class="member-parameters__body">
+      <tr class="member-parameter">
+        <td class="member-parameter__name">
+          gl
+        </td>
+        <td class="member-parameter__type">
+          WebGL2RenderingContext
+        </td>
+        
+        
+        <td class="member-parameter__description"></td>
+      </tr><tr class="member-parameter">
+        <td class="member-parameter__name">
+          name
+        </td>
+        <td class="member-parameter__type">
+          string
+        </td>
+        
+        
+        <td class="member-parameter__description"></td>
+      </tr><tr class="member-parameter">
+        <td class="member-parameter__name">
+          value
+        </td>
+        <td class="member-parameter__type">
+          <a href="/essem.js/docs/essem/js/ESSEM/Matrix3.html">ESSEM.Matrix3</a>
+        </td>
+        
+        
+        <td class="member-parameter__description"></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+  
+
+  
+    
+<div class="table-wrapper">
+  <table class="member-returns">
+    <caption class="member-returns__caption">Returns:</caption>
+    <thead class="member-returns__head">
+      <tr class="member-returns-header">
+        <th class="member-returns-header__type">Type</th>
+        <th class="member-returns-header__description">Description</th>
+      </tr>
+    </thead>
+    <tbody class="member-returns__body">
+      <tr class="member-return">
+        <td class="member-return__type">
+          void
         </td>
         <td class="member-return__description"></td>
       </tr>
@@ -597,13 +672,15 @@
   <section class="page-members-explorer-category__title">Public Methods</section>
   <ul class="page-members-explorer-category__items">
     
-      <li class="page-members-explorer__item"><a href=/docs/essem/js/VertexArray.html#addVertexBuffer>addVertexBuffer</a></li>
+      <li class="page-members-explorer__item"><a href=/docs/essem/js/ESSEM/Shader.html#dispose>dispose</a></li>
     
-      <li class="page-members-explorer__item"><a href=/docs/essem/js/VertexArray.html#bind>bind</a></li>
+      <li class="page-members-explorer__item"><a href=/docs/essem/js/ESSEM/Shader.html#init>init</a></li>
     
-      <li class="page-members-explorer__item"><a href=/docs/essem/js/VertexArray.html#dispose>dispose</a></li>
+      <li class="page-members-explorer__item"><a href=/docs/essem/js/ESSEM/Shader.html#setFloat1>setFloat1</a></li>
     
-      <li class="page-members-explorer__item"><a href=/docs/essem/js/VertexArray.html#setIndexBuffer>setIndexBuffer</a></li>
+      <li class="page-members-explorer__item"><a href=/docs/essem/js/ESSEM/Shader.html#setInt1>setInt1</a></li>
+    
+      <li class="page-members-explorer__item"><a href=/docs/essem/js/ESSEM/Shader.html#setMatrix3>setMatrix3</a></li>
     
   </ul>
 </div>

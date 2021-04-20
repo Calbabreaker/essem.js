@@ -74,9 +74,9 @@ app.eventManager.addListener(ESSEM.ApplicationInitEvent, <span class="hljs-funct
     entity.addComponent(<span class="hljs-keyword">new</span> ESSEM.SpriteComponent(app.loader.resources[<span class="hljs-string">&quot;fish.png&quot;</span>]));
 
     <span class="hljs-keyword">const</span> camera = scene.createEntity();
-    entity.addComponent(<span class="hljs-keyword">new</span> ESSEM.TransformComponent());
-    entity.addComponent(<span class="hljs-keyword">new</span> ESSEM.CameraComponent());
-    entity.addTag(<span class="hljs-string">&quot;MainCamera&quot;</span>);
+    camera.addComponent(<span class="hljs-keyword">new</span> ESSEM.TransformComponent());
+    camera.addComponent(<span class="hljs-keyword">new</span> ESSEM.CameraComponent());
+    camera.addTag(<span class="hljs-string">&quot;MainCamera&quot;</span>);
 });
 </code></pre>
 <h2>Documentation</h2>

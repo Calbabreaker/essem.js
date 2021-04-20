@@ -3,7 +3,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>essem.js: EventManager</title>
+    <title>essem.js: SpriteRenderer</title>
 
     <link type="text/css" rel="stylesheet" href="/essem.js/docs/styles/index.css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
@@ -47,20 +47,15 @@
         &gt;
       
       
-        <a href=/docs/essem/js/ESSEM.html>ESSEM</a>
-        &gt;
-      
-      <span>EventManager</span>
+      <span>SpriteRenderer</span>
     </div>
-    <h1 class="document__title">ESSEM.EventManager</h1>
+    <h1 class="document__title">SpriteRenderer</h1>
     
-<pre class="signature__container"><code class="signature">class EventManager</code></pre>
+<pre class="signature__container"><code class="signature">class SpriteRenderer extends <a href="/essem.js/docs/essem/js/ESSEM/AbstractBatchRenderer.html">ESSEM.AbstractBatchRenderer</a></code></pre>
 
 
     <div class="document__brief"></div>
-    <div class="document__description"><p>Used to add listeners and send events.
-It is automatically created when creating <a href=/docs/essem/js/ESSEM/Application.html>ESSEM.Application</a> and it can be accesed from
-<code>app.events</code>.</p></div>
+    <div class="document__description"></div>
 
     
       
@@ -86,7 +81,7 @@ It is automatically created when creating <a href=/docs/essem/js/ESSEM/Applicati
         <img class="accordion__bg-inactive" src="/essem.js/docs/icons/chevron-down.svg"/>
         <img class="accordion__bg-active" src="/essem.js/docs/icons/chevron-up.svg"/>
       </button>
-      <h3 class="members__subcategory">Methods from EventManager</h3>
+      <h3 class="members__subcategory">Methods from SpriteRenderer</h3>
     </section>
     <div class="accordion__content table-wrapper">
       <table class="summary">
@@ -100,29 +95,9 @@ It is automatically created when creating <a href=/docs/essem/js/ESSEM/Applicati
               </td>
               <td>
                 <section class="summary__signature">
-                  <a href="/essem.js/docs/essem/js/ESSEM/EventManager.html#addListener">addListener(eventType: AnyCtor | string, listenerFunc: EventListenerFunc)</a>
+                  <a href="/essem.js/docs/essem/js/SpriteRenderer.html#drawSprite">drawSprite(entity: <a href="/essem.js/docs/essem/js/ESSEM/Entity.html">ESSEM.Entity</a>)</a>
                 </section>
                 <section>
-                  
-                    <p>Adds a function to act as a listener to listen and receive the specified event.</p>
-                  
-                </section>
-              </td>
-            </tr>
-          
-            <tr>
-              <td class="summary__signature">
-                
-                  void
-                
-              </td>
-              <td>
-                <section class="summary__signature">
-                  <a href="/essem.js/docs/essem/js/ESSEM/EventManager.html#sendEvent">sendEvent(event: <a href="/essem.js/docs/essem/js/ESSEM/Event.html">ESSEM.Event</a>)</a>
-                </section>
-                <section>
-                  
-                    <p>Send a event for all event's listeners to get.</p>
                   
                 </section>
               </td>
@@ -137,9 +112,76 @@ It is automatically created when creating <a href=/docs/essem/js/ESSEM/Applicati
   
 
 
+  
 
   
 
+
+  
+  <div class="accordion">
+    <section class="accordion__toggle">
+      <button>
+        <img class="accordion__bg-inactive" src="/essem.js/docs/icons/chevron-down.svg"/>
+        <img class="accordion__bg-active" src="/essem.js/docs/icons/chevron-up.svg"/>
+      </button>
+      <h3 class="members__subcategory">Methods inherited from AbstractBatchRenderer</h3>
+    </section>
+    <div class="accordion__content table-wrapper">
+      <table class="summary">
+        <tbody>
+          
+            <tr>
+              <td class="summary__signature">
+                
+                  void
+                
+              </td>
+              <td>
+                <section class="summary__signature">
+                  <a href="/essem.js/docs/essem/js/ESSEM/AbstractBatchRenderer.html#beginScene">beginScene(viewProjection: <a href="/essem.js/docs/essem/js/ESSEM/Matrix3.html">ESSEM.Matrix3</a>)</a>
+                </section>
+                <section>
+                  
+                </section>
+              </td>
+            </tr>
+          
+            <tr>
+              <td class="summary__signature">
+                
+                  void
+                
+              </td>
+              <td>
+                <section class="summary__signature">
+                  <a href="/essem.js/docs/essem/js/ESSEM/AbstractBatchRenderer.html#flush">flush()</a>
+                </section>
+                <section>
+                  
+                </section>
+              </td>
+            </tr>
+          
+            <tr>
+              <td class="summary__signature">
+                
+                  void
+                
+              </td>
+              <td>
+                <section class="summary__signature">
+                  <a href="/essem.js/docs/essem/js/ESSEM/AbstractBatchRenderer.html#startBatch">startBatch()</a>
+                </section>
+                <section>
+                  
+                </section>
+              </td>
+            </tr>
+          
+        </tbody>
+      </table>
+    </div>
+  </div>
 
 
 </div>
@@ -154,24 +196,24 @@ It is automatically created when creating <a href=/docs/essem/js/ESSEM/Applicati
 
   
     
-<div class="member" id="addListener">
+<div class="member" id="drawSprite">
   
     <section class="member__title">
-      <a href="/essem.js/docs/essem/js/ESSEM/EventManager.html#addListener">
+      <a href="/essem.js/docs/essem/js/SpriteRenderer.html#drawSprite">
         <img
           src="/essem.js/docs/icons/link.svg"
           width="16px"
           height="16px"
         />
       </a>
-      <span>addListener</span>
+      <span>drawSprite</span>
     </section>
   
   
-<pre class="signature__container"><code class="signature">addListener(eventType: AnyCtor | string, listenerFunc: EventListenerFunc) → {void}</code></pre>
+<pre class="signature__container"><code class="signature">drawSprite(entity: <a href="/essem.js/docs/essem/js/ESSEM/Entity.html">ESSEM.Entity</a>) → {void}</code></pre>
 
 
-  <div class="member__brief"><p>Adds a function to act as a listener to listen and receive the specified event.</p></div>
+  <div class="member__brief"></div>
   <div class="member__description"></div>
 
   
@@ -191,104 +233,14 @@ It is automatically created when creating <a href=/docs/essem/js/ESSEM/Applicati
     <tbody class="member-parameters__body">
       <tr class="member-parameter">
         <td class="member-parameter__name">
-          eventType
+          entity
         </td>
         <td class="member-parameter__type">
-          AnyCtor | string
+          <a href="/essem.js/docs/essem/js/ESSEM/Entity.html">ESSEM.Entity</a>
         </td>
         
         
-        <td class="member-parameter__description"><p>The event class or name for the listener to listen to.</p></td>
-      </tr><tr class="member-parameter">
-        <td class="member-parameter__name">
-          listenerFunc
-        </td>
-        <td class="member-parameter__type">
-          EventListenerFunc
-        </td>
-        
-        
-        <td class="member-parameter__description"><p>The function that will receive the events.</p></td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-
-  
-
-  
-    
-<div class="table-wrapper">
-  <table class="member-returns">
-    <caption class="member-returns__caption">Returns:</caption>
-    <thead class="member-returns__head">
-      <tr class="member-returns-header">
-        <th class="member-returns-header__type">Type</th>
-        <th class="member-returns-header__description">Description</th>
-      </tr>
-    </thead>
-    <tbody class="member-returns__body">
-      <tr class="member-return">
-        <td class="member-return__type">
-          void
-        </td>
-        <td class="member-return__description"></td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-
-  
-</div>
-
-  
-    
-<div class="member" id="sendEvent">
-  
-    <section class="member__title">
-      <a href="/essem.js/docs/essem/js/ESSEM/EventManager.html#sendEvent">
-        <img
-          src="/essem.js/docs/icons/link.svg"
-          width="16px"
-          height="16px"
-        />
-      </a>
-      <span>sendEvent</span>
-    </section>
-  
-  
-<pre class="signature__container"><code class="signature">sendEvent(event: <a href="/essem.js/docs/essem/js/ESSEM/Event.html">ESSEM.Event</a>) → {void}</code></pre>
-
-
-  <div class="member__brief"><p>Send a event for all event's listeners to get.</p></div>
-  <div class="member__description"></div>
-
-  
-    
-<div class="table-wrapper">
-  <table class="member-parameters">
-    <caption class="member-parameters__caption">Parameters:</caption>
-    <thead class="member-parameters__head">
-      <tr class="member-parameter-header">
-        <th class="member-parameter-header__name">Name</th>
-        <th class="member-parameter-header__type">Type</th>
-        
-        
-        <th class="member-parameter-header__description">Description</th>
-      </tr>
-    </thead>
-    <tbody class="member-parameters__body">
-      <tr class="member-parameter">
-        <td class="member-parameter__name">
-          event
-        </td>
-        <td class="member-parameter__type">
-          <a href="/essem.js/docs/essem/js/ESSEM/Event.html">ESSEM.Event</a>
-        </td>
-        
-        
-        <td class="member-parameter__description"><p>An instance of the event to send. Same named classes will be considered as
-the same event.</p></td>
+        <td class="member-parameter__description"></td>
       </tr>
     </tbody>
   </table>
@@ -344,9 +296,7 @@ the same event.</p></td>
   <section class="page-members-explorer-category__title">Public Methods</section>
   <ul class="page-members-explorer-category__items">
     
-      <li class="page-members-explorer__item"><a href=/docs/essem/js/ESSEM/EventManager.html#addListener>addListener</a></li>
-    
-      <li class="page-members-explorer__item"><a href=/docs/essem/js/ESSEM/EventManager.html#sendEvent>sendEvent</a></li>
+      <li class="page-members-explorer__item"><a href=/docs/essem/js/SpriteRenderer.html#drawSprite>drawSprite</a></li>
     
   </ul>
 </div>

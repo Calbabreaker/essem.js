@@ -1,6 +1,6 @@
 /*!
- * essem.js - v0.0.0
- * Compiled Mon, 19 Apr 2021 06:21:01 GMT
+ * essem.js - v0.0.1
+ * Compiled Tue, 20 Apr 2021 08:21:26 GMT
  *
  * Free to use under the MIT LICENSE.
  */
@@ -63,6 +63,7 @@
      * Gets an item from the map using a key and sets it with a new instance of the class of it
      * doesn't  exist.
      *
+     * @memberof ESSEM
      * @param map - The map to use.
      * @param key - The key of the item.
      * @param defaultClass - The class to create a new instance from.
@@ -77,6 +78,7 @@
      * Removes an item from an array by swapping the last element with the removing element and popping
      * the array.
      *
+     * @memberof ESSEM
      * @param array - The array to use.
      * @param index - The index to remove.
      * @return The last item of the array that was swapped to the index.
@@ -87,6 +89,13 @@
         array.pop();
         return lastItem;
     }
+    /**
+     * Gets the name of the class or just uses string.
+     *
+     * @memberof ESSEM
+     * @param {AnyClass | string} type - Any class or string.
+     * @return The name of the type.
+     */
     function getTypeName(type) {
         var _a;
         return (_a = type.name) !== null && _a !== void 0 ? _a : type;
@@ -117,7 +126,7 @@
     function sayHello() {
         if (!saidHello) {
             // TODO: make this look better
-            console.log("---\n--- essem.js v0.0.0\n---");
+            console.log("---\n--- essem.js v0.0.1\n---");
             saidHello = true;
         }
     }
@@ -154,6 +163,13 @@
         return rgb;
     }
 
+    /**
+     * Main renderer class.
+     * It is automatically created when creating {@link ESSEM.Application} and it can be accesed from
+     * `app.renderer`.
+     *
+     * @memberof ESSEM
+     */
     class Renderer {
         constructor(canvasElement) {
             if (isWebGL2Supported()) {
@@ -285,6 +301,8 @@
          * back when active.
          * Setting the value will make all its children be the same active state unless the child is
          * explicitly set to be not active and the parent(s) is set to be active.
+         *
+         * @member {boolean}
          */
         get active() {
             return this._active;
@@ -305,6 +323,7 @@
          * The local active state.
          * This will be regardless of its parents` active states.
          *
+         * @member {boolean}
          * @readonly
          */
         get activeSelf() {
@@ -330,6 +349,8 @@
         }
         /**
          * Parent of the entity. Could be either another entity, the scene or none at all.
+         *
+         * @member {ESSEM.Entity | ESSEM.Scene | null}
          */
         get parent() {
             return this._parent;
@@ -348,6 +369,8 @@
         }
         /**
          * The name of the entity.
+         *
+         * @member {string}
          */
         get name() {
             return this._name;
@@ -372,6 +395,7 @@
         /**
          * Whether or not the entity is destroyed.
          *
+         * @member {boolean}
          * @readonly
          */
         get destroyed() {
@@ -407,6 +431,9 @@
         }
     }
 
+    /**
+     * @memberof ESSEM
+     */
     class ObjectPool {
         constructor(objectClass, objectManager) {
             this.availableObjects = [];
@@ -470,12 +497,12 @@
          * Creates a new entity that is aquired from a pool for efficency.
          *
          * @param [name=`Unnamed Entity ${entity.id}`] - The name of the entity.
-         * @param parent - The parent for the entity. Default is the scene.
+         * @param [parent=this] - The parent for the entity. Default is this scene.
          * @return The entity that was created.
          */
-        createEntity(name, parent = this) {
+        createEntity(name, parent) {
             const entity = this.entityPool.aquire();
-            entity._setup(name !== null && name !== void 0 ? name : `Unnamed Entity ${entity.id}`, parent);
+            entity._setup(name !== null && name !== void 0 ? name : `Unnamed Entity ${entity.id}`, parent !== null && parent !== void 0 ? parent : this);
             return entity;
         }
         /**
@@ -764,8 +791,9 @@
         }
     }
     /**
-     * Used to add listeners and send events. It is automatically created when creating
-     * {@link ESSEM.Application} and it can be accesed from `app.events`.
+     * Used to add listeners and send events.
+     * It is automatically created when creating {@link ESSEM.Application} and it can be accesed from
+     * `app.events`.
      *
      * @memberof ESSEM
      */
@@ -1020,6 +1048,11 @@
         }
     }
 
+    /**
+     * Class for handling audio.
+     *
+     * @memberof ESSEM
+     */
     class AudioClip {
         constructor(buffer, context) {
             this.volume = 1;
@@ -1443,23 +1476,63 @@
     }
 
     /**
-     * Component to handle camera stuff
+     * Component to handle cameras.
      * All render systems will look for a entity tagged 'MainCamera' as the camera to render with.
      *
      * @memberof ESSEM
      */
     class CameraComponent {
-        constructor(zoom = 5, fixedAspectRatio = false) {
-            this.aspectRatio = 0;
+        /**
+         * @param [size=5] - The size or 'inverse zoom' of the camera.
+         * @param [fixedAspectRatio=false] - Whether or not the camera shouldn't be automatically
+         *        resized whenever the viewport resizes.
+         */
+        constructor(size, fixedAspectRatio) {
+            this._aspectRatio = 0;
             this._projectionMatrix = new Matrix3();
-            this.size = zoom;
-            this.fixedAspectRatio = fixedAspectRatio;
+            this._projectionValid = false;
+            this._size = size !== null && size !== void 0 ? size : 5;
+            this.fixedAspectRatio = fixedAspectRatio !== null && fixedAspectRatio !== void 0 ? fixedAspectRatio : false;
         }
         setViewportSize(width, height) {
-            this.aspectRatio = width / height;
+            this._aspectRatio = width / height;
         }
-        getProjectionMatrix() {
-            return this._projectionMatrix.projection(-this.size * this.aspectRatio, this.size * this.aspectRatio, this.size, -this.size);
+        /**
+         * The current size or 'inverse zoom' of the camera.
+         *
+         * @member {number}
+         */
+        get size() {
+            return this._size;
+        }
+        set size(size) {
+            this._projectionValid = false;
+            this._size = size;
+        }
+        /**
+         * The current aspect ratio or 'inverse zoom' of the camera.
+         *
+         * @member {number}
+         */
+        get aspectRatio() {
+            return this._aspectRatio;
+        }
+        set aspectRatio(aspectRatio) {
+            this._projectionValid = false;
+            this._aspectRatio = aspectRatio;
+        }
+        /**
+         * The camera projection represented as a matrix.
+         *
+         * @member {Matrix3}
+         * @readonly
+         */
+        get projectionMatrix() {
+            if (!this._projectionValid) {
+                this._projectionMatrix.projection(-this._size * this.aspectRatio, this._size * this.aspectRatio, this._size, -this._size);
+                this._projectionValid = true;
+            }
+            return this._projectionMatrix;
         }
     }
 
@@ -1471,7 +1544,7 @@
     class SpriteComponent {
         /**
          * @param texture - Texture to use. This should be resued between other components.
-         * @param color -
+         * @param color - Colour of the sprite in hexadecimal.
          */
         constructor(texture, color = 0xffffff) {
             this.texture = texture;
@@ -1479,6 +1552,8 @@
         }
         /**
          * Colour of the sprite in hexadecimal.
+         *
+         * @member {number}
          */
         set color(hex) {
             this._hexColor = hex;
@@ -1521,17 +1596,9 @@
             return this._transformMatrix;
         }
         /**
-         * Rotation of the component.
-         */
-        set rotation(rotation) {
-            this._transformValid = false;
-            this._rotation = rotation;
-        }
-        get rotation() {
-            return this._rotation;
-        }
-        /**
          * Position of the component.
+         *
+         * @member {Vector2}
          */
         set position(position) {
             this._transformValid = false;
@@ -1543,6 +1610,8 @@
         }
         /**
          * Scale of the component.
+         *
+         * @member {Vector2}
          */
         set scale(scale) {
             this._transformValid = false;
@@ -1551,6 +1620,18 @@
         get scale() {
             this._transformValid = false;
             return this._scale;
+        }
+        /**
+         * Rotation of the component.
+         *
+         * @member {number}
+         */
+        set rotation(rotation) {
+            this._transformValid = false;
+            this._rotation = rotation;
+        }
+        get rotation() {
+            return this._rotation;
         }
         static getGlobalPosition(entity) {
             const vector = entity.getComponent(TransformComponent)._position.clone();
@@ -1580,7 +1661,7 @@
          * @return A global transform matrix.
          */
         static getGlobalTransformMatrix(entity) {
-            const matrix = entity.getComponent(TransformComponent).transformMatrix;
+            const matrix = entity.getComponent(TransformComponent).transformMatrix.clone();
             entity.forEachParent((parent) => {
                 matrix.multiplyFront(parent.getComponent(TransformComponent).transformMatrix);
             });
@@ -1590,7 +1671,8 @@
 
     /**
      * System base class to extend to collect all the wanted entities and do stuff to them.
-     * * ## Example * ```js
+     * ## Example
+     * ```js
      * // System that logs hello for each entity with a transform component
      * class HelloSystem extends ESSEM.System {
      *     setup(app) {
@@ -1671,6 +1753,11 @@
         }
     }
 
+    /**
+     * Class for interacting with gl shaders.
+     *
+     * @memberof ESSEM
+     */
     class Shader {
         constructor(vertexSrc, fragmentSrc, name = "Default") {
             this.glProgram = null;
@@ -1743,6 +1830,9 @@
         }
     }
 
+    /**
+     * @memberof ESSEM
+     */
     class VertexArray {
         constructor(gl) {
             this.glIndexBuffer = null;
@@ -1785,6 +1875,11 @@
 
     var textureFragmentSrc = "#version 300 es\n\nprecision mediump float;\n\nlayout(location = 0) out vec4 color;\n\nin vec2 v_texCoord;\nin float v_texIndex;\nin vec4 v_color;\n\nuniform sampler2D u_textures[32];\n\nvoid main() \n{\n    vec4 texColor = v_color;\n    vec2 coordinate = v_texCoord;\n\n    // have to use switch because WebGL doesn't support dynamic sampler indexing\n    switch(int(v_texIndex))\n\t{\n\t\tcase 0: texColor *= texture(u_textures[0], coordinate); break;\n\t\tcase 1: texColor *= texture(u_textures[1], coordinate); break;\n\t\tcase 2: texColor *= texture(u_textures[2], coordinate); break;\n\t\tcase 3: texColor *= texture(u_textures[3], coordinate); break;\n\t\tcase 4: texColor *= texture(u_textures[4], coordinate); break;\n\t\tcase 5: texColor *= texture(u_textures[5], coordinate); break;\n\t\tcase 6: texColor *= texture(u_textures[6], coordinate); break;\n\t\tcase 7: texColor *= texture(u_textures[7], coordinate); break;\n\t\tcase 8: texColor *= texture(u_textures[8], coordinate); break;\n\t\tcase 9: texColor *= texture(u_textures[9], coordinate); break;\n\t\tcase 10: texColor *= texture(u_textures[10], coordinate); break;\n\t\tcase 11: texColor *= texture(u_textures[11], coordinate); break;\n\t\tcase 12: texColor *= texture(u_textures[12], coordinate); break;\n\t\tcase 13: texColor *= texture(u_textures[13], coordinate); break;\n\t\tcase 14: texColor *= texture(u_textures[14], coordinate); break;\n\t\tcase 15: texColor *= texture(u_textures[15], coordinate); break;\n\t\tcase 16: texColor *= texture(u_textures[16], coordinate); break;\n\t\tcase 17: texColor *= texture(u_textures[17], coordinate); break;\n\t\tcase 18: texColor *= texture(u_textures[18], coordinate); break;\n\t\tcase 19: texColor *= texture(u_textures[19], coordinate); break;\n\t\tcase 20: texColor *= texture(u_textures[20], coordinate); break;\n\t\tcase 21: texColor *= texture(u_textures[21], coordinate); break;\n\t\tcase 22: texColor *= texture(u_textures[22], coordinate); break;\n\t\tcase 23: texColor *= texture(u_textures[23], coordinate); break;\n\t\tcase 24: texColor *= texture(u_textures[24], coordinate); break;\n\t\tcase 25: texColor *= texture(u_textures[25], coordinate); break;\n\t\tcase 26: texColor *= texture(u_textures[26], coordinate); break;\n\t\tcase 27: texColor *= texture(u_textures[27], coordinate); break;\n\t\tcase 28: texColor *= texture(u_textures[28], coordinate); break;\n\t\tcase 29: texColor *= texture(u_textures[29], coordinate); break;\n\t\tcase 30: texColor *= texture(u_textures[30], coordinate); break;\n\t\tcase 31: texColor *= texture(u_textures[31], coordinate); break;\n\t}\n\n    color = texColor;\n}\n";
 
+    /**
+     * Base renderer that most renderers extend for batching.
+     *
+     * @memberof ESSEM
+     */
     class AbstractBatchRenderer {
         constructor(renderer) {
             this.textureToSlotMap = new Map();
@@ -1934,7 +2029,7 @@
             const mainCamera = this.scene.getEntitesByTag("MainCamera")[0];
             if (mainCamera === undefined)
                 return;
-            const viewProjection = mainCamera.getComponent(CameraComponent).getProjectionMatrix();
+            const viewProjection = mainCamera.getComponent(CameraComponent).projectionMatrix;
             viewProjection.multiply(mainCamera.getComponent(TransformComponent).transformMatrix.invert());
             this.spriteRenderer.beginScene(viewProjection);
             this.entities.forEach((entity) => {
@@ -1953,7 +2048,7 @@
      * @memberof ESSEM
      * @type string
      */
-    const VERSION = "0.0.0";
+    const VERSION = "0.0.1";
     if (window.__ESSEM__) {
         throw new Error("essem.js is already imported!");
     }
@@ -1989,7 +2084,6 @@
     exports.Scene = Scene;
     exports.Shader = Shader;
     exports.SpriteComponent = SpriteComponent;
-    exports.SpriteRenderer = SpriteRenderer;
     exports.SpriteRendererSystem = SpriteRendererSystem;
     exports.System = System;
     exports.TWO_PI = TWO_PI;

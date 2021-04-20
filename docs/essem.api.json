@@ -9,6 +9,35 @@
 			"description": "",
 			"members": [
 				{
+					"name": "AbstractBatchRenderer",
+					"type": "ClassDoc",
+					"brief": "<p>Base renderer that most renderers extend for batching.</p>",
+					"description": "",
+					"members": [
+						{
+							"name": "beginScene",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": ""
+						},
+						{
+							"name": "flush",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": ""
+						},
+						{
+							"name": "startBatch",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": ""
+						}
+					]
+				},
+				{
 					"name": "Application",
 					"type": "ClassDoc",
 					"brief": "<p>Class that is used for everything in essem.js.</p>",
@@ -96,13 +125,56 @@
 					"description": ""
 				},
 				{
+					"name": "AudioClip",
+					"type": "ClassDoc",
+					"brief": "<p>Class for handling audio.</p>",
+					"description": "",
+					"members": [
+						{
+							"name": "fromURL",
+							"type": "MethodDoc",
+							"scope": "static",
+							"brief": "",
+							"description": ""
+						},
+						{
+							"name": "stop",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": ""
+						}
+					]
+				},
+				{
 					"name": "CameraComponent",
 					"type": "ClassDoc",
 					"brief": "",
-					"description": "<p>Component to handle camera stuff\nAll render systems will look for a entity tagged 'MainCamera' as the camera to render with.</p>",
+					"description": "<p>Component to handle cameras.\nAll render systems will look for a entity tagged 'MainCamera' as the camera to render with.</p>",
 					"members": [
 						{
-							"name": "setViewportSize",
+							"name": "aspectRatio",
+							"type": "PropertyDoc",
+							"scope": "instance",
+							"brief": "<p>The current aspect ratio or 'inverse zoom' of the camera.</p>",
+							"description": ""
+						},
+						{
+							"name": "projectionMatrix",
+							"type": "PropertyDoc",
+							"scope": "instance",
+							"brief": "<p>The camera projection represented as a matrix.</p>",
+							"description": ""
+						},
+						{
+							"name": "size",
+							"type": "PropertyDoc",
+							"scope": "instance",
+							"brief": "<p>The current size or 'inverse zoom' of the camera.</p>",
+							"description": ""
+						},
+						{
+							"name": "constructor",
 							"type": "MethodDoc",
 							"scope": "instance",
 							"brief": "",
@@ -416,7 +488,7 @@
 					"name": "EventManager",
 					"type": "ClassDoc",
 					"brief": "",
-					"description": "<p>Used to add listeners and send events. It is automatically created when creating\n{@link ESSEM.Application} and it can be accesed from <code>app.events</code>.</p>",
+					"description": "<p>Used to add listeners and send events.\nIt is automatically created when creating {@link ESSEM.Application} and it can be accesed from\n<code>app.events</code>.</p>",
 					"members": [
 						{
 							"name": "addListener",
@@ -661,6 +733,43 @@
 					]
 				},
 				{
+					"name": "ObjectPool",
+					"type": "ClassDoc",
+					"brief": "",
+					"description": "",
+					"members": [
+						{
+							"name": "aquire",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": ""
+						},
+						{
+							"name": "reserve",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": ""
+						}
+					]
+				},
+				{
+					"name": "Renderer",
+					"type": "ClassDoc",
+					"brief": "",
+					"description": "<p>Main renderer class.\nIt is automatically created when creating {@link ESSEM.Application} and it can be accesed from\n<code>app.renderer</code>.</p>",
+					"members": [
+						{
+							"name": "update",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": ""
+						}
+					]
+				},
+				{
 					"name": "Scene",
 					"type": "ClassDoc",
 					"brief": "",
@@ -739,6 +848,49 @@
 							"access": "private",
 							"scope": "instance",
 							"brief": "<p>Gets called whenever a component type gets added to a system.</p>",
+							"description": ""
+						}
+					]
+				},
+				{
+					"name": "Shader",
+					"type": "ClassDoc",
+					"brief": "<p>Class for interacting with gl shaders.</p>",
+					"description": "",
+					"members": [
+						{
+							"name": "dispose",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": ""
+						},
+						{
+							"name": "init",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": ""
+						},
+						{
+							"name": "setFloat1",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": ""
+						},
+						{
+							"name": "setInt1",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": ""
+						},
+						{
+							"name": "setMatrix3",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "",
 							"description": ""
 						}
 					]
@@ -1082,6 +1234,28 @@
 					]
 				},
 				{
+					"name": "VertexArray",
+					"type": "ClassDoc",
+					"brief": "",
+					"description": "",
+					"members": [
+						{
+							"name": "bind",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": ""
+						},
+						{
+							"name": "setIndexBuffer",
+							"type": "MethodDoc",
+							"scope": "instance",
+							"brief": "",
+							"description": ""
+						}
+					]
+				},
+				{
 					"name": "DEG_TO_RAD",
 					"type": "PropertyDoc",
 					"brief": "",
@@ -1118,6 +1292,12 @@
 					"description": "<p>Throws an error if condition is false.\nAll uses if this in the essem.js code will get removed in minified files.</p>"
 				},
 				{
+					"name": "getTypeName",
+					"type": "FunctionDoc",
+					"brief": "<p>Gets the name of the class or just uses string.</p>",
+					"description": ""
+				},
+				{
 					"name": "hexToRGBA",
 					"type": "FunctionDoc",
 					"brief": "<p>Converts hexadecimal number to a rbga array.</p>",
@@ -1128,6 +1308,18 @@
 					"type": "FunctionDoc",
 					"brief": "<p>Checks to see if WebGL2 is supported in the browser.</p>",
 					"description": ""
+				},
+				{
+					"name": "lastItemSwapRemove",
+					"type": "FunctionDoc",
+					"brief": "",
+					"description": "<p>Removes an item from an array by swapping the last element with the removing element and popping\nthe array.</p>"
+				},
+				{
+					"name": "mapGet",
+					"type": "FunctionDoc",
+					"brief": "",
+					"description": "<p>Gets an item from the map using a key and sets it with a new instance of the class of it\ndoesn't  exist.</p>"
 				},
 				{
 					"name": "sayHello",
@@ -1156,13 +1348,20 @@
 			]
 		},
 		{
-			"name": "AbstractBatchRenderer",
+			"name": "SpriteRenderer",
 			"type": "ClassDoc",
 			"brief": "",
 			"description": "",
 			"members": [
 				{
 					"name": "beginScene",
+					"type": "MethodDoc",
+					"scope": "instance",
+					"brief": "",
+					"description": ""
+				},
+				{
+					"name": "drawSprite",
 					"type": "MethodDoc",
 					"scope": "instance",
 					"brief": "",
@@ -1183,177 +1382,6 @@
 					"description": ""
 				}
 			]
-		},
-		{
-			"name": "AudioClip",
-			"type": "ClassDoc",
-			"brief": "",
-			"description": "",
-			"members": [
-				{
-					"name": "fromURL",
-					"type": "MethodDoc",
-					"scope": "static",
-					"brief": "",
-					"description": ""
-				},
-				{
-					"name": "stop",
-					"type": "MethodDoc",
-					"scope": "instance",
-					"brief": "",
-					"description": ""
-				}
-			]
-		},
-		{
-			"name": "ObjectPool",
-			"type": "ClassDoc",
-			"brief": "",
-			"description": "",
-			"members": [
-				{
-					"name": "aquire",
-					"type": "MethodDoc",
-					"scope": "instance",
-					"brief": "",
-					"description": ""
-				},
-				{
-					"name": "constructor",
-					"type": "MethodDoc",
-					"scope": "instance",
-					"brief": "",
-					"description": ""
-				},
-				{
-					"name": "release",
-					"type": "MethodDoc",
-					"scope": "instance",
-					"brief": "",
-					"description": ""
-				},
-				{
-					"name": "reserve",
-					"type": "MethodDoc",
-					"scope": "instance",
-					"brief": "",
-					"description": ""
-				}
-			]
-		},
-		{
-			"name": "Renderer",
-			"type": "ClassDoc",
-			"brief": "",
-			"description": "",
-			"members": [
-				{
-					"name": "update",
-					"type": "MethodDoc",
-					"scope": "instance",
-					"brief": "",
-					"description": ""
-				}
-			]
-		},
-		{
-			"name": "Shader",
-			"type": "ClassDoc",
-			"brief": "",
-			"description": "",
-			"members": [
-				{
-					"name": "dispose",
-					"type": "MethodDoc",
-					"scope": "instance",
-					"brief": "",
-					"description": ""
-				},
-				{
-					"name": "init",
-					"type": "MethodDoc",
-					"scope": "instance",
-					"brief": "",
-					"description": ""
-				},
-				{
-					"name": "setFloat1",
-					"type": "MethodDoc",
-					"scope": "instance",
-					"brief": "",
-					"description": ""
-				},
-				{
-					"name": "setInt1",
-					"type": "MethodDoc",
-					"scope": "instance",
-					"brief": "",
-					"description": ""
-				},
-				{
-					"name": "setMatrix3",
-					"type": "MethodDoc",
-					"scope": "instance",
-					"brief": "",
-					"description": ""
-				}
-			]
-		},
-		{
-			"name": "VertexArray",
-			"type": "ClassDoc",
-			"brief": "",
-			"description": "",
-			"members": [
-				{
-					"name": "addVertexBuffer",
-					"type": "MethodDoc",
-					"scope": "instance",
-					"brief": "",
-					"description": ""
-				},
-				{
-					"name": "bind",
-					"type": "MethodDoc",
-					"scope": "instance",
-					"brief": "",
-					"description": ""
-				},
-				{
-					"name": "constructor",
-					"type": "MethodDoc",
-					"scope": "instance",
-					"brief": "",
-					"description": ""
-				},
-				{
-					"name": "dispose",
-					"type": "MethodDoc",
-					"scope": "instance",
-					"brief": "",
-					"description": ""
-				},
-				{
-					"name": "setIndexBuffer",
-					"type": "MethodDoc",
-					"scope": "instance",
-					"brief": "",
-					"description": ""
-				}
-			]
-		},
-		{
-			"name": "lastItemSwapRemove",
-			"type": "FunctionDoc",
-			"brief": "",
-			"description": "<p>Removes an item from an array by swapping the last element with the removing element and popping\nthe array.</p>"
-		},
-		{
-			"name": "mapGet",
-			"type": "FunctionDoc",
-			"brief": "",
-			"description": "<p>Gets an item from the map using a key and sets it with a new instance of the class of it\ndoesn't  exist.</p>"
 		}
 	]
 }

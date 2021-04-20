@@ -58,96 +58,21 @@
 
 
     <div class="document__brief"></div>
-    <div class="document__description"><p>Component to handle camera stuff
+    <div class="document__description"><p>Component to handle cameras.
 All render systems will look for a entity tagged 'MainCamera' as the camera to render with.</p></div>
 
     
       
-    
-
-    
-
 <div class="members">
-  <h2 class="members__category">Summary</h2>
-  <hr />
-  
-
-
-  
-
-  
-
-
-  
-  <div class="accordion accordion-active">
-    <section class="accordion__toggle">
-      <button>
-        <img class="accordion__bg-inactive" src="/essem.js/docs/icons/chevron-down.svg"/>
-        <img class="accordion__bg-active" src="/essem.js/docs/icons/chevron-up.svg"/>
-      </button>
-      <h3 class="members__subcategory">Methods from CameraComponent</h3>
-    </section>
-    <div class="accordion__content table-wrapper">
-      <table class="summary">
-        <tbody>
-          
-            <tr>
-              <td class="summary__signature">
-                
-                  void
-                
-              </td>
-              <td>
-                <section class="summary__signature">
-                  <a href="/essem.js/docs/essem/js/ESSEM/CameraComponent.html#setViewportSize">setViewportSize(width: number, height: number)</a>
-                </section>
-                <section>
-                  
-                </section>
-              </td>
-            </tr>
-          
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-
-  
-
-
-
-  
-
-
-
-</div>
-
-
-    
-    
-    
-<div class="members">
-  <h2 class="members__category">Public Methods</h2>
+  <h2 class="members__category">Constructor</h2>
   <hr />
 
   
     
-<div class="member" id="setViewportSize">
-  
-    <section class="member__title">
-      <a href="/essem.js/docs/essem/js/ESSEM/CameraComponent.html#setViewportSize">
-        <img
-          src="/essem.js/docs/icons/link.svg"
-          width="16px"
-          height="16px"
-        />
-      </a>
-      <span>setViewportSize</span>
-    </section>
+<div class="member" id="constructor">
   
   
-<pre class="signature__container"><code class="signature">setViewportSize(width: number, height: number) → {void}</code></pre>
+<pre class="signature__container"><code class="signature">new ESSEM.CameraComponent(size: number, fixedAspectRatio: boolean) → {}</code></pre>
 
 
   <div class="member__brief"></div>
@@ -162,60 +87,239 @@ All render systems will look for a entity tagged 'MainCamera' as the camera to r
       <tr class="member-parameter-header">
         <th class="member-parameter-header__name">Name</th>
         <th class="member-parameter-header__type">Type</th>
-        
-        
+        <th class="member-parameter-header__attributes">Attributes</th>
+        <th class="member-parameter-header__default">Default</th>
         <th class="member-parameter-header__description">Description</th>
       </tr>
     </thead>
     <tbody class="member-parameters__body">
       <tr class="member-parameter">
         <td class="member-parameter__name">
-          width
+          size
         </td>
         <td class="member-parameter__type">
           number
         </td>
-        
-        
-        <td class="member-parameter__description"></td>
+        <td class="member-parameter__attributes">
+          <p>&lt;optional&gt;</p>
+          
+          
+        </td>
+        <td class="member-parameter__default">
+          5
+        </td>
+        <td class="member-parameter__description"><p>The size or 'inverse zoom' of the camera.</p></td>
       </tr><tr class="member-parameter">
         <td class="member-parameter__name">
-          height
+          fixedAspectRatio
         </td>
         <td class="member-parameter__type">
-          number
+          boolean
         </td>
-        
-        
-        <td class="member-parameter__description"></td>
+        <td class="member-parameter__attributes">
+          <p>&lt;optional&gt;</p>
+          
+          
+        </td>
+        <td class="member-parameter__default">
+          false
+        </td>
+        <td class="member-parameter__description"><p>Whether or not the camera shouldn't be automatically
+resized whenever the viewport resizes.</p></td>
       </tr>
     </tbody>
   </table>
 </div>
 
   
+
+  
+</div>
+
+  
+</div>
+
+    
+
+    
+
+<div class="members">
+  <h2 class="members__category">Summary</h2>
+  <hr />
+  
+
+
+  
+  <div class="accordion accordion-active">
+    <section class="accordion__toggle">
+      <button>
+        <img class="accordion__bg-inactive" src="/essem.js/docs/icons/chevron-down.svg"/>
+        <img class="accordion__bg-active" src="/essem.js/docs/icons/chevron-up.svg"/>
+      </button>
+      <h3 class="members__subcategory">Properties from CameraComponent</h3>
+    </section>
+    <div class="accordion__content table-wrapper">
+      <table class="summary">
+        <tbody>
+          
+            <tr>
+              <td class="summary__signature">
+                
+                  number
+                
+              </td>
+              <td>
+                <section class="summary__signature">
+                  <a href="/essem.js/docs/essem/js/ESSEM/CameraComponent.html#aspectRatio">aspectRatio</a>
+                </section>
+                <section>
+                  
+                    <p>The current aspect ratio or 'inverse zoom' of the camera.</p>
+                  
+                </section>
+              </td>
+            </tr>
+          
+            <tr>
+              <td class="summary__signature">
+                
+                  Matrix3
+                
+              </td>
+              <td>
+                <section class="summary__signature">
+                  <a href="/essem.js/docs/essem/js/ESSEM/CameraComponent.html#projectionMatrix">projectionMatrix</a>
+                </section>
+                <section>
+                  
+                    <p>The camera projection represented as a matrix.</p>
+                  
+                </section>
+              </td>
+            </tr>
+          
+            <tr>
+              <td class="summary__signature">
+                
+                  number
+                
+              </td>
+              <td>
+                <section class="summary__signature">
+                  <a href="/essem.js/docs/essem/js/ESSEM/CameraComponent.html#size">size</a>
+                </section>
+                <section>
+                  
+                    <p>The current size or 'inverse zoom' of the camera.</p>
+                  
+                </section>
+              </td>
+            </tr>
+          
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+
+  
+
+
+  
+
+  
+
+
+
+  
+
+
+
+</div>
+
+
+    
+<div class="members">
+  <h2 class="members__category">Public Properties</h2>
+  <hr />
 
   
     
-<div class="table-wrapper">
-  <table class="member-returns">
-    <caption class="member-returns__caption">Returns:</caption>
-    <thead class="member-returns__head">
-      <tr class="member-returns-header">
-        <th class="member-returns-header__type">Type</th>
-        <th class="member-returns-header__description">Description</th>
-      </tr>
-    </thead>
-    <tbody class="member-returns__body">
-      <tr class="member-return">
-        <td class="member-return__type">
-          void
-        </td>
-        <td class="member-return__description"></td>
-      </tr>
-    </tbody>
-  </table>
+<div class="member" id="aspectRatio">
+  
+    <section class="member__title">
+      <a href="/essem.js/docs/essem/js/ESSEM/CameraComponent.html#aspectRatio">
+        <img
+          src="/essem.js/docs/icons/link.svg"
+          width="16px"
+          height="16px"
+        />
+      </a>
+      <span>aspectRatio</span>
+    </section>
+  
+  
+<pre class="signature__container"><code class="signature">aspectRatio: number</code></pre>
+
+
+  <div class="member__brief"><p>The current aspect ratio or 'inverse zoom' of the camera.</p></div>
+  <div class="member__description"></div>
+
+  
+
+  
 </div>
+
+  
+    
+<div class="member" id="projectionMatrix">
+  
+    <section class="member__title">
+      <a href="/essem.js/docs/essem/js/ESSEM/CameraComponent.html#projectionMatrix">
+        <img
+          src="/essem.js/docs/icons/link.svg"
+          width="16px"
+          height="16px"
+        />
+      </a>
+      <span>projectionMatrix</span>
+    </section>
+  
+  
+<pre class="signature__container"><code class="signature">projectionMatrix: Matrix3</code></pre>
+
+
+  <div class="member__brief"><p>The camera projection represented as a matrix.</p></div>
+  <div class="member__description"></div>
+
+  
+
+  
+</div>
+
+  
+    
+<div class="member" id="size">
+  
+    <section class="member__title">
+      <a href="/essem.js/docs/essem/js/ESSEM/CameraComponent.html#size">
+        <img
+          src="/essem.js/docs/icons/link.svg"
+          width="16px"
+          height="16px"
+        />
+      </a>
+      <span>size</span>
+    </section>
+  
+  
+<pre class="signature__container"><code class="signature">size: number</code></pre>
+
+
+  <div class="member__brief"><p>The current size or 'inverse zoom' of the camera.</p></div>
+  <div class="member__description"></div>
+
+  
 
   
 </div>
@@ -223,6 +327,8 @@ All render systems will look for a entity tagged 'MainCamera' as the camera to r
   
 </div>
 
+    
+    
     
   </div>
   <footer class="footer" id="footer-mount-point"></footer>
@@ -236,18 +342,22 @@ All render systems will look for a entity tagged 'MainCamera' as the camera to r
     </section>
   </div>
   
-  
-  
 
 <div class="page-members-explorer-category">
-  <section class="page-members-explorer-category__title">Public Methods</section>
+  <section class="page-members-explorer-category__title">Public Properties</section>
   <ul class="page-members-explorer-category__items">
     
-      <li class="page-members-explorer__item"><a href=/docs/essem/js/ESSEM/CameraComponent.html#setViewportSize>setViewportSize</a></li>
+      <li class="page-members-explorer__item"><a href=/docs/essem/js/ESSEM/CameraComponent.html#aspectRatio>aspectRatio</a></li>
+    
+      <li class="page-members-explorer__item"><a href=/docs/essem/js/ESSEM/CameraComponent.html#projectionMatrix>projectionMatrix</a></li>
+    
+      <li class="page-members-explorer__item"><a href=/docs/essem/js/ESSEM/CameraComponent.html#size>size</a></li>
     
   </ul>
 </div>
 
+  
+  
   
 </nav>
 
