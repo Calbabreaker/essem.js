@@ -7,7 +7,8 @@ export type SystemClass = new (scene: Scene) => System;
 
 /**
  * System base class to extend to collect all the wanted entities and do stuff to them.
- * * ## Example * ```js
+ * ## Example
+ * ```js
  * // System that logs hello for each entity with a transform component
  * class HelloSystem extends ESSEM.System {
  *     setup(app) {

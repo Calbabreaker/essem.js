@@ -133,6 +133,8 @@ export class Entity {
      * back when active.
      * Setting the value will make all its children be the same active state unless the child is
      * explicitly set to be not active and the parent(s) is set to be active.
+     *
+     * @member {boolean}
      */
     get active(): boolean {
         return this._active;
@@ -159,6 +161,7 @@ export class Entity {
      * The local active state.
      * This will be regardless of its parents` active states.
      *
+     * @member {boolean}
      * @readonly
      */
     get activeSelf(): boolean {
@@ -187,6 +190,8 @@ export class Entity {
 
     /**
      * Parent of the entity. Could be either another entity, the scene or none at all.
+     *
+     * @member {ESSEM.Entity | ESSEM.Scene | null}
      */
     get parent(): Entity | Scene | null {
         return this._parent;
@@ -212,6 +217,8 @@ export class Entity {
 
     /**
      * The name of the entity.
+     *
+     * @member {string}
      */
     get name(): string {
         return this._name;
@@ -239,6 +246,7 @@ export class Entity {
     /**
      * Whether or not the entity is destroyed.
      *
+     * @member {boolean}
      * @readonly
      */
     get destroyed(): boolean {

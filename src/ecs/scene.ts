@@ -46,12 +46,12 @@ export class Scene {
      * Creates a new entity that is aquired from a pool for efficency.
      *
      * @param [name=`Unnamed Entity ${entity.id}`] - The name of the entity.
-     * @param parent - The parent for the entity. Default is the scene.
+     * @param [parent=this] - The parent for the entity. Default is this scene.
      * @return The entity that was created.
      */
-    createEntity(name?: string, parent: Entity | Scene = this): Entity {
+    createEntity(name?: string, parent?: Entity | Scene): Entity {
         const entity = this.entityPool.aquire();
-        entity._setup(name ?? `Unnamed Entity ${entity.id}`, parent);
+        entity._setup(name ?? `Unnamed Entity ${entity.id}`, parent ?? this);
         return entity;
     }
 
