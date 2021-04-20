@@ -1,6 +1,6 @@
 {
     "name": "essem.js",
-    "version": "0.0.0",
+    "version": "0.0.1",
     "description": "Javascript ecs game engine.",
     "main": "build/essem.js",
     "module": "build/essem.module.js",

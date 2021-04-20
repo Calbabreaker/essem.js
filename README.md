@@ -13,7 +13,7 @@ Add a script tag to the header (you can swap 0.0.0 for any version):
 
 ```html
 <head>
-    <script src="https://cdn.jsdelivr.net/npm/essem.js@0.0.0/build/essem.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/essem.js@0.0.1/build/essem.js"></script>
 </head>
 ```
 
@@ -24,7 +24,6 @@ Run `npm install essem.js` to install essem.js module. Then import essem.js (sup
 ```js
 import * as ESSEM from "essem.js";
 ```
-
 
 ### Basic Example
 
