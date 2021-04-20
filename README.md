@@ -33,19 +33,19 @@ Texture drawing example:
 const app = new ESSEM.Application();
 
 app.registerSystem(ESSEM.CameraSystem, ESSEM.SpriteRendererSystem):
-app.loader.add("fish.png");
+app.loader.add(ESSEM.Texture, "fish.png");
 
-document.appendChild(app.canvas.element);
+document.body.appendChild(app.canvas.element);
 
 app.eventManager.addListener(ESSEM.ApplicationInitEvent, () => {
     const scene = app.createScene();
     const entity = scene.createEntity();
-    entity.addComponent(new TransformComponent());
-    entity.addComponent(new SpriteRendererComponent(app.loader.resources["fish.png"]));
+    entity.addComponent(new ESSEM.TransformComponent());
+    entity.addComponent(new ESSEM.SpriteComponent(app.loader.resources["fish.png"]));
 
     const camera = scene.createEntity();
-    entity.addComponent(new TransformComponent());
-    entity.addComponent(new CameraComponent());
+    entity.addComponent(new ESSEM.TransformComponent());
+    entity.addComponent(new ESSEM.CameraComponent());
     entity.addTag("MainCamera");
 });
 ```
@@ -54,7 +54,7 @@ app.eventManager.addListener(ESSEM.ApplicationInitEvent, () => {
 
 The documentation is [here]("https://calbabreaker.github.io/essem.js/docs/")
 You can also build the documentation from the sources by doing `yarn run docs` and viewing the 
-`/docs/` directory.
+`docs/` directory.
 
 ## Contributing
 
