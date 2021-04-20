@@ -162,7 +162,7 @@ entity.addComponent(<span class="hljs-keyword">new</span> ESSEM.TransformCompone
               </td>
               <td>
                 <section class="summary__signature">
-                  <a href="/essem.js/docs/essem/js/ESSEM/Scene.html#createEntity">createEntity(name: string, parent)</a>
+                  <a href="/essem.js/docs/essem/js/ESSEM/Scene.html#createEntity">createEntity(name: string, parent: <a href="/essem.js/docs/essem/js/ESSEM/Entity.html">ESSEM.Entity</a> | <a href="/essem.js/docs/essem/js/ESSEM/Scene.html">ESSEM.Scene</a>)</a>
                 </section>
                 <section>
                   
@@ -309,7 +309,7 @@ entity.addComponent(<span class="hljs-keyword">new</span> ESSEM.TransformCompone
     </section>
   
   
-<pre class="signature__container"><code class="signature">createEntity(name: string, parent) → {<a href="/essem.js/docs/essem/js/ESSEM/Entity.html">ESSEM.Entity</a>}</code></pre>
+<pre class="signature__container"><code class="signature">createEntity(name: string, parent: <a href="/essem.js/docs/essem/js/ESSEM/Entity.html">ESSEM.Entity</a> | <a href="/essem.js/docs/essem/js/ESSEM/Scene.html">ESSEM.Scene</a>) → {<a href="/essem.js/docs/essem/js/ESSEM/Entity.html">ESSEM.Entity</a>}</code></pre>
 
 
   <div class="member__brief"><p>Creates a new entity that is aquired from a pool for efficency.</p></div>
@@ -351,17 +351,17 @@ entity.addComponent(<span class="hljs-keyword">new</span> ESSEM.TransformCompone
           parent
         </td>
         <td class="member-parameter__type">
-          
+          <a href="/essem.js/docs/essem/js/ESSEM/Entity.html">ESSEM.Entity</a> | <a href="/essem.js/docs/essem/js/ESSEM/Scene.html">ESSEM.Scene</a>
         </td>
         <td class="member-parameter__attributes">
-          
+          <p>&lt;optional&gt;</p>
           
           
         </td>
         <td class="member-parameter__default">
-          
+          this
         </td>
-        <td class="member-parameter__description"><p>The parent for the entity. Default is the scene.</p></td>
+        <td class="member-parameter__description"><p>The parent for the entity. Default is this scene.</p></td>
       </tr>
     </tbody>
   </table>

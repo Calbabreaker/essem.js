@@ -59,33 +59,29 @@
 
     <div class="document__brief"></div>
     <div class="document__description"><p>System base class to extend to collect all the wanted entities and do stuff to them.</p>
-<ul>
-<li>
-<h2>Example * ```js</h2>
-</li>
-</ul>
-<p>// System that logs hello for each entity with a transform component
-class HelloSystem extends ESSEM.System {
-setup(app) {
-app.eventManager.addListener(ESSEM.ApplicationUpdateEvent, this.onUpdate.bind(this));
-this.setComponents(ESSEM.TransformComponent);
-}</p>
-<pre><code class="hljs"> onUpdate() {
-     for (entity of this.entities) {
-         const transform = entity.getComponent(ESSEM.TransformComponent);
-         console.log(&quot;Hello from: &quot; + tranform.position.toString())
-     }
- }
-</code></pre>
-<p>}</p>
-<p>const app = new ESSEM.Application();
-app.registerSystem(HelloSystem);
-const scene = app.createScene()</p>
-<p>// Logs &quot;Hello from: Vector2(0, 1)&quot; every frame
-const entity = scene.createEntity();
-entity.addComponent(new TransformComponent(new ESSEM.Vector2(0, 1)));</p>
-<pre><code class="hljs">
+<h2>Example</h2>
+<pre><code class="hljs language-js"><span class="hljs-comment">// System that logs hello for each entity with a transform component</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">HelloSystem</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">ESSEM</span>.<span class="hljs-title">System</span> </span>{
+    <span class="hljs-function"><span class="hljs-title">setup</span>(<span class="hljs-params">app</span>)</span> {
+        app.eventManager.addListener(ESSEM.ApplicationUpdateEvent, <span class="hljs-built_in">this</span>.onUpdate.bind(<span class="hljs-built_in">this</span>));
+        <span class="hljs-built_in">this</span>.setComponents(ESSEM.TransformComponent);
+    }
 
+    <span class="hljs-function"><span class="hljs-title">onUpdate</span>(<span class="hljs-params"></span>)</span> {
+        <span class="hljs-keyword">for</span> (entity <span class="hljs-keyword">of</span> <span class="hljs-built_in">this</span>.entities) {
+            <span class="hljs-keyword">const</span> transform = entity.getComponent(ESSEM.TransformComponent);
+            <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&quot;Hello from: &quot;</span> + tranform.position.toString())
+        }
+    }
+}
+
+<span class="hljs-keyword">const</span> app = <span class="hljs-keyword">new</span> ESSEM.Application();
+app.registerSystem(HelloSystem);
+<span class="hljs-keyword">const</span> scene = app.createScene()
+
+<span class="hljs-comment">// Logs &quot;Hello from: Vector2(0, 1)&quot; every frame</span>
+<span class="hljs-keyword">const</span> entity = scene.createEntity();
+entity.addComponent(<span class="hljs-keyword">new</span> TransformComponent(<span class="hljs-keyword">new</span> ESSEM.Vector2(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>)));
 </code></pre></div>
 
     
