@@ -12,17 +12,17 @@ export class CameraComponent {
     private _aspectRatio = 0;
     private _size: number;
 
-    private _projectionMatrix: Matrix3 = new Matrix3();
+    private _projectionMatrix = new Matrix3();
     private _projectionValid = false;
 
     /**
-     * @param [size=5] - The size or 'inverse zoom' of the camera.
-     * @param [fixedAspectRatio=false] - Whether or not the camera shouldn't be automatically
+     * @param {number} [size=5] - The size or 'inverse zoom' of the camera.
+     * @param {boolean} [fixedAspectRatio=false] - Whether or not the camera shouldn't be automatically
      *        resized whenever the viewport resizes.
      */
-    constructor(size?: number, fixedAspectRatio?: boolean) {
-        this._size = size ?? 5;
-        this.fixedAspectRatio = fixedAspectRatio ?? false;
+    constructor(size: number = 5, fixedAspectRatio: boolean = false) {
+        this._size = size;
+        this.fixedAspectRatio = fixedAspectRatio;
     }
 
     setViewportSize(width: number, height: number): void {
