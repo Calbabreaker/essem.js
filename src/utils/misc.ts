@@ -66,3 +66,7 @@ export function lastItemSwapRemove<T>(array: T[], index: number): T {
 export function getTypeName<T>(type: AnyCtor<T> | string): string {
     return (type as AnyCtor<T>).name ?? type;
 }
+
+export function genUID(): string {
+    return Math.floor(Math.random() * 100000).toString(16);
+}

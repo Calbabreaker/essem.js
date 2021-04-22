@@ -22,7 +22,7 @@ jobs:
             - name: Install dependencies
               run: yarn install
             - name: Lint code
-              run: yarn run lint:fix
+              run: yarn run lint
             - name: Build library
               run: yarn run build
             - name: Run Unit Tests

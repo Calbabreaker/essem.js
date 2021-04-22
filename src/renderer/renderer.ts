@@ -1,6 +1,7 @@
-import { assert } from "src/utils/misc";
+import { assert, genUID } from "src/utils/misc";
 import { isWebGL2Supported } from "src/utils/browser";
 import { hexToRGBA } from "src/utils/colors";
+import { TextureExtension } from "./texture/texture_extension";
 
 /**
  * Main renderer class.
@@ -11,15 +12,19 @@ import { hexToRGBA } from "src/utils/colors";
  */
 export class Renderer {
     readonly gl: WebGL2RenderingContext;
-    readonly maxTextureSlots: number;
+    readonly contextUID: string;
+
+    readonly textureExtension: TextureExtension;
 
     constructor(canvasElement: HTMLCanvasElement) {
         if (isWebGL2Supported()) {
             const gl = canvasElement.getContext("webgl2");
             assert(gl !== null, "Failed to create WebGL2 context");
-            this.gl = gl;
 
-            this.maxTextureSlots = gl.getParameter(gl.MAX_TEXTURE_IMAGE_UNITS);
+            this.gl = gl;
+            this.contextUID = genUID();
+
+            this.textureExtension = new TextureExtension(this);
         } else {
             alert("WebGL2 is not supported in your browser!");
             throw new Error("WebGL2 not supported!");

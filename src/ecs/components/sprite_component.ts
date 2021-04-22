@@ -1,4 +1,4 @@
-import { Texture } from "src/renderer/texture";
+import { Texture } from "src/renderer/texture/texture";
 import { hexToRGBA } from "src/utils/colors";
 
 /**

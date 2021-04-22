@@ -1,4 +1,4 @@
-import { AbstractBatchRenderer } from "src/renderer/abstract_batch_renderer";
+import { BatchRendererExtension } from "src/renderer/batch_renderer_extension";
 import { Application, ApplicationUpdateEvent } from "src/core/application";
 import { CameraComponent } from "src/ecs/components/camera_component";
 import { Entity } from "../entity";
@@ -7,7 +7,7 @@ import { System } from "../system";
 import { TransformComponent } from "src/ecs/components/transform_component";
 import { Vector2 } from "src/math/vector2";
 
-class SpriteRenderer extends AbstractBatchRenderer {
+class SpriteRenderer extends BatchRendererExtension {
     // prettier-ignore
     static vertexPositions: Float32Array = new Float32Array([
         -0.5, -0.5,   
@@ -26,7 +26,7 @@ class SpriteRenderer extends AbstractBatchRenderer {
     private _cacheVector: Vector2 = new Vector2();
 
     drawSprite(entity: Entity): void {
-        if (this.indicesCount >= AbstractBatchRenderer.maxIndices) this.nextBatch();
+        if (this.indicesCount >= BatchRendererExtension.maxIndices) this.nextBatch();
         const matrix = TransformComponent.getGlobalTransformMatrix(entity);
         const sprite = entity.getComponent(SpriteComponent);
 
@@ -34,7 +34,7 @@ class SpriteRenderer extends AbstractBatchRenderer {
             const index = i * 2;
             this._cacheVector
                 .set(
-                    SpriteRenderer.vertexPositions[index] * sprite.texture.aspectRatio,
+                    SpriteRenderer.vertexPositions[index],
                     SpriteRenderer.vertexPositions[index + 1]
                 )
                 .transformMatrix3(matrix);

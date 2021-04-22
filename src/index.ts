@@ -18,10 +18,12 @@ export * from "./ecs/entity";
 export * from "./ecs/scene";
 export * from "./ecs/system";
 
-export * from "./renderer/abstract_batch_renderer";
+export * from "./renderer/batch_renderer_extension";
 export * from "./renderer/renderer";
 export * from "./renderer/shader";
-export * from "./renderer/texture";
+export * from "./renderer/texture/gl_texture";
+export * from "./renderer/texture/texture";
+export * from "./renderer/texture/texture_extension";
 export * from "./renderer/vertex_array";
 
 export * from "./math/common";
@@ -30,7 +32,9 @@ export * from "./math/matrix3";
 
 export * from "./utils/browser";
 export * from "./utils/colors";
+export * from "./utils/constants";
 export * from "./utils/misc";
+export * from "./utils/settings";
 export * from "./utils/types";
 
 /**
