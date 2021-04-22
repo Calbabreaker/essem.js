@@ -13,7 +13,7 @@ Add a script tag to the header (you can swap 0.0.0 for any version):
 
 ```html
 <head>
-    <script src="https://cdn.jsdelivr.net/npm/essem.js@0.0.1/build/essem.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/essem.js@0.0.0/build/essem.js"></script>
 </head>
 ```
 
@@ -52,7 +52,7 @@ app.eventManager.addListener(ESSEM.ApplicationInitEvent, () => {
 
 ## Documentation
 
-The documentation is [here]("https://calbabreaker.github.io/essem.js/docs/")
+The documentation is [here](https://calbabreaker.github.io/essem.js/docs/)
 You can also build the documentation from the sources by doing `yarn run docs` and viewing the 
 `docs/` directory.
 

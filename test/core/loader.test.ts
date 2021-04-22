@@ -1,4 +1,4 @@
-import { Texture } from "src/renderer/texture";
+import { Texture } from "src/renderer/texture/texture";
 import { Loader } from "src/core/loader";
 import { AudioClip } from "src/core/audio_clip";
 
