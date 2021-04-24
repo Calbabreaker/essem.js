@@ -1,5 +1,6 @@
+import { Dict } from "src/utils/types";
 import {
-    DATA_TYPES,
+    TEXTURE_TYPES,
     SCALE_MODES,
     TEXTURE_FORMATS,
     TEXTURE_TARGETS,
@@ -13,7 +14,7 @@ export type TextureSource = HTMLImageElement | HTMLCanvasElement;
 export interface ITextureOptions {
     format?: TEXTURE_FORMATS;
     target?: TEXTURE_TARGETS;
-    dataType?: DATA_TYPES;
+    dataType?: TEXTURE_TYPES;
     scaleMode?: SCALE_MODES;
     wrapMode?: WRAP_MODES;
 }
@@ -28,20 +29,20 @@ export class Texture {
 
     format: TEXTURE_FORMATS;
     target: TEXTURE_TARGETS;
-    dataType: DATA_TYPES;
+    dataType: TEXTURE_TYPES;
     scaleMode: SCALE_MODES;
     wrapMode: WRAP_MODES;
 
     dirtyID = 0;
     dirtyStyleID = 0;
-    glTextures: { [key: string]: GLTexture | undefined } = {};
+    glTextures: Dict<GLTexture | undefined> = {};
 
     constructor(source: TextureSource, options: ITextureOptions = {}) {
         this.source = source;
 
         this.format = options.format ?? TEXTURE_FORMATS.RGBA;
         this.target = options.target ?? TEXTURE_TARGETS.TEXTURE_2D;
-        this.dataType = options.dataType ?? DATA_TYPES.UNSIGNED_BYTE;
+        this.dataType = options.dataType ?? TEXTURE_TYPES.UNSIGNED_BYTE;
         this.scaleMode = options.scaleMode ?? settings.SCALE_MODE;
         this.wrapMode = options.wrapMode ?? settings.WRAP_MODE;
     }

@@ -1,13 +1,13 @@
 import { Vector2 } from "./vector2";
 
 /**
- * The matrix as this class make it a lot faster since there are less values to work with.
+ * The matrix as this class makes it a lot faster since there are less values to work with.
  *
  * Here's a representation of it:
  * ```js
- * | xScale | xSkew | xTrans |
- * | ySkew  | yScale| yTrans |
- * | 0      | 0     | 1      |
+ * | xScale | xSkew  | xTrans |
+ * | ySkew  | yScale | yTrans |
+ * | 0      | 0      | 1      |
  * ```
  *
  * @memberof ESSEM

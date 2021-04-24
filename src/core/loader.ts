@@ -1,4 +1,4 @@
-import { AnyCtor } from "src/utils/types";
+import { AnyCtor, Dict } from "src/utils/types";
 import { AudioClip } from "./audio_clip";
 import { Texture } from "src/renderer/texture/texture";
 
@@ -15,7 +15,7 @@ export class Loader {
     private _audioContext: AudioContext;
 
     resourceURLs: [ResourceTypeNames, string][] = [];
-    resources: { [key: string]: ResourceTypes } = {};
+    resources: Dict<ResourceTypes> = {};
 
     constructor(audioContext: AudioContext) {
         this._audioContext = audioContext;

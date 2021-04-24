@@ -7,6 +7,8 @@ import { Scene } from "./scene";
 export type Component = Object;
 export type ComponentClass = AnyCtor<Component>;
 
+let uidCounter = 0;
+
 /**
  * Entity class to handle components in ecs.
  *
@@ -35,8 +37,8 @@ export class Entity {
     private _componentMap: Map<string, Component> = new Map();
     private _scene: Scene;
 
-    constructor(id: number, scene: Scene) {
-        this.id = id;
+    constructor(scene: Scene) {
+        this.id = uidCounter++;
         this._scene = scene;
     }
 

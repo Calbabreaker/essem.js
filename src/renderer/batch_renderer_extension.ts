@@ -1,10 +1,10 @@
 import { Renderer } from "./renderer";
-import { Shader } from "./shader";
 import { VertexArray } from "./vertex_array";
 import textureVertexSrc from "./shaders/texture_vert.glsl";
 import textureFragmentSrc from "./shaders/texture_frag.glsl";
 import { Texture } from "./texture/texture";
 import { Matrix3 } from "src/math/matrix3";
+import { Shader } from "./shader/shader";
 
 export interface IBatchableElement {
     texture: Texture;
@@ -67,22 +67,17 @@ export class BatchRendererExtension {
         gl.enableVertexAttribArray(3);
         gl.vertexAttribPointer(3, 4, gl.FLOAT, false, stride, 5 * Float32Array.BYTES_PER_ELEMENT);
 
-        // TODO: abstract shader
         this.textureShader = new Shader(textureVertexSrc, textureFragmentSrc, "Sprite");
-        this.textureShader.bind(gl);
 
         const maxTextureSlots = renderer.textureExtension.boundTextures.length;
         const samplers = new Int32Array(maxTextureSlots).map((_, i) => i);
-        this.textureShader.setIntArray(gl, "u_textures", samplers);
+        this.textureShader.uniforms.u_textures = samplers;
 
         this.textureSlots = new Array(maxTextureSlots).fill(undefined);
     }
 
     beginScene(viewProjection: Matrix3): void {
-        const gl = this.renderer.gl;
-        this.textureShader.bind(gl);
-        this.textureShader.setMatrix3(gl, "u_viewProjection", viewProjection);
-
+        this.textureShader.uniforms.u_viewProjection = viewProjection;
         this.startBatch();
     }
 
@@ -104,7 +99,9 @@ export class BatchRendererExtension {
     flush(): void {
         if (this.indicesCount === 0 || this.verticesIndex === 0) return;
 
-        const gl = this.renderer.gl;
+        const { gl, shaderExtension } = this.renderer;
+
+        shaderExtension.bindShader(this.textureShader);
 
         // set buffer data
         const vertices =

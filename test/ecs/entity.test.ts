@@ -23,9 +23,8 @@ describe("ESSEM.Entity", () => {
     const scene = new Scene();
 
     test("should generate Entity()", () => {
-        const entity = new Entity(0, scene);
+        const entity = new Entity(scene);
 
-        expect(entity.id).toBe(0);
         expect(entity.active).toBe(false);
         expect(entity.name).toBe("");
         expect(entity.parent).toBe(null);
@@ -38,7 +37,7 @@ describe("ESSEM.Entity", () => {
     });
 
     test("addComponent()", () => {
-        const entity = new Entity(0, scene);
+        const entity = new Entity(scene);
 
         const thing = new ComponentThing(true);
         const value = new ValueComponent(123, "asdf");
@@ -52,7 +51,7 @@ describe("ESSEM.Entity", () => {
     });
 
     test("removeComponent()", () => {
-        const entity = new Entity(0, scene);
+        const entity = new Entity(scene);
 
         const thing = new ComponentThing(true);
         const value = new ValueComponent(123, "asdf");
@@ -66,7 +65,7 @@ describe("ESSEM.Entity", () => {
     });
 
     test("getComponent()", () => {
-        const entity = new Entity(0, scene);
+        const entity = new Entity(scene);
 
         const thing = new ComponentThing(true);
         const value = new ValueComponent(123, "asdf");
@@ -78,7 +77,7 @@ describe("ESSEM.Entity", () => {
     });
 
     test("hasComponent()", () => {
-        const entity = new Entity(0, scene);
+        const entity = new Entity(scene);
 
         const thing = new ComponentThing(true);
         const value = new ValueComponent(123, "asdf");
@@ -92,7 +91,7 @@ describe("ESSEM.Entity", () => {
     });
 
     test("hasAllComponents()", () => {
-        const entity = new Entity(0, scene);
+        const entity = new Entity(scene);
 
         const thing = new ComponentThing(true);
         const value = new ValueComponent(123, "asdf");

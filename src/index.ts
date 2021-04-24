@@ -20,7 +20,11 @@ export * from "./ecs/system";
 
 export * from "./renderer/batch_renderer_extension";
 export * from "./renderer/renderer";
-export * from "./renderer/shader";
+export * from "./renderer/shader/gl_program";
+export * from "./renderer/shader/shader";
+export * from "./renderer/shader/shader_extension";
+export * from "./renderer/shader/shader_utils";
+export * from "./renderer/shader/uniforms";
 export * from "./renderer/texture/gl_texture";
 export * from "./renderer/texture/texture";
 export * from "./renderer/texture/texture_extension";

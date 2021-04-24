@@ -1,4 +1,4 @@
-export type ObjectClassType<T, M> = new (id: number, objectManager: M) => T;
+export type ObjectClassType<T, M = undefined> = new (objectManager: M) => T;
 
 /**
  * @memberof ESSEM
@@ -30,9 +30,7 @@ export class ObjectPool<T, M = undefined> {
 
     reserve(count: number): void {
         for (let i = 0; i < count; i++) {
-            this.availableObjects.push(
-                new this.objectClass(i + this.totalObjects, this.objectManager)
-            );
+            this.availableObjects.push(new this.objectClass(this.objectManager));
         }
 
         this.totalObjects += count;

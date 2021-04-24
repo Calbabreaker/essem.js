@@ -26,8 +26,7 @@ export class CameraComponent {
     }
 
     setViewportSize(width: number, height: number): void {
-        this._aspectRatio = width / height;
-        new CameraComponent();
+        this.aspectRatio = width / height;
     }
 
     /**

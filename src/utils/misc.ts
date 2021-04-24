@@ -1,4 +1,4 @@
-import { AnyCtor } from "./types";
+import { AnyCtor, ArrayTypes } from "./types";
 
 /**
  * Error class that is used for {@link ESSEM.assert}.
@@ -14,7 +14,7 @@ export class AssertionError extends Error {
 
 /**
  * Throws an error if condition is false.
- * All uses if this in the essem.js code will get removed in minified files.
+ * All uses if this in the essem.js code will get removed in minified versions of the library.
  *
  * @memberof ESSEM
  * @param condition - The condition to assert.
@@ -67,6 +67,12 @@ export function getTypeName<T>(type: AnyCtor<T> | string): string {
     return (type as AnyCtor<T>).name ?? type;
 }
 
-export function genUID(): string {
-    return Math.floor(Math.random() * 100000).toString(16);
+export function arrayEquals(array1: ArrayTypes, array2: ArrayTypes): boolean {
+    if (array1.length !== array2.length) return false;
+
+    for (let i = 0; i < array1.length; i++) {
+        if (array1[i] !== array2[i]) return false;
+    }
+
+    return true;
 }

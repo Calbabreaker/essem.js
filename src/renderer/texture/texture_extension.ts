@@ -17,14 +17,6 @@ export class TextureExtension {
         this.boundTextures = new Array(gl.getParameter(gl.MAX_TEXTURE_IMAGE_UNITS)).fill(null);
     }
 
-    initTexture(texture: Texture): GLTexture {
-        const { gl, contextUID } = this.renderer;
-
-        const glTexture = new GLTexture(gl.createTexture());
-        texture.glTextures[contextUID] = glTexture;
-        return glTexture;
-    }
-
     bindTexture(texture: Texture, slot: number = 0): void {
         const { gl, contextUID } = this.renderer;
 
@@ -56,6 +48,16 @@ export class TextureExtension {
                 return;
             }
         }
+    }
+
+    initTexture(texture: Texture): GLTexture {
+        const { gl, contextUID } = this.renderer;
+
+        const webglTexture = gl.createTexture();
+        assert(webglTexture !== null, "Failed to create WebGL texture");
+        const glTexture = new GLTexture(webglTexture);
+        texture.glTextures[contextUID] = glTexture;
+        return glTexture;
     }
 
     updateTexture(texture: Texture, glTexture: GLTexture): void {
