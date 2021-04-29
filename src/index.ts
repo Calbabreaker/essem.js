@@ -18,7 +18,7 @@ export * from "./ecs/entity";
 export * from "./ecs/scene";
 export * from "./ecs/system";
 
-export * from "./renderer/batch_renderer_extension";
+export * from "./renderer/batch/batch_renderer_extension";
 export * from "./renderer/renderer";
 export * from "./renderer/shader/gl_program";
 export * from "./renderer/shader/shader";

@@ -5,9 +5,11 @@ import {
     TEXTURE_FORMATS,
     TEXTURE_TARGETS,
     WRAP_MODES,
+    DEFAULT_TEXTURE_UVS,
 } from "src/utils/constants";
 import { settings } from "src/utils/settings";
 import { GLTexture } from "./gl_texture";
+import { Vector2 } from "src/math/vector2";
 
 export type TextureSource = HTMLImageElement | HTMLCanvasElement;
 
@@ -17,6 +19,7 @@ export interface ITextureOptions {
     dataType?: TEXTURE_TYPES;
     scaleMode?: SCALE_MODES;
     wrapMode?: WRAP_MODES;
+    anchor?: Vector2;
 }
 
 /**
@@ -26,6 +29,8 @@ export interface ITextureOptions {
  */
 export class Texture {
     source: TextureSource;
+    uvs: Float32Array = DEFAULT_TEXTURE_UVS.slice();
+    anchor: Vector2;
 
     format: TEXTURE_FORMATS;
     target: TEXTURE_TARGETS;
@@ -45,6 +50,15 @@ export class Texture {
         this.dataType = options.dataType ?? TEXTURE_TYPES.UNSIGNED_BYTE;
         this.scaleMode = options.scaleMode ?? settings.SCALE_MODE;
         this.wrapMode = options.wrapMode ?? settings.WRAP_MODE;
+        this.anchor = options.anchor ?? new Vector2(0.5, 0.5);
+    }
+
+    get width(): number {
+        return this.source.width;
+    }
+
+    get height(): number {
+        return this.source.height;
     }
 
     static async fromURL(url: string): Promise<Texture> {

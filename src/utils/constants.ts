@@ -40,3 +40,5 @@ export enum SHADER_TYPES {
     FRAGMENT_SHADER = 35632,
     VERTEX_SHADER = 35633,
 }
+
+export const DEFAULT_TEXTURE_UVS: Float32Array = new Float32Array([0, 0, 1, 0, 1, 1, 0, 1]);

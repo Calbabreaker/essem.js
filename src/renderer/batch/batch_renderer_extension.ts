@@ -1,15 +1,16 @@
-import { Renderer } from "./renderer";
-import { VertexArray } from "./vertex_array";
-import textureVertexSrc from "./shaders/texture_vert.glsl";
-import textureFragmentSrc from "./shaders/texture_frag.glsl";
-import { Texture } from "./texture/texture";
+import { Renderer } from "../renderer";
+import { VertexArray } from "../vertex_array";
+import batchVertexSrc from "./batch_vert.glsl";
+import batchFragmentSrc from "./batch_frag.glsl";
+import { Texture } from "../texture/texture";
 import { Matrix3 } from "src/math/matrix3";
-import { Shader } from "./shader/shader";
+import { Shader } from "../shader/shader";
 
 export interface IBatchableElement {
     texture: Texture;
     vertexData: Float32Array;
-    color: Float32Array;
+    rgbaColor: Float32Array;
+    uvs: Float32Array;
 }
 
 /**
@@ -67,9 +68,9 @@ export class BatchRendererExtension {
         gl.enableVertexAttribArray(3);
         gl.vertexAttribPointer(3, 4, gl.FLOAT, false, stride, 5 * Float32Array.BYTES_PER_ELEMENT);
 
-        this.textureShader = new Shader(textureVertexSrc, textureFragmentSrc, "Sprite");
+        this.textureShader = new Shader(batchVertexSrc, batchFragmentSrc, "Sprite");
 
-        const maxTextureSlots = renderer.textureExtension.boundTextures.length;
+        const maxTextureSlots = renderer.extensions.texture.boundTextures.length;
         const samplers = new Int32Array(maxTextureSlots).map((_, i) => i);
         this.textureShader.uniforms.u_textures = samplers;
 
@@ -88,20 +89,38 @@ export class BatchRendererExtension {
     startBatch(): void {
         this.verticesIndex = 0;
         this.indicesCount = 0;
+        this.textureSlotIndex = 0;
     }
 
     nextBatch(): void {
         this.flush();
         this.startBatch();
-        this.textureSlotIndex = 0;
+    }
+
+    render(batchableElement: IBatchableElement) {
+        const { vertexData, uvs, rgbaColor } = batchableElement;
+
+        for (let i = 0; i < vertexData.length; i += 2) {
+            this.vertices[this.verticesIndex++] = vertexData[i];
+            this.vertices[this.verticesIndex++] = vertexData[i + 1];
+            this.vertices[this.verticesIndex++] = uvs[i];
+            this.vertices[this.verticesIndex++] = uvs[i + 1];
+            this.vertices[this.verticesIndex++] = this.getTextureSlot(batchableElement.texture);
+            this.vertices[this.verticesIndex++] = rgbaColor[0];
+            this.vertices[this.verticesIndex++] = rgbaColor[1];
+            this.vertices[this.verticesIndex++] = rgbaColor[2];
+            this.vertices[this.verticesIndex++] = rgbaColor[3];
+        }
+
+        this.indicesCount += 6;
     }
 
     flush(): void {
         if (this.indicesCount === 0 || this.verticesIndex === 0) return;
 
-        const { gl, shaderExtension } = this.renderer;
+        const { gl, extensions } = this.renderer;
 
-        shaderExtension.bindShader(this.textureShader);
+        extensions.shader.bindShader(this.textureShader);
 
         // set buffer data
         const vertices =
@@ -114,7 +133,7 @@ export class BatchRendererExtension {
 
         // bind textures
         for (let i = 0; i < this.textureSlotIndex; i++) {
-            this.renderer.textureExtension.bindTexture(this.textureSlots[i], i);
+            extensions.texture.bindTexture(this.textureSlots[i], i);
         }
 
         // now draw!
@@ -123,10 +142,11 @@ export class BatchRendererExtension {
     }
 
     getTextureSlot(texture: Texture): number {
+        const { extensions } = this.renderer;
+
         let slot = this.textureToSlotMap.get(texture);
         if (slot === undefined) {
-            if (this.textureSlotIndex >= this.renderer.textureExtension.boundTextures.length)
-                this.nextBatch();
+            if (this.textureSlotIndex >= extensions.texture.boundTextures.length) this.nextBatch();
 
             slot = this.textureSlotIndex;
             this.textureSlots[this.textureSlotIndex] = texture;

@@ -16,11 +16,11 @@ export class CameraComponent {
     private _projectionValid = false;
 
     /**
-     * @param {number} [size=5] - The size or 'inverse zoom' of the camera.
+     * @param {number} [size=100] - The size or 'inverse zoom' of the camera.
      * @param {boolean} [fixedAspectRatio=false] - Whether or not the camera shouldn't be automatically
      *        resized whenever the viewport resizes.
      */
-    constructor(size: number = 5, fixedAspectRatio: boolean = false) {
+    constructor(size: number = 100, fixedAspectRatio: boolean = false) {
         this._size = size;
         this.fixedAspectRatio = fixedAspectRatio;
     }

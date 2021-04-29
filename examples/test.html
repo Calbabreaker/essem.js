@@ -38,12 +38,12 @@
             const entityTransform = entity.addComponent(new ESSEM.TransformComponent());
             const redSquare = scene.createEntity("RedSquare", entity);
             const redSquareTransform = redSquare.addComponent(
-                new ESSEM.TransformComponent(new ESSEM.Vector2(2, 0))
+                new ESSEM.TransformComponent(new ESSEM.Vector2(30, 0), new ESSEM.Vector2(20, 20))
             );
             redSquare.addComponent(new ESSEM.SpriteComponent(ESSEM.Texture.WHITE, 0xff1100));
 
             const camera = scene.createEntity("MainCamera");
-            camera.addComponent(new ESSEM.CameraComponent(2));
+            camera.addComponent(new ESSEM.CameraComponent(444));
             camera.addComponent(new ESSEM.TransformComponent());
             camera.addTag("MainCamera");
 

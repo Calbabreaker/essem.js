@@ -17,6 +17,9 @@ export class SpriteComponent {
      */
     rgbaColor!: Float32Array;
 
+    vertexData: Float32Array = new Float32Array(8);
+    uvs: Float32Array;
+
     private _hexColor!: number;
 
     /**
@@ -26,6 +29,7 @@ export class SpriteComponent {
     constructor(texture: Texture, color: number = 0xffffff) {
         this.texture = texture;
         this.color = color;
+        this.uvs = texture.uvs;
     }
 
     /**

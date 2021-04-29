@@ -3,8 +3,15 @@ import { isWebGL2Supported } from "src/utils/browser";
 import { hexToRGBA } from "src/utils/colors";
 import { TextureExtension } from "./texture/texture_extension";
 import { ShaderExtension } from "./shader/shader_extension";
+import { BatchRendererExtension } from "./batch/batch_renderer_extension";
 
 let uidCounter = 0;
+
+interface IRendererExtensions {
+    texture: TextureExtension;
+    shader: ShaderExtension;
+    batch: BatchRendererExtension;
+}
 
 /**
  * Main renderer class.
@@ -17,8 +24,7 @@ export class Renderer {
     readonly gl: WebGL2RenderingContext;
     readonly contextUID: string;
 
-    textureExtension: TextureExtension;
-    shaderExtension: ShaderExtension;
+    extensions: IRendererExtensions;
 
     constructor(canvasElement: HTMLCanvasElement) {
         if (isWebGL2Supported()) {
@@ -28,8 +34,10 @@ export class Renderer {
             this.gl = gl;
             this.contextUID = (uidCounter++).toString(16);
 
-            this.textureExtension = new TextureExtension(this);
-            this.shaderExtension = new ShaderExtension(this);
+            this.extensions = {} as IRendererExtensions;
+            this.extensions.texture = new TextureExtension(this);
+            this.extensions.shader = new ShaderExtension(this);
+            this.extensions.batch = new BatchRendererExtension(this);
         } else {
             alert("WebGL2 is not supported in your browser!");
             throw new Error("WebGL2 not supported!");
