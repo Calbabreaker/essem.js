@@ -42,6 +42,16 @@ export class Texture {
     dirtyStyleID = 0;
     glTextures: Dict<GLTexture | undefined> = {};
 
+    /**
+     * @param {HTMLCanvasElement | HTMLImageElement} source - The source for the texture.
+     * @param {object} [options={}] - Optional parameters for the texture.
+     * @param {object} [options.format=ESSEM.TEXTURE_FORMATS.RGBA] - The colour format for the texture.
+     * @param {object} [options.target=ESSEM.TEXTURE_TARGETS.TEXTURE_2D] - The target of the texture.
+     * @param {object} [options.dataType=ESSEM.TEXTURE_TYPES.UNSIGNED_BYTE] - The data type of the texture.
+     * @param {object} [options.scaleMode=ESSEM.settings.SCALE_MODE] - The scale mode for the texture.
+     * @param {object} [options.anchor=new Vector2(0.5, 0.5)] - The anchor of the texture used for rendering.
+     *        Default is the middle of the texture.
+     */
     constructor(source: TextureSource, options: ITextureOptions = {}) {
         this.source = source;
 
@@ -74,7 +84,10 @@ export class Texture {
         });
     }
 
-    static readonly WHITE = createWhiteTexture();
+    /**
+     * A completely white 16x16 texture useful for solid colour rectangles.
+     */
+    static readonly WHITE: Texture = createWhiteTexture();
 }
 
 function createWhiteTexture(): Texture {
