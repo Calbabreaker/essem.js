@@ -97,7 +97,7 @@ export class BatchRendererExtension {
         this.startBatch();
     }
 
-    render(batchableElement: IBatchableElement) {
+    render(batchableElement: IBatchableElement): void {
         const { vertexData, uvs, rgbaColor } = batchableElement;
 
         for (let i = 0; i < vertexData.length; i += 2) {

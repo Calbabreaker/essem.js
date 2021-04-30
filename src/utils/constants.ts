@@ -25,6 +25,13 @@ export enum TEXTURE_TYPES {
     UNSIGNED_SHORT_5_6_5 = 33635,
 }
 
+/**
+ * Possible scale modes for textures.
+ *
+ * @memberof ESSEM
+ * @property {number} NEAREST - No smooth scaling (pixelated look).
+ * @property {number} LINEAR - Smooth scaling.
+ */
 export enum SCALE_MODES {
     NEAREST = 9728,
     LINEAR = 9729,

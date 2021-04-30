@@ -40,15 +40,15 @@ export class SpriteRendererSystem extends System {
         batchExt.endScene();
     }
 
-    calculateVertices(entity: Entity) {
+    calculateVertices(entity: Entity): void {
         const m = TransformComponent.getGlobalTransformMatrix(entity);
         const sprite = entity.getComponent(SpriteComponent);
         const { texture, vertexData } = sprite;
 
-        let w0 = -texture.anchor.x * texture.width;
-        let w1 = w0 + texture.width;
-        let h0 = -texture.anchor.y * texture.height;
-        let h1 = h0 + texture.height;
+        const w0 = -texture.anchor.x * texture.width;
+        const w1 = w0 + texture.width;
+        const h0 = -texture.anchor.y * texture.height;
+        const h1 = h0 + texture.height;
 
         // not using vectors apply matrix function because this faster
         vertexData[0] = m.xScale * w1 + m.xSkew * h1 + m.xTrans;

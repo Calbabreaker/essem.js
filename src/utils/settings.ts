@@ -9,9 +9,17 @@ export interface ISettings {
 /**
  * Customizeable global defaults and settings for the user to set.
  *
- * @memberof ESSEM
+ * @namespace ESSEM.settings
  */
 export const settings: ISettings = {
+    /**
+     * Default ESSEM.SCALE_MODE for all textures.
+     * You can set this to SCALE_MODES.NEAREST for no interpolation (pixelated look).
+     *
+     * @memberof ESSEM.settings
+     * @type {ESSEM.SCALE_MODES}
+     * @default ESSEM.SCALE_MODES.NEAREST
+     */
     SCALE_MODE: SCALE_MODES.LINEAR,
     WRAP_MODE: WRAP_MODES.MIRRORED_REPEAT,
     SPRITE_BATCH_SIZE: 1000,

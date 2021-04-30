@@ -194,12 +194,12 @@ export class Matrix3 {
 
     projection(left: number, right: number, bottom: number, top: number): this {
         const rl = right - left;
-        const tp = top - bottom;
+        const tb = top - bottom;
 
         this.xScale = 2 / rl;
-        this.yScale = 2 / tp;
+        this.yScale = 2 / tb;
         this.xTrans = (right + left) / rl;
-        this.yTrans = (top + bottom) / tp;
+        this.yTrans = (top + bottom) / tb;
         this.xSkew = 0;
         this.ySkew = 0;
         return this;

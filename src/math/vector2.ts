@@ -47,6 +47,12 @@ export class Vector2 {
         return `Vector2(${this.x}, ${this.y})`;
     }
 
+    /**
+     * Converts the vector into a Float32Array array.
+     *
+     * @param [out=new Float32Array(2)] - An array to set the values of the vector. Leave it empty
+     *        to use the vector's array cache.
+     */
     toArray(out?: Float32Array): Float32Array {
         if (!this._array) this._array = new Float32Array(2);
 
@@ -118,13 +124,19 @@ export class Vector2 {
         return this;
     }
 
-    rotate(radians: number, origin: Vector2 = new Vector2()): this {
+    /**
+     * Sets the rotation of the vector by the angle that's in radians.
+     *
+     * @param angle - The angle of the rotation in radians.
+     * @param {Vector2} [origin=Vector2.ZERO] - The origin of the rotation.
+     */
+    rotate(angle: number, origin: Vector2 = Vector2.ZERO): this {
         const pointX = this.x - origin.x;
         const pointY = this.y - origin.y;
 
         // perform rotation and translate to correct position
-        const sinC = Math.sin(radians);
-        const cosC = Math.cos(radians);
+        const sinC = Math.sin(angle);
+        const cosC = Math.cos(angle);
         this.x = pointX * cosC - pointY * sinC + origin.x;
         this.y = pointX * sinC + pointY * cosC + origin.y;
         return this;
@@ -158,4 +170,6 @@ export class Vector2 {
         this.y = matrix.ySkew * x + matrix.yScale * this.y + matrix.yTrans;
         return this;
     }
+
+    static readonly ZERO = new Vector2(0, 0);
 }
