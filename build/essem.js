@@ -1,6 +1,6 @@
 /*!
- * essem.js - v0.0.1
- * Compiled Tue, 20 Apr 2021 08:21:26 GMT
+ * essem.js - v0.0.2
+ * Compiled Fri, 30 Apr 2021 02:58:00 GMT
  *
  * Free to use under the MIT LICENSE.
  */
@@ -48,7 +48,7 @@
     }
     /**
      * Throws an error if condition is false.
-     * All uses if this in the essem.js code will get removed in minified files.
+     * All uses if this in the essem.js code will get removed in minified versions of the library.
      *
      * @memberof ESSEM
      * @param condition - The condition to assert.
@@ -100,6 +100,15 @@
         var _a;
         return (_a = type.name) !== null && _a !== void 0 ? _a : type;
     }
+    function arrayEquals(array1, array2) {
+        if (array1.length !== array2.length)
+            return false;
+        for (let i = 0; i < array1.length; i++) {
+            if (array1[i] !== array2[i])
+                return false;
+        }
+        return true;
+    }
 
     // caches the result from webgl2Supported function
     let webgl2Supported;
@@ -126,7 +135,7 @@
     function sayHello() {
         if (!saidHello) {
             // TODO: make this look better
-            console.log("---\n--- essem.js v0.0.1\n---");
+            console.log("---\n--- essem.js v0.0.2\n---");
             saidHello = true;
         }
     }
@@ -163,6 +172,598 @@
         return rgb;
     }
 
+    class GLTexture {
+        constructor(handle) {
+            this.dirtyID = -1;
+            this.dirtyStyleID = -1;
+            this.handle = handle;
+        }
+    }
+
+    class TextureExtension {
+        constructor(renderer) {
+            this.currentSlot = -1;
+            this.renderer = renderer;
+            const { gl } = this.renderer;
+            this.boundTextures = new Array(gl.getParameter(gl.MAX_TEXTURE_IMAGE_UNITS)).fill(null);
+        }
+        bindTexture(texture, slot = 0) {
+            var _a;
+            const { gl, contextUID } = this.renderer;
+            assert(this.boundTextures[slot] !== undefined, `Can't bind texture at invalid slot ${slot}!`);
+            const glTexture = (_a = texture.glTextures[contextUID]) !== null && _a !== void 0 ? _a : this.initTexture(texture);
+            if (this.boundTextures[slot] !== texture) {
+                this.setActiveTextureSlot(slot);
+                gl.bindTexture(texture.target, glTexture.handle);
+                this.boundTextures[slot] = texture;
+            }
+            if (texture.dirtyID !== glTexture.dirtyID)
+                this.updateTexture(texture, glTexture);
+        }
+        unbindTexture(texture) {
+            const { gl } = this.renderer;
+            for (let i = 0; i < this.boundTextures.length; i++) {
+                if (this.boundTextures[i] === texture) {
+                    this.setActiveTextureSlot(i);
+                    gl.bindTexture(texture.target, null);
+                    this.boundTextures[i] = null;
+                    return;
+                }
+            }
+        }
+        initTexture(texture) {
+            const { gl, contextUID } = this.renderer;
+            const webglTexture = gl.createTexture();
+            assert(webglTexture !== null, "Failed to create WebGL texture");
+            const glTexture = new GLTexture(webglTexture);
+            texture.glTextures[contextUID] = glTexture;
+            return glTexture;
+        }
+        updateTexture(texture, glTexture) {
+            const { gl } = this.renderer;
+            if (texture.dirtyStyleID !== glTexture.dirtyStyleID)
+                this.updateTextureStyle(texture, glTexture);
+            gl.texImage2D(texture.target, 0, texture.format, texture.format, texture.dataType, texture.source);
+            glTexture.dirtyID = texture.dirtyID;
+        }
+        updateTextureStyle(texture, glTexture) {
+            const { gl } = this.renderer;
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, texture.wrapMode);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, texture.wrapMode);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, texture.scaleMode);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, texture.scaleMode);
+            texture.dirtyStyleID = glTexture.dirtyStyleID;
+        }
+        destroyTexture(texture) {
+            const { gl, contextUID } = this.renderer;
+            const glTexture = texture.glTextures[contextUID];
+            if (glTexture !== undefined) {
+                this.unbindTexture(texture);
+                gl.deleteTexture(glTexture.handle);
+                delete texture.glTextures[contextUID];
+            }
+        }
+        setActiveTextureSlot(slot) {
+            const { gl } = this.renderer;
+            if (this.currentSlot !== slot) {
+                gl.activeTexture(gl.TEXTURE0 + slot);
+                this.currentSlot = slot;
+            }
+        }
+    }
+
+    class GLProgram {
+        constructor(handle) {
+            this.uniformDatas = {};
+            this.handle = handle;
+        }
+    }
+
+    exports.TEXTURE_FORMATS = void 0;
+    (function (TEXTURE_FORMATS) {
+        TEXTURE_FORMATS[TEXTURE_FORMATS["ALPHA"] = 6406] = "ALPHA";
+        TEXTURE_FORMATS[TEXTURE_FORMATS["DEPTH_COMPONENT"] = 6402] = "DEPTH_COMPONENT";
+        TEXTURE_FORMATS[TEXTURE_FORMATS["DEPTH_STENCIL"] = 34041] = "DEPTH_STENCIL";
+        TEXTURE_FORMATS[TEXTURE_FORMATS["LUMINANCE"] = 6409] = "LUMINANCE";
+        TEXTURE_FORMATS[TEXTURE_FORMATS["LUMINANCE_ALPHA"] = 6410] = "LUMINANCE_ALPHA";
+        TEXTURE_FORMATS[TEXTURE_FORMATS["RED"] = 6403] = "RED";
+        TEXTURE_FORMATS[TEXTURE_FORMATS["RGB"] = 6407] = "RGB";
+        TEXTURE_FORMATS[TEXTURE_FORMATS["RGBA"] = 6408] = "RGBA";
+    })(exports.TEXTURE_FORMATS || (exports.TEXTURE_FORMATS = {}));
+    exports.TEXTURE_TARGETS = void 0;
+    (function (TEXTURE_TARGETS) {
+        TEXTURE_TARGETS[TEXTURE_TARGETS["TEXTURE_2D"] = 3553] = "TEXTURE_2D";
+        TEXTURE_TARGETS[TEXTURE_TARGETS["TEXTURE_CUBE_MAP"] = 34067] = "TEXTURE_CUBE_MAP";
+        TEXTURE_TARGETS[TEXTURE_TARGETS["TEXTURE_2D_ARRAY"] = 35866] = "TEXTURE_2D_ARRAY";
+    })(exports.TEXTURE_TARGETS || (exports.TEXTURE_TARGETS = {}));
+    exports.TEXTURE_TYPES = void 0;
+    (function (TEXTURE_TYPES) {
+        TEXTURE_TYPES[TEXTURE_TYPES["FLOAT"] = 5126] = "FLOAT";
+        TEXTURE_TYPES[TEXTURE_TYPES["HALF_FLOAT"] = 36193] = "HALF_FLOAT";
+        TEXTURE_TYPES[TEXTURE_TYPES["UNSIGNED_BYTE"] = 5121] = "UNSIGNED_BYTE";
+        TEXTURE_TYPES[TEXTURE_TYPES["UNSIGNED_SHORT"] = 5123] = "UNSIGNED_SHORT";
+        TEXTURE_TYPES[TEXTURE_TYPES["UNSIGNED_SHORT_4_4_4_4"] = 32819] = "UNSIGNED_SHORT_4_4_4_4";
+        TEXTURE_TYPES[TEXTURE_TYPES["UNSIGNED_SHORT_5_5_5_1"] = 32820] = "UNSIGNED_SHORT_5_5_5_1";
+        TEXTURE_TYPES[TEXTURE_TYPES["UNSIGNED_SHORT_5_6_5"] = 33635] = "UNSIGNED_SHORT_5_6_5";
+    })(exports.TEXTURE_TYPES || (exports.TEXTURE_TYPES = {}));
+    /**
+     * Possible scale modes for textures.
+     *
+     * @memberof ESSEM
+     * @property {number} NEAREST - No smooth scaling (pixelated look).
+     * @property {number} LINEAR - Smooth scaling.
+     */
+    exports.SCALE_MODES = void 0;
+    (function (SCALE_MODES) {
+        SCALE_MODES[SCALE_MODES["NEAREST"] = 9728] = "NEAREST";
+        SCALE_MODES[SCALE_MODES["LINEAR"] = 9729] = "LINEAR";
+    })(exports.SCALE_MODES || (exports.SCALE_MODES = {}));
+    exports.WRAP_MODES = void 0;
+    (function (WRAP_MODES) {
+        WRAP_MODES[WRAP_MODES["CLAMP"] = 33071] = "CLAMP";
+        WRAP_MODES[WRAP_MODES["REPEAT"] = 10497] = "REPEAT";
+        WRAP_MODES[WRAP_MODES["MIRRORED_REPEAT"] = 33648] = "MIRRORED_REPEAT";
+    })(exports.WRAP_MODES || (exports.WRAP_MODES = {}));
+    exports.SHADER_TYPES = void 0;
+    (function (SHADER_TYPES) {
+        SHADER_TYPES[SHADER_TYPES["FRAGMENT_SHADER"] = 35632] = "FRAGMENT_SHADER";
+        SHADER_TYPES[SHADER_TYPES["VERTEX_SHADER"] = 35633] = "VERTEX_SHADER";
+    })(exports.SHADER_TYPES || (exports.SHADER_TYPES = {}));
+    const DEFAULT_TEXTURE_UVS = new Float32Array([0, 0, 1, 0, 1, 1, 0, 1]);
+
+    /* eslint-disable-next-line @typescript-eslint/ban-ts-comment */
+    function glslToShaderDataType(glslType) {
+        const GL = WebGL2RenderingContext;
+        // prettier-ignore
+        switch (glslType) {
+            case GL.FLOAT: return "float1";
+            case GL.FLOAT_VEC2: return "float2";
+            case GL.FLOAT_VEC3: return "float3";
+            case GL.FLOAT_VEC4: return "float4";
+            case GL.INT: return "int1";
+            case GL.INT_VEC2: return "int2";
+            case GL.INT_VEC3: return "int3";
+            case GL.INT_VEC4: return "int4";
+            case GL.UNSIGNED_INT: return "uint1";
+            case GL.UNSIGNED_INT_VEC2: return "uint2";
+            case GL.UNSIGNED_INT_VEC3: return "uint3";
+            case GL.UNSIGNED_INT_VEC4: return "uint4";
+            case GL.BOOL: return "bool1";
+            case GL.BOOL_VEC2: return "bool2";
+            case GL.BOOL_VEC3: return "bool3";
+            case GL.BOOL_VEC4: return "bool4";
+            case GL.FLOAT_MAT2: return "matrix2";
+            case GL.FLOAT_MAT3: return "matrix3";
+            case GL.FLOAT_MAT4: return "matrix4";
+            case GL.SAMPLER_2D:
+            case GL.INT_SAMPLER_2D:
+            case GL.UNSIGNED_INT_SAMPLER_2D:
+            case GL.SAMPLER_CUBE:
+            case GL.INT_SAMPLER_CUBE:
+            case GL.UNSIGNED_INT_SAMPLER_CUBE:
+            case GL.SAMPLER_2D_ARRAY:
+            case GL.INT_SAMPLER_2D_ARRAY:
+            case GL.UNSIGNED_INT_SAMPLER_2D_ARRAY: return "int1";
+            default: assert(false, "Invalid glslType!");
+        }
+    }
+    /**
+     * Figures out the default value of the shader data type.
+     *
+     * @param dataType - The shader data type to calculate.
+     * @param isArray - If the data type is an array.
+     * @param size - The component count of the data type multiplied by the size of the array (1 if it
+     *        isn't).
+     * @return The default value for shader data type.
+     *
+     * @memberof ESSEM
+     */
+    function shaderDataTypeDefaultValue(dataType, isArray, size) {
+        /* eslint-disable no-fallthrough */
+        // prettier-ignore
+        switch (dataType) {
+            // if it is an array then it will fall to case "float4":
+            case "float1": if (!isArray)
+                return 0;
+            case "float2":
+            case "float3":
+            case "float4": return new Float32Array(size);
+            case "int1": if (!isArray)
+                return 0;
+            case "int2":
+            case "int3":
+            case "int4": return new Int32Array(size);
+            case "uint1": if (!isArray)
+                return 0;
+            case "uint2":
+            case "uint3":
+            case "uint4": return new Uint32Array(size);
+            case "bool1": if (!isArray)
+                return false;
+            case "bool2":
+            case "bool3":
+            case "bool4": return new Array(size).fill(false);
+            case "matrix2":
+                return new Float32Array([
+                    1, 0,
+                    0, 1
+                ]);
+            case "matrix3":
+                return new Float32Array([
+                    1, 0, 0,
+                    0, 1, 0,
+                    0, 0, 1
+                ]);
+            case "matrix4":
+                return new Float32Array([
+                    1, 0, 0, 0,
+                    0, 1, 0, 0,
+                    0, 0, 1, 0,
+                    0, 0, 0, 1
+                ]);
+        }
+        /* eslint-enable no-fallthrough */
+    }
+
+    class UniformGroup {
+        constructor() {
+            this.uniforms = {};
+            this.uniformInfos = [];
+            this.hasDetectedUniforms = false;
+        }
+    }
+    function uploadUniform(gl, 
+    /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+    value, // easier to just use any type
+    info, uniformData) {
+        const { cachedValue, location } = uniformData;
+        // convert matrixs and vectors to arrays
+        if (value.toArray !== undefined)
+            value = value.toArray();
+        // check if value has changed and if so don't do anything
+        // check if is array
+        if (value.length !== undefined) {
+            const cachedArray = cachedValue;
+            if (arrayEquals(value, cachedArray))
+                return;
+            // settings value in a for loop instead because faster than slice
+            for (let i = 0; i < value.length; i++) {
+                cachedArray[i] = value[i];
+            }
+        }
+        else {
+            if (value === cachedValue)
+                return;
+            uniformData.cachedValue = value;
+        }
+        switch (info.dataType) {
+            case "float1":
+                return info.isArray ? gl.uniform1fv(location, value) : gl.uniform1f(location, value);
+            case "float2":
+                return info.isArray
+                    ? gl.uniform2fv(location, value)
+                    : gl.uniform2f(location, value[0], value[1]);
+            case "float3":
+                return info.isArray
+                    ? gl.uniform3fv(location, value)
+                    : gl.uniform3f(location, value[0], value[1], value[2]);
+            case "float4":
+                return info.isArray
+                    ? gl.uniform4fv(location, value)
+                    : gl.uniform4f(location, value[0], value[1], value[2], value[3]);
+            // bools and ints use the same gl upload func so lets use a fall through case
+            case "bool1":
+            case "int1":
+                return info.isArray ? gl.uniform1iv(location, value) : gl.uniform1i(location, value);
+            case "bool2":
+            case "int2":
+                return info.isArray
+                    ? gl.uniform2iv(location, value)
+                    : gl.uniform2i(location, value[0], value[1]);
+            case "bool3":
+            case "int3":
+                return info.isArray
+                    ? gl.uniform3iv(location, value)
+                    : gl.uniform3i(location, value[0], value[1], value[2]);
+            case "bool4":
+            case "int4":
+                return info.isArray
+                    ? gl.uniform4iv(location, value)
+                    : gl.uniform4i(location, value[0], value[1], value[2], value[3]);
+            case "uint1":
+                return info.isArray ? gl.uniform1uiv(location, value) : gl.uniform1ui(location, value);
+            case "uint2":
+                return info.isArray
+                    ? gl.uniform2uiv(location, value)
+                    : gl.uniform2ui(location, value[0], value[1]);
+            case "uint3":
+                return info.isArray
+                    ? gl.uniform3uiv(location, value)
+                    : gl.uniform3ui(location, value[0], value[1], value[2]);
+            case "uint4":
+                return info.isArray
+                    ? gl.uniform4uiv(location, value)
+                    : gl.uniform4ui(location, value[0], value[1], value[2], value[3]);
+            case "matrix2":
+                return gl.uniformMatrix2fv(location, false, value);
+            case "matrix3":
+                return gl.uniformMatrix3fv(location, false, value);
+            case "matrix4":
+                return gl.uniformMatrix4fv(location, false, value);
+            default:
+                assert(false, `Unsupported shader type name ${info.dataType}`);
+        }
+    }
+
+    class ShaderExtension {
+        constructor(renderer) {
+            this.boundShader = null;
+            this.renderer = renderer;
+        }
+        bindShader(shader) {
+            var _a;
+            const { gl, contextUID } = this.renderer;
+            const glProgram = (_a = shader.glPrograms[contextUID]) !== null && _a !== void 0 ? _a : this.initShader(shader);
+            if (shader !== this.boundShader) {
+                gl.useProgram(glProgram.handle);
+                this.boundShader = shader;
+            }
+            this.syncUniforms(shader, glProgram);
+        }
+        unbindShader() {
+            this.renderer.gl.useProgram(null);
+            this.boundShader = null;
+        }
+        destroyShader(shader) {
+            const { gl, contextUID } = this.renderer;
+            const glProgram = shader.glPrograms[contextUID];
+            if (glProgram !== undefined) {
+                if (this.boundShader === shader)
+                    this.unbindShader();
+                gl.deleteProgram(glProgram.handle);
+                delete shader.glPrograms[contextUID];
+            }
+        }
+        initShader(shader) {
+            const { gl, contextUID } = this.renderer;
+            const webglProgram = gl.createProgram();
+            assert(webglProgram !== null, "Failed to create WebGL program!");
+            const glVertexShader = this.compileGLShader(gl.VERTEX_SHADER, shader.vertexSrc);
+            const glFragmentShader = this.compileGLShader(gl.FRAGMENT_SHADER, shader.fragmentSrc);
+            gl.attachShader(webglProgram, glVertexShader);
+            gl.attachShader(webglProgram, glFragmentShader);
+            gl.linkProgram(webglProgram);
+            assert(gl.getProgramParameter(webglProgram, gl.LINK_STATUS), `WebGL program failed to link!\n${gl.getProgramInfoLog(webglProgram)}`);
+            gl.deleteShader(glVertexShader);
+            gl.deleteShader(glFragmentShader);
+            const glProgram = new GLProgram(webglProgram);
+            this.dectectShaderUniforms(shader, glProgram);
+            shader.glPrograms[contextUID] = glProgram;
+            return glProgram;
+        }
+        compileGLShader(type, source) {
+            const { gl } = this.renderer;
+            const webglShader = gl.createShader(type);
+            const shaderTypeName = type === exports.SHADER_TYPES.VERTEX_SHADER ? "vertex" : "fragment";
+            assert(webglShader !== null, `Could not create ${shaderTypeName} shader!`);
+            gl.shaderSource(webglShader, source);
+            gl.compileShader(webglShader);
+            assert(gl.getShaderParameter(webglShader, gl.COMPILE_STATUS), `Failed to compile ${shaderTypeName} shader!\n${gl.getShaderInfoLog(webglShader)}`);
+            return webglShader;
+        }
+        syncUniforms(shader, glProgram) {
+            const { gl } = this.renderer;
+            const group = shader.uniformGroup;
+            group.uniformInfos.forEach((info) => {
+                const uniformData = glProgram.uniformDatas[info.name];
+                const value = shader.uniformGroup.uniforms[info.name];
+                uploadUniform(gl, value, info, uniformData);
+            });
+        }
+        dectectShaderUniforms(shader, glProgram) {
+            const group = shader.uniformGroup;
+            if (group.hasDetectedUniforms)
+                return;
+            const { gl } = this.renderer;
+            const uniformCount = gl.getProgramParameter(glProgram.handle, gl.ACTIVE_UNIFORMS);
+            for (let i = 0; i < uniformCount; i++) {
+                const rawUniformData = gl.getActiveUniform(glProgram.handle, i);
+                // gets rid of the array descriptor
+                const name = rawUniformData.name.replace(/\[.*?\]$/, "");
+                const dataType = glslToShaderDataType(rawUniformData.type);
+                const componentCount = parseInt(dataType.slice(-1));
+                const uniformInfo = {
+                    name,
+                    dataType: dataType,
+                    isArray: rawUniformData.size > 1,
+                    size: componentCount * rawUniformData.size,
+                };
+                group.uniformInfos.push(uniformInfo);
+                const location = gl.getUniformLocation(glProgram.handle, name);
+                glProgram.uniformDatas[name] = {
+                    location,
+                    cachedValue: shaderDataTypeDefaultValue(dataType, uniformInfo.isArray, uniformInfo.size),
+                };
+            }
+            group.hasDetectedUniforms = true;
+        }
+    }
+
+    /**
+     * @memberof ESSEM
+     */
+    class VertexArray {
+        constructor(gl) {
+            this.glIndexBuffer = null;
+            this.glVertexBuffers = [];
+            const glVertexArray = gl.createVertexArray();
+            assert(glVertexArray !== null, "Failed to create vertex array!");
+            this.glVertexArray = glVertexArray;
+        }
+        bind(gl) {
+            gl.bindVertexArray(this.glVertexArray);
+        }
+        addVertexBuffer(gl, vertices, usage = WebGL2RenderingContext.STATIC_DRAW) {
+            this.bind(gl);
+            const glVertexBuffer = gl.createBuffer();
+            assert(glVertexBuffer !== null, "Failed to create vertex buffer!");
+            gl.bindBuffer(gl.ARRAY_BUFFER, glVertexBuffer);
+            gl.bufferData(gl.ARRAY_BUFFER, vertices, usage);
+            this.glVertexBuffers.push(glVertexBuffer);
+            return glVertexBuffer;
+        }
+        setIndexBuffer(gl, indices) {
+            this.bind(gl);
+            const glIndexBuffer = gl.createBuffer();
+            assert(glIndexBuffer !== null, "Failed to create index buffer!");
+            gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, glIndexBuffer);
+            gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, indices, gl.STATIC_DRAW);
+            this.glIndexBuffer = glIndexBuffer;
+            return glIndexBuffer;
+        }
+        dispose(gl) {
+            this.glVertexBuffers.forEach((buffer) => {
+                gl.deleteBuffer(buffer);
+            });
+            gl.deleteBuffer(this.glIndexBuffer);
+            gl.deleteVertexArray(this.glVertexArray);
+        }
+    }
+
+    var batchVertexSrc = "#version 300 es\n\nlayout(location = 0) in vec2 a_position;\nlayout(location = 1) in vec2 a_texCoord;\nlayout(location = 2) in float a_texIndex;\nlayout(location = 3) in vec4 a_color;\n\nuniform mat3 u_viewProjection;\n\nout vec2 v_texCoord;\nout float v_texIndex;\nout vec4 v_color;\n\nvoid main() \n{\n    v_texCoord = a_texCoord;\n    v_texIndex = a_texIndex;\n    v_color = a_color;\n\n    gl_Position = vec4(u_viewProjection * vec3(a_position, 1.0), 1.0);\n}\n";
+
+    var batchFragmentSrc = "#version 300 es\n\nprecision mediump float;\n\nlayout(location = 0) out vec4 color;\n\nin vec2 v_texCoord;\nin float v_texIndex;\nin vec4 v_color;\n\nuniform sampler2D u_textures[32];\n\nvoid main() \n{\n    vec4 texColor = v_color;\n    vec2 coordinate = v_texCoord;\n\n    // have to use switch because WebGL doesn't support dynamic sampler indexing\n    switch(int(v_texIndex))\n\t{\n\t\tcase 0: texColor *= texture(u_textures[0], coordinate); break;\n\t\tcase 1: texColor *= texture(u_textures[1], coordinate); break;\n\t\tcase 2: texColor *= texture(u_textures[2], coordinate); break;\n\t\tcase 3: texColor *= texture(u_textures[3], coordinate); break;\n\t\tcase 4: texColor *= texture(u_textures[4], coordinate); break;\n\t\tcase 5: texColor *= texture(u_textures[5], coordinate); break;\n\t\tcase 6: texColor *= texture(u_textures[6], coordinate); break;\n\t\tcase 7: texColor *= texture(u_textures[7], coordinate); break;\n\t\tcase 8: texColor *= texture(u_textures[8], coordinate); break;\n\t\tcase 9: texColor *= texture(u_textures[9], coordinate); break;\n\t\tcase 10: texColor *= texture(u_textures[10], coordinate); break;\n\t\tcase 11: texColor *= texture(u_textures[11], coordinate); break;\n\t\tcase 12: texColor *= texture(u_textures[12], coordinate); break;\n\t\tcase 13: texColor *= texture(u_textures[13], coordinate); break;\n\t\tcase 14: texColor *= texture(u_textures[14], coordinate); break;\n\t\tcase 15: texColor *= texture(u_textures[15], coordinate); break;\n\t\tcase 16: texColor *= texture(u_textures[16], coordinate); break;\n\t\tcase 17: texColor *= texture(u_textures[17], coordinate); break;\n\t\tcase 18: texColor *= texture(u_textures[18], coordinate); break;\n\t\tcase 19: texColor *= texture(u_textures[19], coordinate); break;\n\t\tcase 20: texColor *= texture(u_textures[20], coordinate); break;\n\t\tcase 21: texColor *= texture(u_textures[21], coordinate); break;\n\t\tcase 22: texColor *= texture(u_textures[22], coordinate); break;\n\t\tcase 23: texColor *= texture(u_textures[23], coordinate); break;\n\t\tcase 24: texColor *= texture(u_textures[24], coordinate); break;\n\t\tcase 25: texColor *= texture(u_textures[25], coordinate); break;\n\t\tcase 26: texColor *= texture(u_textures[26], coordinate); break;\n\t\tcase 27: texColor *= texture(u_textures[27], coordinate); break;\n\t\tcase 28: texColor *= texture(u_textures[28], coordinate); break;\n\t\tcase 29: texColor *= texture(u_textures[29], coordinate); break;\n\t\tcase 30: texColor *= texture(u_textures[30], coordinate); break;\n\t\tcase 31: texColor *= texture(u_textures[31], coordinate); break;\n\t}\n\n    color = texColor;\n}\n";
+
+    /**
+     * Class for interacting with gl shaders.
+     *
+     * @memberof ESSEM
+     */
+    class Shader {
+        constructor(vertexSrc, fragmentSrc, name = "Default") {
+            this.uniformGroup = new UniformGroup();
+            this.glPrograms = {};
+            this.vertexSrc = vertexSrc;
+            this.fragmentSrc = fragmentSrc;
+            this.name = name;
+        }
+        get uniforms() {
+            return this.uniformGroup.uniforms;
+        }
+    }
+
+    /**
+     * Renderer that batches vertices for speed.
+     *
+     * @memberof ESSEM
+     */
+    class BatchRendererExtension {
+        constructor(renderer) {
+            this.textureToSlotMap = new Map();
+            this.vertices = new Float32Array(BatchRendererExtension.maxVertices);
+            this.indices = new Uint16Array(BatchRendererExtension.maxIndices);
+            this.verticesIndex = 0;
+            this.indicesCount = 0;
+            this.textureSlotIndex = 0;
+            this.renderer = renderer;
+            const { gl } = renderer;
+            this.vertexArray = new VertexArray(gl);
+            this.vertexBuffer = this.vertexArray.addVertexBuffer(gl, this.vertices, gl.DYNAMIC_DRAW);
+            for (let i = 0, offset = 0; i < BatchRendererExtension.maxIndices; i += 6, offset += 4) {
+                this.indices[i] = offset;
+                this.indices[i + 1] = offset + 1;
+                this.indices[i + 2] = offset + 2;
+                this.indices[i + 3] = offset + 2;
+                this.indices[i + 4] = offset + 3;
+                this.indices[i + 5] = offset;
+            }
+            this.vertexArray.setIndexBuffer(gl, this.indices);
+            const stride = BatchRendererExtension.vertexSize * Float32Array.BYTES_PER_ELEMENT;
+            gl.enableVertexAttribArray(0);
+            gl.vertexAttribPointer(0, 2, gl.FLOAT, false, stride, 0);
+            gl.enableVertexAttribArray(1);
+            gl.vertexAttribPointer(1, 2, gl.FLOAT, false, stride, 2 * Float32Array.BYTES_PER_ELEMENT);
+            gl.enableVertexAttribArray(2);
+            gl.vertexAttribPointer(2, 1, gl.FLOAT, false, stride, 4 * Float32Array.BYTES_PER_ELEMENT);
+            gl.enableVertexAttribArray(3);
+            gl.vertexAttribPointer(3, 4, gl.FLOAT, false, stride, 5 * Float32Array.BYTES_PER_ELEMENT);
+            this.textureShader = new Shader(batchVertexSrc, batchFragmentSrc, "Sprite");
+            const maxTextureSlots = renderer.extensions.texture.boundTextures.length;
+            const samplers = new Int32Array(maxTextureSlots).map((_, i) => i);
+            this.textureShader.uniforms.u_textures = samplers;
+            this.textureSlots = new Array(maxTextureSlots).fill(undefined);
+        }
+        beginScene(viewProjection) {
+            this.textureShader.uniforms.u_viewProjection = viewProjection;
+            this.startBatch();
+        }
+        endScene() {
+            this.flush();
+        }
+        startBatch() {
+            this.verticesIndex = 0;
+            this.indicesCount = 0;
+            this.textureSlotIndex = 0;
+        }
+        nextBatch() {
+            this.flush();
+            this.startBatch();
+        }
+        render(batchableElement) {
+            const { vertexData, uvs, rgbaColor } = batchableElement;
+            for (let i = 0; i < vertexData.length; i += 2) {
+                this.vertices[this.verticesIndex++] = vertexData[i];
+                this.vertices[this.verticesIndex++] = vertexData[i + 1];
+                this.vertices[this.verticesIndex++] = uvs[i];
+                this.vertices[this.verticesIndex++] = uvs[i + 1];
+                this.vertices[this.verticesIndex++] = this.getTextureSlot(batchableElement.texture);
+                this.vertices[this.verticesIndex++] = rgbaColor[0];
+                this.vertices[this.verticesIndex++] = rgbaColor[1];
+                this.vertices[this.verticesIndex++] = rgbaColor[2];
+                this.vertices[this.verticesIndex++] = rgbaColor[3];
+            }
+            this.indicesCount += 6;
+        }
+        flush() {
+            if (this.indicesCount === 0 || this.verticesIndex === 0)
+                return;
+            const { gl, extensions } = this.renderer;
+            extensions.shader.bindShader(this.textureShader);
+            // set buffer data
+            const vertices = this.verticesIndex === BatchRendererExtension.maxVertices
+                ? this.vertices
+                : this.vertices.subarray(0, this.verticesIndex);
+            gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexBuffer);
+            gl.bufferSubData(gl.ARRAY_BUFFER, 0, vertices);
+            // bind textures
+            for (let i = 0; i < this.textureSlotIndex; i++) {
+                extensions.texture.bindTexture(this.textureSlots[i], i);
+            }
+            // now draw!
+            this.vertexArray.bind(gl);
+            gl.drawElements(gl.TRIANGLES, this.indicesCount, gl.UNSIGNED_SHORT, 0);
+        }
+        getTextureSlot(texture) {
+            const { extensions } = this.renderer;
+            let slot = this.textureToSlotMap.get(texture);
+            if (slot === undefined) {
+                if (this.textureSlotIndex >= extensions.texture.boundTextures.length)
+                    this.nextBatch();
+                slot = this.textureSlotIndex;
+                this.textureSlots[this.textureSlotIndex] = texture;
+                this.textureToSlotMap.set(texture, this.textureSlotIndex);
+                this.textureSlotIndex++;
+            }
+            return slot;
+        }
+    }
+    BatchRendererExtension.vertexSize = 9; // position (2) + texCoord (2) + texture index (1) + color (4)
+    BatchRendererExtension.maxDraws = 1000;
+    BatchRendererExtension.maxVertices = BatchRendererExtension.maxDraws * 4 * BatchRendererExtension.vertexSize;
+    BatchRendererExtension.maxIndices = BatchRendererExtension.maxDraws * 6;
+    BatchRendererExtension.maxVerticesBytes = BatchRendererExtension.maxVertices * Float32Array.BYTES_PER_ELEMENT;
+
+    let uidCounter$1 = 0;
     /**
      * Main renderer class.
      * It is automatically created when creating {@link ESSEM.Application} and it can be accesed from
@@ -176,7 +777,11 @@
                 const gl = canvasElement.getContext("webgl2");
                 assert(gl !== null, "Failed to create WebGL2 context");
                 this.gl = gl;
-                this.maxTextureSlots = gl.getParameter(gl.MAX_TEXTURE_IMAGE_UNITS);
+                this.contextUID = (uidCounter$1++).toString(16);
+                this.extensions = {};
+                this.extensions.texture = new TextureExtension(this);
+                this.extensions.shader = new ShaderExtension(this);
+                this.extensions.batch = new BatchRendererExtension(this);
             }
             else {
                 alert("WebGL2 is not supported in your browser!");
@@ -193,13 +798,14 @@
         }
     }
 
+    let uidCounter = 0;
     /**
      * Entity class to handle components in ecs.
      *
      * @memberof ESSEM
      */
     class Entity {
-        constructor(id, scene) {
+        constructor(scene) {
             /**
              * The child entities of the entity mapped by their name.
              */
@@ -213,7 +819,7 @@
             this._systemIndexMap = new Map();
             this._tagIndexMap = new Map();
             this._componentMap = new Map();
-            this.id = id;
+            this.id = uidCounter++;
             this._scene = scene;
         }
         /**
@@ -454,7 +1060,7 @@
         }
         reserve(count) {
             for (let i = 0; i < count; i++) {
-                this.availableObjects.push(new this.objectClass(i + this.totalObjects, this.objectManager));
+                this.availableObjects.push(new this.objectClass(this.objectManager));
             }
             this.totalObjects += count;
         }
@@ -497,12 +1103,12 @@
          * Creates a new entity that is aquired from a pool for efficency.
          *
          * @param [name=`Unnamed Entity ${entity.id}`] - The name of the entity.
-         * @param [parent=this] - The parent for the entity. Default is this scene.
+         * @param {Entity | Scene} [parent=this] - The parent for the entity. Default is this scene.
          * @return The entity that was created.
          */
-        createEntity(name, parent) {
+        createEntity(name, parent = this) {
             const entity = this.entityPool.aquire();
-            entity._setup(name !== null && name !== void 0 ? name : `Unnamed Entity ${entity.id}`, parent !== null && parent !== void 0 ? parent : this);
+            entity._setup(name !== null && name !== void 0 ? name : `Unnamed Entity ${entity.id}`, parent);
             return entity;
         }
         /**
@@ -683,6 +1289,12 @@
         toString() {
             return `Vector2(${this.x}, ${this.y})`;
         }
+        /**
+         * Converts the vector into a Float32Array array.
+         *
+         * @param [out=new Float32Array(2)] - An array to set the values of the vector. Leave it empty
+         *        to use the vector's array cache.
+         */
         toArray(out) {
             if (!this._array)
                 this._array = new Float32Array(2);
@@ -741,12 +1353,18 @@
             this.y = Math.cos(rValue) * magnitude;
             return this;
         }
-        rotate(radians, origin = new Vector2()) {
+        /**
+         * Sets the rotation of the vector by the angle that's in radians.
+         *
+         * @param angle - The angle of the rotation in radians.
+         * @param {Vector2} [origin=Vector2.ZERO] - The origin of the rotation.
+         */
+        rotate(angle, origin = Vector2.ZERO) {
             const pointX = this.x - origin.x;
             const pointY = this.y - origin.y;
             // perform rotation and translate to correct position
-            const sinC = Math.sin(radians);
-            const cosC = Math.cos(radians);
+            const sinC = Math.sin(angle);
+            const cosC = Math.cos(angle);
             this.x = pointX * cosC - pointY * sinC + origin.x;
             this.y = pointX * sinC + pointY * cosC + origin.y;
             return this;
@@ -775,6 +1393,7 @@
             return this;
         }
     }
+    Vector2.ZERO = new Vector2(0, 0);
 
     /**
      * Event base class that all events must extend from.
@@ -1095,52 +1714,59 @@
     }
 
     /**
-     * Class that is used to render images.
+     * Customizeable global defaults and settings for the user to set.
+     *
+     * @namespace ESSEM.settings
+     */
+    const settings = {
+        /**
+         * Default ESSEM.SCALE_MODE for all textures.
+         * You can set this to SCALE_MODES.NEAREST for no interpolation (pixelated look).
+         *
+         * @memberof ESSEM.settings
+         * @type {ESSEM.SCALE_MODES}
+         * @default ESSEM.SCALE_MODES.NEAREST
+         */
+        SCALE_MODE: exports.SCALE_MODES.LINEAR,
+        WRAP_MODE: exports.WRAP_MODES.MIRRORED_REPEAT,
+        SPRITE_BATCH_SIZE: 1000,
+    };
+
+    /**
+     * Class that is used to store and render images.
      *
      * @memberof ESSEM
      */
     class Texture {
-        constructor(source) {
-            this.glTexture = null;
+        /**
+         * @param {HTMLCanvasElement | HTMLImageElement} source - The source for the texture.
+         * @param {object} [options={}] - Optional parameters for the texture.
+         * @param {object} [options.format=ESSEM.TEXTURE_FORMATS.RGBA] - The colour format for the texture.
+         * @param {object} [options.target=ESSEM.TEXTURE_TARGETS.TEXTURE_2D] - The target of the texture.
+         * @param {object} [options.dataType=ESSEM.TEXTURE_TYPES.UNSIGNED_BYTE] - The data type of the texture.
+         * @param {object} [options.scaleMode=ESSEM.settings.SCALE_MODE] - The scale mode for the texture.
+         * @param {object} [options.anchor=new Vector2(0.5, 0.5)] - The anchor of the texture used for rendering.
+         *        Default is the middle of the texture.
+         */
+        constructor(source, options = {}) {
+            var _a, _b, _c, _d, _e, _f;
+            this.uvs = DEFAULT_TEXTURE_UVS.slice();
+            this.dirtyID = 0;
+            this.dirtyStyleID = 0;
+            this.glTextures = {};
             this.source = source;
-            this.aspectRatio = this.source.width / this.source.height;
+            this.format = (_a = options.format) !== null && _a !== void 0 ? _a : exports.TEXTURE_FORMATS.RGBA;
+            this.target = (_b = options.target) !== null && _b !== void 0 ? _b : exports.TEXTURE_TARGETS.TEXTURE_2D;
+            this.dataType = (_c = options.dataType) !== null && _c !== void 0 ? _c : exports.TEXTURE_TYPES.UNSIGNED_BYTE;
+            this.scaleMode = (_d = options.scaleMode) !== null && _d !== void 0 ? _d : settings.SCALE_MODE;
+            this.wrapMode = (_e = options.wrapMode) !== null && _e !== void 0 ? _e : settings.WRAP_MODE;
+            this.anchor = (_f = options.anchor) !== null && _f !== void 0 ? _f : new Vector2(0.5, 0.5);
         }
-        /**
-         * Inits the texture. This will get automatically called when binding the texture.
-         *
-         * @param gl - An WebGL2 rendering context for the texture to use.
-         */
-        init(gl) {
-            this.glTexture = gl.createTexture();
-            assert(this.glTexture !== null, "Could not create glTexture!");
-            this.bind(gl);
-            // TODO: add options for this
-            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.MIRRORED_REPEAT);
-            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.MIRRORED_REPEAT);
-            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
-            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
-            gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, this.source.width, this.source.height, 0, gl.RGBA, gl.UNSIGNED_BYTE, this.source);
+        get width() {
+            return this.source.width;
         }
-        /**
-         * Binds the texture.
-         *
-         * @param gl - An WebGL2 rendering context for the texture to use.
-         * @param slot - The texture slot for the texture to be binded to (optional).
-         */
-        bind(gl, slot) {
-            if (slot) {
-                gl.activeTexture(gl.TEXTURE0 + slot);
-            }
-            if (this.glTexture === null) {
-                this.init(gl);
-            }
-            else {
-                gl.bindTexture(gl.TEXTURE_2D, this.glTexture);
-            }
-        }
-        dispose(gl) {
-            gl.deleteTexture(this.glTexture);
-            this.glTexture = null;
+        get height() {
+            return this.source.height;
         }
         static fromURL(url) {
             return __awaiter(this, void 0, void 0, function* () {
@@ -1156,6 +1782,9 @@
             });
         }
     }
+    /**
+     * A completely white 16x16 texture useful for solid colour rectangles.
+     */
     Texture.WHITE = createWhiteTexture();
     function createWhiteTexture() {
         const canvas = document.createElement("canvas");
@@ -1311,13 +1940,13 @@
     }
 
     /**
-     * The matrix as this class make it a lot faster since there are less values to work with.
+     * The matrix as this class makes it a lot faster since there are less values to work with.
      *
      * Here's a representation of it:
      * ```js
-     * | xScale | xSkew | xTrans |
-     * | ySkew  | yScale| yTrans |
-     * | 0      | 0     | 1      |
+     * | xScale | xSkew  | xTrans |
+     * | ySkew  | yScale | yTrans |
+     * | 0      | 0      | 1      |
      * ```
      *
      * @memberof ESSEM
@@ -1464,11 +2093,11 @@
         }
         projection(left, right, bottom, top) {
             const rl = right - left;
-            const tp = top - bottom;
+            const tb = top - bottom;
             this.xScale = 2 / rl;
-            this.yScale = 2 / tp;
+            this.yScale = 2 / tb;
             this.xTrans = (right + left) / rl;
-            this.yTrans = (top + bottom) / tp;
+            this.yTrans = (top + bottom) / tb;
             this.xSkew = 0;
             this.ySkew = 0;
             return this;
@@ -1483,19 +2112,19 @@
      */
     class CameraComponent {
         /**
-         * @param [size=5] - The size or 'inverse zoom' of the camera.
-         * @param [fixedAspectRatio=false] - Whether or not the camera shouldn't be automatically
+         * @param {number} [size=100] - The size or 'inverse zoom' of the camera.
+         * @param {boolean} [fixedAspectRatio=false] - Whether or not the camera shouldn't be automatically
          *        resized whenever the viewport resizes.
          */
-        constructor(size, fixedAspectRatio) {
+        constructor(size = 100, fixedAspectRatio = false) {
             this._aspectRatio = 0;
             this._projectionMatrix = new Matrix3();
             this._projectionValid = false;
-            this._size = size !== null && size !== void 0 ? size : 5;
-            this.fixedAspectRatio = fixedAspectRatio !== null && fixedAspectRatio !== void 0 ? fixedAspectRatio : false;
+            this._size = size;
+            this.fixedAspectRatio = fixedAspectRatio;
         }
         setViewportSize(width, height) {
-            this._aspectRatio = width / height;
+            this.aspectRatio = width / height;
         }
         /**
          * The current size or 'inverse zoom' of the camera.
@@ -1544,11 +2173,13 @@
     class SpriteComponent {
         /**
          * @param texture - Texture to use. This should be resued between other components.
-         * @param color - Colour of the sprite in hexadecimal.
+         * @param {number} [color=0xffffff] - Colour of the sprite in hexadecimal.
          */
         constructor(texture, color = 0xffffff) {
+            this.vertexData = new Float32Array(8);
             this.texture = texture;
             this.color = color;
+            this.uvs = texture.uvs;
         }
         /**
          * Colour of the sprite in hexadecimal.
@@ -1754,276 +2385,15 @@
     }
 
     /**
-     * Class for interacting with gl shaders.
-     *
-     * @memberof ESSEM
-     */
-    class Shader {
-        constructor(vertexSrc, fragmentSrc, name = "Default") {
-            this.glProgram = null;
-            this.uniformLocationCache = new Map();
-            this.vertexSrc = vertexSrc;
-            this.fragmentSrc = fragmentSrc;
-            this.name = name;
-        }
-        init(gl) {
-            const glVertexShader = this._compileGLShader(gl, gl.VERTEX_SHADER, this.vertexSrc);
-            const glFragmentShader = this._compileGLShader(gl, gl.FRAGMENT_SHADER, this.fragmentSrc);
-            this.glProgram = gl.createProgram();
-            assert(this.glProgram !== null, `Could not create glProgram!`);
-            gl.attachShader(this.glProgram, glVertexShader);
-            gl.attachShader(this.glProgram, glFragmentShader);
-            gl.linkProgram(this.glProgram);
-            if (!gl.getProgramParameter(this.glProgram, gl.LINK_STATUS)) {
-                const programLog = gl.getProgramInfoLog(this.glProgram);
-                throw new Error(`Program failed to link in '${this.name}' shader!\n${programLog}`);
-            }
-            gl.deleteShader(glVertexShader);
-            gl.deleteShader(glFragmentShader);
-        }
-        bind(gl) {
-            if (!this.glProgram) {
-                this.init(gl);
-            }
-            gl.useProgram(this.glProgram);
-        }
-        dispose(gl) {
-            gl.deleteProgram(this.glProgram);
-        }
-        getUniformLocation(gl, name) {
-            const cachedLocation = this.uniformLocationCache.get(name);
-            if (cachedLocation !== undefined) {
-                return cachedLocation;
-            }
-            assert(this.glProgram !== null, `Has not initialized yet in '${this.name}' shader!`);
-            const location = gl.getUniformLocation(this.glProgram, name);
-            assert(location !== null, `Uniform '${name}' does not appear to exist!`);
-            this.uniformLocationCache.set(name, location);
-            return location;
-        }
-        setFloat1(gl, name, value) {
-            gl.uniform1f(this.getUniformLocation(gl, name), value);
-        }
-        setFloat2(gl, name, value) {
-            gl.uniform2f(this.getUniformLocation(gl, name), value.x, value.y);
-        }
-        setInt1(gl, name, value) {
-            gl.uniform1i(this.getUniformLocation(gl, name), value);
-        }
-        setIntArray(gl, name, value) {
-            gl.uniform1iv(this.getUniformLocation(gl, name), value);
-        }
-        setMatrix3(gl, name, value) {
-            gl.uniformMatrix3fv(this.getUniformLocation(gl, name), false, value.toArray(true));
-        }
-        _compileGLShader(gl, type, source) {
-            const glShader = gl.createShader(type);
-            const shaderTypeName = type === gl.VERTEX_SHADER ? "vertex" : "fragment";
-            assert(glShader !== null, `Could not create ${shaderTypeName} shader!`);
-            gl.shaderSource(glShader, source);
-            gl.compileShader(glShader);
-            if (!gl.getShaderParameter(glShader, gl.COMPILE_STATUS)) {
-                const shaderLog = gl.getShaderInfoLog(glShader);
-                throw new Error(`Failed to compile ${shaderTypeName} shader in '${this.name}' shader!\n${shaderLog}`);
-            }
-            return glShader;
-        }
-    }
-
-    /**
-     * @memberof ESSEM
-     */
-    class VertexArray {
-        constructor(gl) {
-            this.glIndexBuffer = null;
-            this.glVertexBuffers = [];
-            const glVertexArray = gl.createVertexArray();
-            assert(glVertexArray !== null, "Failed to create vertex array!");
-            this.glVertexArray = glVertexArray;
-        }
-        bind(gl) {
-            gl.bindVertexArray(this.glVertexArray);
-        }
-        addVertexBuffer(gl, vertices, usage = WebGL2RenderingContext.STATIC_DRAW) {
-            this.bind(gl);
-            const glVertexBuffer = gl.createBuffer();
-            assert(glVertexBuffer !== null, "Failed to create vertex buffer!");
-            gl.bindBuffer(gl.ARRAY_BUFFER, glVertexBuffer);
-            gl.bufferData(gl.ARRAY_BUFFER, vertices, usage);
-            this.glVertexBuffers.push(glVertexBuffer);
-            return glVertexBuffer;
-        }
-        setIndexBuffer(gl, indices) {
-            this.bind(gl);
-            const glIndexBuffer = gl.createBuffer();
-            assert(glIndexBuffer !== null, "Failed to create index buffer!");
-            gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, glIndexBuffer);
-            gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, indices, gl.STATIC_DRAW);
-            this.glIndexBuffer = glIndexBuffer;
-            return glIndexBuffer;
-        }
-        dispose(gl) {
-            this.glVertexBuffers.forEach((buffer) => {
-                gl.deleteBuffer(buffer);
-            });
-            gl.deleteBuffer(this.glIndexBuffer);
-            gl.deleteVertexArray(this.glVertexArray);
-        }
-    }
-
-    var textureVertexSrc = "#version 300 es\n\nlayout(location = 0) in vec2 a_position;\nlayout(location = 1) in vec2 a_texCoord;\nlayout(location = 2) in float a_texIndex;\nlayout(location = 3) in vec4 a_color;\n\nuniform mat3 u_viewProjection;\n\nout vec2 v_texCoord;\nout float v_texIndex;\nout vec4 v_color;\n\nvoid main() \n{\n    v_texCoord = a_texCoord;\n    v_texIndex = a_texIndex;\n    v_color = a_color;\n\n    gl_Position = vec4(u_viewProjection * vec3(a_position, 1.0), 1.0);\n}\n";
-
-    var textureFragmentSrc = "#version 300 es\n\nprecision mediump float;\n\nlayout(location = 0) out vec4 color;\n\nin vec2 v_texCoord;\nin float v_texIndex;\nin vec4 v_color;\n\nuniform sampler2D u_textures[32];\n\nvoid main() \n{\n    vec4 texColor = v_color;\n    vec2 coordinate = v_texCoord;\n\n    // have to use switch because WebGL doesn't support dynamic sampler indexing\n    switch(int(v_texIndex))\n\t{\n\t\tcase 0: texColor *= texture(u_textures[0], coordinate); break;\n\t\tcase 1: texColor *= texture(u_textures[1], coordinate); break;\n\t\tcase 2: texColor *= texture(u_textures[2], coordinate); break;\n\t\tcase 3: texColor *= texture(u_textures[3], coordinate); break;\n\t\tcase 4: texColor *= texture(u_textures[4], coordinate); break;\n\t\tcase 5: texColor *= texture(u_textures[5], coordinate); break;\n\t\tcase 6: texColor *= texture(u_textures[6], coordinate); break;\n\t\tcase 7: texColor *= texture(u_textures[7], coordinate); break;\n\t\tcase 8: texColor *= texture(u_textures[8], coordinate); break;\n\t\tcase 9: texColor *= texture(u_textures[9], coordinate); break;\n\t\tcase 10: texColor *= texture(u_textures[10], coordinate); break;\n\t\tcase 11: texColor *= texture(u_textures[11], coordinate); break;\n\t\tcase 12: texColor *= texture(u_textures[12], coordinate); break;\n\t\tcase 13: texColor *= texture(u_textures[13], coordinate); break;\n\t\tcase 14: texColor *= texture(u_textures[14], coordinate); break;\n\t\tcase 15: texColor *= texture(u_textures[15], coordinate); break;\n\t\tcase 16: texColor *= texture(u_textures[16], coordinate); break;\n\t\tcase 17: texColor *= texture(u_textures[17], coordinate); break;\n\t\tcase 18: texColor *= texture(u_textures[18], coordinate); break;\n\t\tcase 19: texColor *= texture(u_textures[19], coordinate); break;\n\t\tcase 20: texColor *= texture(u_textures[20], coordinate); break;\n\t\tcase 21: texColor *= texture(u_textures[21], coordinate); break;\n\t\tcase 22: texColor *= texture(u_textures[22], coordinate); break;\n\t\tcase 23: texColor *= texture(u_textures[23], coordinate); break;\n\t\tcase 24: texColor *= texture(u_textures[24], coordinate); break;\n\t\tcase 25: texColor *= texture(u_textures[25], coordinate); break;\n\t\tcase 26: texColor *= texture(u_textures[26], coordinate); break;\n\t\tcase 27: texColor *= texture(u_textures[27], coordinate); break;\n\t\tcase 28: texColor *= texture(u_textures[28], coordinate); break;\n\t\tcase 29: texColor *= texture(u_textures[29], coordinate); break;\n\t\tcase 30: texColor *= texture(u_textures[30], coordinate); break;\n\t\tcase 31: texColor *= texture(u_textures[31], coordinate); break;\n\t}\n\n    color = texColor;\n}\n";
-
-    /**
-     * Base renderer that most renderers extend for batching.
-     *
-     * @memberof ESSEM
-     */
-    class AbstractBatchRenderer {
-        constructor(renderer) {
-            this.textureToSlotMap = new Map();
-            this.vertices = new Float32Array(AbstractBatchRenderer.maxVertices);
-            this.indices = new Uint16Array(AbstractBatchRenderer.maxIndices);
-            this.verticesIndex = 0;
-            this.indicesCount = 0;
-            this.textureSlotIndex = 0;
-            this.renderer = renderer;
-            const gl = renderer.gl;
-            this.vertexArray = new VertexArray(gl);
-            this.vertexBuffer = this.vertexArray.addVertexBuffer(gl, this.vertices, gl.DYNAMIC_DRAW);
-            for (let i = 0, offset = 0; i < AbstractBatchRenderer.maxIndices; i += 6, offset += 4) {
-                this.indices[i] = offset;
-                this.indices[i + 1] = offset + 1;
-                this.indices[i + 2] = offset + 2;
-                this.indices[i + 3] = offset + 2;
-                this.indices[i + 4] = offset + 3;
-                this.indices[i + 5] = offset;
-            }
-            this.vertexArray.setIndexBuffer(gl, this.indices);
-            const stride = AbstractBatchRenderer.vertexSize * Float32Array.BYTES_PER_ELEMENT;
-            gl.enableVertexAttribArray(0);
-            gl.vertexAttribPointer(0, 2, gl.FLOAT, false, stride, 0);
-            gl.enableVertexAttribArray(1);
-            gl.vertexAttribPointer(1, 2, gl.FLOAT, false, stride, 2 * Float32Array.BYTES_PER_ELEMENT);
-            gl.enableVertexAttribArray(2);
-            gl.vertexAttribPointer(2, 1, gl.FLOAT, false, stride, 4 * Float32Array.BYTES_PER_ELEMENT);
-            gl.enableVertexAttribArray(3);
-            gl.vertexAttribPointer(3, 4, gl.FLOAT, false, stride, 5 * Float32Array.BYTES_PER_ELEMENT);
-            // TODO: abstract shader
-            this.textureShader = new Shader(textureVertexSrc, textureFragmentSrc, "Sprite");
-            this.textureShader.bind(gl);
-            const samplers = new Int32Array(renderer.maxTextureSlots).map((_, i) => i);
-            this.textureShader.setIntArray(gl, "u_textures", samplers);
-            this.textureSlots = new Array(renderer.maxTextureSlots).fill(undefined);
-        }
-        beginScene(viewProjection) {
-            const gl = this.renderer.gl;
-            this.textureShader.bind(gl);
-            this.textureShader.setMatrix3(gl, "u_viewProjection", viewProjection);
-            this.startBatch();
-        }
-        endScene() {
-            this.flush();
-        }
-        startBatch() {
-            this.verticesIndex = 0;
-            this.indicesCount = 0;
-        }
-        nextBatch() {
-            this.flush();
-            this.startBatch();
-            this.textureSlotIndex = 0;
-        }
-        flush() {
-            if (this.indicesCount === 0 || this.verticesIndex === 0)
-                return;
-            const gl = this.renderer.gl;
-            // set buffer data
-            const vertices = this.verticesIndex === AbstractBatchRenderer.maxVertices
-                ? this.vertices
-                : this.vertices.subarray(0, this.verticesIndex);
-            gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexBuffer);
-            gl.bufferSubData(gl.ARRAY_BUFFER, 0, vertices);
-            // bind textures
-            for (let i = 0; i < this.textureSlotIndex; i++) {
-                this.textureSlots[i].bind(gl, i);
-            }
-            // now draw!
-            this.vertexArray.bind(gl);
-            gl.drawElements(gl.TRIANGLES, this.indicesCount, gl.UNSIGNED_SHORT, 0);
-        }
-        getTextureSlot(texture) {
-            let slot = this.textureToSlotMap.get(texture);
-            if (slot === undefined) {
-                if (this.textureSlotIndex >= this.renderer.maxTextureSlots)
-                    this.nextBatch();
-                slot = this.textureSlotIndex;
-                this.textureSlots[this.textureSlotIndex] = texture;
-                this.textureToSlotMap.set(texture, this.textureSlotIndex);
-                this.textureSlotIndex++;
-            }
-            return slot;
-        }
-    }
-    AbstractBatchRenderer.vertexSize = 9; // position (2) + texCoord (2) + texture index (1) + color (4)
-    AbstractBatchRenderer.maxDraws = 1000;
-    AbstractBatchRenderer.maxVertices = AbstractBatchRenderer.maxDraws * 4 * AbstractBatchRenderer.vertexSize;
-    AbstractBatchRenderer.maxIndices = AbstractBatchRenderer.maxDraws * 6;
-    AbstractBatchRenderer.maxVerticesBytes = AbstractBatchRenderer.maxVertices * Float32Array.BYTES_PER_ELEMENT;
-
-    class SpriteRenderer extends AbstractBatchRenderer {
-        constructor() {
-            super(...arguments);
-            this._cacheVector = new Vector2();
-        }
-        drawSprite(entity) {
-            if (this.indicesCount >= AbstractBatchRenderer.maxIndices)
-                this.nextBatch();
-            const matrix = TransformComponent.getGlobalTransformMatrix(entity);
-            const sprite = entity.getComponent(SpriteComponent);
-            for (let i = 0; i < 4; i++) {
-                const index = i * 2;
-                this._cacheVector
-                    .set(SpriteRenderer.vertexPositions[index] * sprite.texture.aspectRatio, SpriteRenderer.vertexPositions[index + 1])
-                    .transformMatrix3(matrix);
-                this.vertices[this.verticesIndex++] = this._cacheVector.x;
-                this.vertices[this.verticesIndex++] = this._cacheVector.y;
-                this.vertices[this.verticesIndex++] = SpriteRenderer.texCoords[index];
-                this.vertices[this.verticesIndex++] = SpriteRenderer.texCoords[index + 1];
-                this.vertices[this.verticesIndex++] = this.getTextureSlot(sprite.texture);
-                this.vertices[this.verticesIndex++] = sprite.rgbaColor[0];
-                this.vertices[this.verticesIndex++] = sprite.rgbaColor[1];
-                this.vertices[this.verticesIndex++] = sprite.rgbaColor[2];
-                this.vertices[this.verticesIndex++] = sprite.rgbaColor[3];
-            }
-            this.indicesCount += 6;
-        }
-    }
-    // prettier-ignore
-    SpriteRenderer.vertexPositions = new Float32Array([
-        -0.5, -0.5,
-        0.5, -0.5,
-        0.5, 0.5,
-        -0.5, 0.5,
-    ]);
-    // prettier-ignore
-    SpriteRenderer.texCoords = new Float32Array([
-        0.0, 0.0,
-        1.0, 0.0,
-        1.0, 1.0,
-        0.0, 1.0,
-    ]);
-    /**
      * Register this system to render sprites.
      *
      * @memberof ESSEM
      */
     class SpriteRendererSystem extends System {
         setup(app) {
+            this.renderer = app.renderer;
             this.setComponents([TransformComponent, SpriteComponent]);
             app.eventManager.addListener(ApplicationUpdateEvent, this.onUpdate.bind(this));
-            this.spriteRenderer = new SpriteRenderer(app.renderer);
         }
         onUpdate() {
             const mainCamera = this.scene.getEntitesByTag("MainCamera")[0];
@@ -2031,11 +2401,32 @@
                 return;
             const viewProjection = mainCamera.getComponent(CameraComponent).projectionMatrix;
             viewProjection.multiply(mainCamera.getComponent(TransformComponent).transformMatrix.invert());
-            this.spriteRenderer.beginScene(viewProjection);
+            const batchExt = this.renderer.extensions.batch;
+            batchExt.beginScene(viewProjection);
             this.entities.forEach((entity) => {
-                this.spriteRenderer.drawSprite(entity);
+                this.calculateVertices(entity);
+                batchExt.render(entity.getComponent(SpriteComponent));
             });
-            this.spriteRenderer.endScene();
+            batchExt.endScene();
+        }
+        calculateVertices(entity) {
+            const m = TransformComponent.getGlobalTransformMatrix(entity);
+            const sprite = entity.getComponent(SpriteComponent);
+            const { texture, vertexData } = sprite;
+            const w0 = -texture.anchor.x * texture.width;
+            const w1 = w0 + texture.width;
+            const h0 = -texture.anchor.y * texture.height;
+            const h1 = h0 + texture.height;
+            // not using vectors apply matrix function because this faster
+            vertexData[0] = m.xScale * w1 + m.xSkew * h1 + m.xTrans;
+            vertexData[1] = m.yScale * h1 + m.ySkew * w1 + m.yTrans;
+            vertexData[2] = m.xScale * w0 + m.xSkew * h1 + m.xTrans;
+            vertexData[3] = m.yScale * h1 + m.ySkew * w0 + m.yTrans;
+            vertexData[4] = m.xScale * w0 + m.xSkew * h0 + m.xTrans;
+            vertexData[5] = m.yScale * h0 + m.ySkew * w0 + m.yTrans;
+            vertexData[6] = m.xScale * w1 + m.xSkew * h0 + m.xTrans;
+            vertexData[7] = m.yScale * h0 + m.ySkew * w1 + m.yTrans;
+            sprite.uvs = sprite.texture.uvs;
         }
     }
 
@@ -2048,7 +2439,7 @@
      * @memberof ESSEM
      * @type string
      */
-    const VERSION = "0.0.1";
+    const VERSION = "0.0.2";
     if (window.__ESSEM__) {
         throw new Error("essem.js is already imported!");
     }
@@ -2056,20 +2447,23 @@
         window.__ESSEM__ = true;
     }
 
-    exports.AbstractBatchRenderer = AbstractBatchRenderer;
     exports.Application = Application;
     exports.ApplicationInitEvent = ApplicationInitEvent;
     exports.ApplicationUpdateEvent = ApplicationUpdateEvent;
     exports.AssertionError = AssertionError;
     exports.AudioClip = AudioClip;
+    exports.BatchRendererExtension = BatchRendererExtension;
     exports.CameraComponent = CameraComponent;
     exports.CameraSystem = CameraSystem;
     exports.Canvas = Canvas;
     exports.CanvasResizedEvent = CanvasResizedEvent;
+    exports.DEFAULT_TEXTURE_UVS = DEFAULT_TEXTURE_UVS;
     exports.DEG_TO_RAD = DEG_TO_RAD;
     exports.Entity = Entity;
     exports.Event = Event;
     exports.EventManager = EventManager;
+    exports.GLProgram = GLProgram;
+    exports.GLTexture = GLTexture;
     exports.KeyPressedEvent = KeyPressedEvent;
     exports.KeyReleasedEvent = KeyReleasedEvent;
     exports.KeyTypedEvent = KeyTypedEvent;
@@ -2083,26 +2477,34 @@
     exports.Renderer = Renderer;
     exports.Scene = Scene;
     exports.Shader = Shader;
+    exports.ShaderExtension = ShaderExtension;
     exports.SpriteComponent = SpriteComponent;
     exports.SpriteRendererSystem = SpriteRendererSystem;
     exports.System = System;
     exports.TWO_PI = TWO_PI;
     exports.Texture = Texture;
+    exports.TextureExtension = TextureExtension;
     exports.TransformComponent = TransformComponent;
+    exports.UniformGroup = UniformGroup;
     exports.VERSION = VERSION;
     exports.Vector2 = Vector2;
     exports.VertexArray = VertexArray;
     exports.approxEquals = approxEquals;
+    exports.arrayEquals = arrayEquals;
     exports.assert = assert;
     exports.getTypeName = getTypeName;
+    exports.glslToShaderDataType = glslToShaderDataType;
     exports.hexToRGBA = hexToRGBA;
     exports.isWebGL2Supported = isWebGL2Supported;
     exports.lastItemSwapRemove = lastItemSwapRemove;
     exports.mapGet = mapGet;
     exports.sayHello = sayHello;
+    exports.settings = settings;
+    exports.shaderDataTypeDefaultValue = shaderDataTypeDefaultValue;
     exports.skipHello = skipHello;
     exports.toDegrees = toDegrees;
     exports.toRadians = toRadians;
+    exports.uploadUniform = uploadUniform;
 
     Object.defineProperty(exports, '__esModule', { value: true });
 
