@@ -54,7 +54,7 @@ export class TextureExtension {
         const { gl, contextUID } = this.renderer;
 
         const webglTexture = gl.createTexture();
-        assert(webglTexture !== null, "Failed to create WebGL texture");
+        assert(webglTexture !== null, "Failed to create WebGL texture!");
         const glTexture = new GLTexture(webglTexture);
         texture.glTextures[contextUID] = glTexture;
         return glTexture;

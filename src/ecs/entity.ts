@@ -23,7 +23,7 @@ export class Entity {
     /**
      * Identifier of the entity, only unique to its scene.
      */
-    readonly id: number;
+    readonly id: string;
 
     // these variables are private and are accessed by getters
     private _active = false;
@@ -38,7 +38,7 @@ export class Entity {
     private _scene: Scene;
 
     constructor(scene: Scene) {
-        this.id = uidCounter++;
+        this.id = (uidCounter++).toString();
         this._scene = scene;
     }
 

@@ -3,6 +3,7 @@ module.exports = {
     runner: "jest-electron/runner",
     testEnvironment: "jest-electron/environment",
     modulePaths: ["./"],
+    verbose: true,
     transform: {
         "\\.glsl$": "jest-raw-loader",
     },

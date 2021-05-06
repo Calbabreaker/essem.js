@@ -45,7 +45,7 @@ export class EventManager {
      * Send a event for all event's listeners to get.
      *
      * @param event - An instance of the event to send. Same named classes will be considered as
-     *                the same event.
+     *      the same event.
      */
     sendEvent(event: Event): void {
         const eventName = event.constructor.name;

@@ -28,7 +28,6 @@ export * from "./renderer/shader/uniforms";
 export * from "./renderer/texture/gl_texture";
 export * from "./renderer/texture/texture";
 export * from "./renderer/texture/texture_extension";
-export * from "./renderer/vertex_array";
 
 export * from "./math/common";
 export * from "./math/vector2";

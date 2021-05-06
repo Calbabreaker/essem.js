@@ -1,9 +1,9 @@
 #version 300 es
 
-layout(location = 0) in vec2 a_position;
-layout(location = 1) in vec2 a_texCoord;
-layout(location = 2) in float a_texIndex;
-layout(location = 3) in vec4 a_color;
+in vec2 a_position;
+in vec2 a_texCoord;
+in float a_texIndex;
+in vec4 a_color;
 
 uniform mat3 u_viewProjection;
 

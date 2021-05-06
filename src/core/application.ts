@@ -68,7 +68,7 @@ export class Application {
     /**
      * @param {object} [options={}] - Optional parameters for Application.
      * @param {object} [options.canvasOptions={}] - Optional parameters for the canvas.
-     *        See {@link ESSEM.Canvas}
+     *      See {@link ESSEM.Canvas}
      */
     constructor(options: IApplicationOptions = {}) {
         this.canvas = new Canvas(options.canvasOptions, this.eventManager);

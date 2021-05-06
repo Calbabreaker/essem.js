@@ -48,4 +48,9 @@ export enum SHADER_TYPES {
     VERTEX_SHADER = 35633,
 }
 
+export enum BUFFER_TYPE {
+    INDEX_BUFFER = 34963,
+    VERTEX_BUFFER = 34962,
+}
+
 export const DEFAULT_TEXTURE_UVS: Float32Array = new Float32Array([0, 0, 1, 0, 1, 1, 0, 1]);

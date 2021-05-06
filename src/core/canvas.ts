@@ -82,7 +82,7 @@ export class Canvas {
     /**
      * @param {object} [options={}] - Parameters as an object for the Canvas.
      * @param {number} [options.aspectRatio] - Aspect ratio for the canvas to resize to if fixedSize
-     *                                         is true. Leave empty for no aspect ratio.
+     *      is true. Leave empty for no aspect ratio.
      * @param {boolean} [options.fixedSize=true] - Will resize to fit window if true.
      * @param {number} [options.width=400] - Initial width.
      * @param {number} [options.height=400] - Initial height.

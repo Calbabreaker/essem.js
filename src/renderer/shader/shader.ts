@@ -1,6 +1,9 @@
 import { Dict } from "src/utils/types";
 import { GLProgram } from "./gl_program";
-import { UniformGroup, UniformTypes } from "./uniforms";
+import { IShaderInfo } from "./shader_utils";
+import { UniformTypes } from "./uniforms";
+
+let uidCounter = 0;
 
 /**
  * Class for interacting with gl shaders.
@@ -11,17 +14,18 @@ export class Shader {
     vertexSrc: string;
     fragmentSrc: string;
     name: string;
-    uniformGroup = new UniformGroup();
+    id: string;
+
+    attributeInfos: IShaderInfo[] | undefined;
+    uniformInfos: IShaderInfo[] | undefined;
+    uniforms: Dict<UniformTypes> = {};
 
     glPrograms: Dict<GLProgram | undefined> = {};
 
-    constructor(vertexSrc: string, fragmentSrc: string, name = "Default") {
+    constructor(vertexSrc: string, fragmentSrc: string, name = "Unnamed") {
         this.vertexSrc = vertexSrc;
         this.fragmentSrc = fragmentSrc;
         this.name = name;
-    }
-
-    get uniforms(): Dict<UniformTypes> {
-        return this.uniformGroup.uniforms;
+        this.id = (uidCounter++).toString();
     }
 }

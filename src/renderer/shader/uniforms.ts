@@ -1,30 +1,17 @@
 import { Matrix3 } from "src/math/matrix3";
 import { Vector2 } from "src/math/vector2";
 import { arrayEquals, assert } from "src/utils/misc";
-import { ArrayTypes, Dict } from "src/utils/types";
+import { ArrayTypes } from "src/utils/types";
 import { IProgramUniformData } from "./gl_program";
-import { ShaderDataDict } from "./shader_utils";
+import { IShaderInfo } from "./shader_utils";
 
 export type UniformTypes = Matrix3 | Vector2 | ArrayTypes | boolean | number;
-
-export interface IUniformInfo {
-    dataType: keyof ShaderDataDict;
-    name: string;
-    isArray: boolean;
-    size: number;
-}
-
-export class UniformGroup {
-    uniforms: Dict<UniformTypes> = {};
-    uniformInfos: IUniformInfo[] = [];
-    hasDetectedUniforms = false;
-}
 
 export function uploadUniform(
     gl: WebGL2RenderingContext,
     /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
     value: any, // easier to just use any type
-    info: IUniformInfo,
+    info: IShaderInfo,
     uniformData: IProgramUniformData
 ): void {
     const { cachedValue, location } = uniformData;

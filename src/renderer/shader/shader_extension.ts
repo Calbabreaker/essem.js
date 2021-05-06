@@ -3,8 +3,8 @@ import { Renderer } from "../renderer";
 import { Shader } from "./shader";
 import { assert } from "src/utils/misc";
 import { SHADER_TYPES } from "src/utils/constants";
-import { glslToShaderDataType, shaderDataTypeDefaultValue } from "./shader_utils";
-import { IUniformInfo, uploadUniform } from "./uniforms";
+import { glslToShaderDataType, IShaderInfo, shaderDataTypeDefaultValue } from "./shader_utils";
+import { uploadUniform } from "./uniforms";
 
 export class ShaderExtension {
     renderer: Renderer;
@@ -14,7 +14,7 @@ export class ShaderExtension {
         this.renderer = renderer;
     }
 
-    bindShader(shader: Shader): void {
+    bindShader(shader: Shader): GLProgram {
         const { gl, contextUID } = this.renderer;
 
         const glProgram = shader.glPrograms[contextUID] ?? this.initShader(shader);
@@ -24,6 +24,7 @@ export class ShaderExtension {
         }
 
         this.syncUniforms(shader, glProgram);
+        return glProgram;
     }
 
     unbindShader(): void {
@@ -63,7 +64,8 @@ export class ShaderExtension {
         gl.deleteShader(glFragmentShader);
 
         const glProgram = new GLProgram(webglProgram);
-        this.dectectShaderUniforms(shader, glProgram);
+        this.detectShaderUniforms(shader, glProgram);
+        this.detectShaderAttributes(shader, glProgram);
 
         shader.glPrograms[contextUID] = glProgram;
         return glProgram;
@@ -90,49 +92,69 @@ export class ShaderExtension {
     syncUniforms(shader: Shader, glProgram: GLProgram): void {
         const { gl } = this.renderer;
 
-        const group = shader.uniformGroup;
-        group.uniformInfos.forEach((info) => {
+        assert(shader.uniformInfos !== undefined, "Has not detected uniforms on shader yet!");
+        shader.uniformInfos.forEach((info) => {
             const uniformData = glProgram.uniformDatas[info.name];
-            const value = shader.uniformGroup.uniforms[info.name];
-            uploadUniform(gl, value, info, uniformData);
+            const value = shader.uniforms[info.name];
+            if (value !== undefined) uploadUniform(gl, value, info, uniformData);
         });
     }
 
-    dectectShaderUniforms(shader: Shader, glProgram: GLProgram): void {
-        const group = shader.uniformGroup;
-        if (group.hasDetectedUniforms) return;
-
+    detectShaderUniforms(shader: Shader, glProgram: GLProgram): void {
         const { gl } = this.renderer;
 
+        const uniformInfos = [];
         const uniformCount = gl.getProgramParameter(glProgram.handle, gl.ACTIVE_UNIFORMS);
         for (let i = 0; i < uniformCount; i++) {
-            const rawUniformData = gl.getActiveUniform(glProgram.handle, i) as WebGLActiveInfo;
-            // gets rid of the array descriptor
-            const name = rawUniformData.name.replace(/\[.*?\]$/, "");
-            const dataType = glslToShaderDataType(rawUniformData.type);
+            const rawUniformInfo = gl.getActiveUniform(glProgram.handle, i) as WebGLActiveInfo;
+            const info = getShaderInfo(rawUniformInfo);
+            uniformInfos.push(info);
 
-            const componentCount = parseInt(dataType.slice(-1));
+            const location = gl.getUniformLocation(
+                glProgram.handle,
+                info.name
+            ) as WebGLUniformLocation;
 
-            const uniformInfo: IUniformInfo = {
-                name,
-                dataType: dataType,
-                isArray: rawUniformData.size > 1,
-                size: componentCount * rawUniformData.size,
-            };
-
-            group.uniformInfos.push(uniformInfo);
-
-            const location = gl.getUniformLocation(glProgram.handle, name) as WebGLUniformLocation;
-            glProgram.uniformDatas[name] = {
+            glProgram.uniformDatas[info.name] = {
                 location,
-                cachedValue: shaderDataTypeDefaultValue(
-                    dataType,
-                    uniformInfo.isArray,
-                    uniformInfo.size
-                ),
+                cachedValue: shaderDataTypeDefaultValue(info.dataType, info.isArray, info.size),
             };
         }
 
-        group.hasDetectedUniforms = true;
+        if (shader.uniformInfos === undefined) shader.uniformInfos = uniformInfos;
     }
+
+    detectShaderAttributes(shader: Shader, glProgram: GLProgram): void {
+        const { gl } = this.renderer;
+
+        const attributeInfos = [];
+        const attributeCount = gl.getProgramParameter(glProgram.handle, gl.ACTIVE_ATTRIBUTES);
+        for (let i = 0; i < attributeCount; i++) {
+            const rawAttributeData = gl.getActiveAttrib(glProgram.handle, i) as WebGLActiveInfo;
+            const info = getShaderInfo(rawAttributeData);
+            attributeInfos.push(info);
+
+            const location = gl.getAttribLocation(glProgram.handle, info.name);
+
+            glProgram.attributeDatas[info.name] = {
+                location,
+            };
+        }
+
+        if (shader.attributeInfos === undefined) shader.attributeInfos = attributeInfos;
+    }
+}
+
+function getShaderInfo(rawShaderInfo: WebGLActiveInfo): IShaderInfo {
+    // gets rid of the array descriptor
+    const name = rawShaderInfo.name.replace(/\[.*?\]$/, "");
+    const dataType = glslToShaderDataType(rawShaderInfo.type);
+    const componentCount = parseInt(dataType.charAt(dataType.length - 1));
+
+    return {
+        name,
+        dataType: dataType,
+        isArray: rawShaderInfo.size > 1,
+        size: componentCount * rawShaderInfo.size,
+    };
 }
