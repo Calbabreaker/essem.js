@@ -13,7 +13,7 @@ export class CameraComponent {
     private _size: number;
 
     private _projectionMatrix = new Matrix3();
-    private _projectionValid = false;
+    _projectionValid = false;
 
     /**
      * @param {number} [size=100] - The size or 'inverse zoom' of the camera.
@@ -64,17 +64,11 @@ export class CameraComponent {
      * @readonly
      */
     get projectionMatrix(): Matrix3 {
-        if (!this._projectionValid) {
-            this._projectionMatrix.projection(
-                -this._size * this.aspectRatio,
-                this._size * this.aspectRatio,
-                this._size,
-                -this._size
-            );
-
-            this._projectionValid = true;
-        }
-
-        return this._projectionMatrix;
+        return this._projectionMatrix.projection(
+            -this._size * this.aspectRatio,
+            this._size * this.aspectRatio,
+            this._size,
+            -this._size
+        );
     }
 }

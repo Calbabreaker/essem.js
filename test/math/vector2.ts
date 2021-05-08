@@ -19,10 +19,32 @@ describe("ESSEM.Vector2", () => {
     });
 
     test("setVector()", () => {
-        const vector = new Vector2(55, 55);
+        const vector1 = new Vector2(55, 55);
         const vector2 = new Vector2(928, 845);
-        vector.setVector(vector2);
-        expect(vector.x).toBe(928);
-        expect(vector.y).toBe(845);
+        vector1.setVector(vector2);
+        expect(vector1.x).toBe(928);
+        expect(vector1.y).toBe(845);
+        expect(vector2.x).toBe(928);
+        expect(vector2.y).toBe(845);
+    });
+
+    test("add()", () => {
+        const vector1 = new Vector2(1, 2);
+        const vector2 = new Vector2(3, 1);
+        vector1.add(vector2);
+        expect(vector1.x).toBe(4);
+        expect(vector1.y).toBe(3);
+        expect(vector2.x).toBe(3);
+        expect(vector2.y).toBe(1);
+    });
+
+    test("subtract()", () => {
+        const vector1 = new Vector2(1, 2);
+        const vector2 = new Vector2(3, 1);
+        vector1.subtract(vector2);
+        expect(vector1.x).toBe(-2);
+        expect(vector1.y).toBe(1);
+        expect(vector2.x).toBe(3);
+        expect(vector2.y).toBe(1);
     });
 });

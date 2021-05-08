@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Starter Example</title>
+        <script src="/build/essem.js"></script>
+    </head>
+    <body>
+        <script>
+            const app = new ESSEM.Application();
+
+            app.registerSystem(ESSEM.CameraSystem, ESSEM.SpriteRendererSystem);
+            app.loader.add(ESSEM.Texture, "assets/fish.png");
+
+            const scene = app.createScene();
+
+            document.body.appendChild(app.canvas.element);
+
+            app.eventManager.addListener(ESSEM.ApplicationInitEvent, () => {
+                const entity = scene.createEntity();
+                entity.addComponent(
+                    new ESSEM.TransformComponent(
+                        new ESSEM.Vector2(0, 0),
+                        new ESSEM.Vector2(0.1, 0.1)
+                    )
+                );
+                entity.addComponent(new ESSEM.SpriteComponent(app.loader.get("assets/fish.png")));
+
+                const camera = scene.createEntity();
+                camera.addComponent(new ESSEM.TransformComponent(new ESSEM.Vector2(21, 0)));
+                camera.addComponent(new ESSEM.CameraComponent());
+                camera.addTag("MainCamera");
+            });
+        </script>
+    </body>
+</html>

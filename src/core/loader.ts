@@ -1,6 +1,7 @@
 import { AnyCtor, Dict } from "src/utils/types";
 import { AudioClip } from "./audio_clip";
 import { Texture } from "src/renderer/texture/texture";
+import { assert, getTypeName } from "src/utils/misc";
 
 type ResourceTypes = Texture | AudioClip;
 type ResourceTypeNames = "Texture" | "AudioClip";
@@ -15,26 +16,32 @@ export class Loader {
     private _audioContext: AudioContext;
 
     resourceURLs: [ResourceTypeNames, string][] = [];
-    resources: Dict<ResourceTypes> = {};
+    loadedResources: Dict<ResourceTypes | undefined> = {};
 
     constructor(audioContext: AudioContext) {
         this._audioContext = audioContext;
     }
 
     add(resourceType: AnyCtor<ResourceTypes> | ResourceTypeNames, url: string): this {
-        const resourceTypeName = (resourceType as AnyCtor<ResourceTypes>).name ?? resourceType;
-        this.resourceURLs.push([resourceTypeName as ResourceTypeNames, url]);
+        const resourceTypeName = getTypeName(resourceType) as ResourceTypeNames;
+        this.resourceURLs.push([resourceTypeName, url]);
         return this;
+    }
+
+    get(url: string): ResourceTypes {
+        const resource = this.loadedResources[url];
+        assert(resource !== undefined, `Resource at ${url} does not exist or is not loaded yet!`);
+        return resource;
     }
 
     async loadAll(): Promise<void> {
         for (const [resourceTypeName, url] of this.resourceURLs) {
             switch (resourceTypeName) {
                 case "AudioClip":
-                    this.resources[url] = await AudioClip.fromURL(url, this._audioContext);
+                    this.loadedResources[url] = await AudioClip.fromURL(url, this._audioContext);
                     break;
                 case "Texture":
-                    this.resources[url] = await Texture.fromURL(url);
+                    this.loadedResources[url] = await Texture.fromURL(url);
             }
         }
 

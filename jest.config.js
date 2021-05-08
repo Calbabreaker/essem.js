@@ -5,6 +5,6 @@ module.exports = {
     modulePaths: ["./"],
     verbose: true,
     transform: {
-        "\\.glsl$": "jest-raw-loader",
+        "\\.glsl$": "./test/text_loader.js",
     },
 };

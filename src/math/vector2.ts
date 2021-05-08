@@ -62,24 +62,44 @@ export class Vector2 {
         return array;
     }
 
+    /**
+     * Adds the vector by another vector.
+     *
+     * @param vector - The vector to add by.
+     */
     add(vector: Vector2): this {
         this.x += vector.x;
         this.y += vector.y;
         return this;
     }
 
+    /**
+     * Subtracts the vector by another vector.
+     *
+     * @param vector - The vector to subtract by.
+     */
     subtract(vector: Vector2): this {
         this.x -= vector.x;
         this.y -= vector.y;
         return this;
     }
 
+    /**
+     * Multiplies the vector by a scalar number.
+     *
+     * @param scalar - The number to multiply by.
+     */
     multiply(scalar: number): this {
         this.x *= scalar;
         this.y *= scalar;
         return this;
     }
 
+    /**
+     * Divides the vector by a scalar number.
+     *
+     * @param scalar - The number to divide by.
+     */
     divide(scalar: number): this {
         this.x /= scalar;
         this.y /= scalar;

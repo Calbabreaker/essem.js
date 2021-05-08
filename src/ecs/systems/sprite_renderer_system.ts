@@ -26,7 +26,7 @@ export class SpriteRendererSystem extends System {
 
         const viewProjection = mainCamera.getComponent(CameraComponent).projectionMatrix;
         viewProjection.multiply(
-            mainCamera.getComponent(TransformComponent).transformMatrix.invert()
+            mainCamera.getComponent(TransformComponent).transformMatrix.clone().invert()
         );
 
         const batchExt = this.renderer.extensions.batch;

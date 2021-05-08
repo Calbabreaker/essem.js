@@ -8,7 +8,7 @@ describe("ESSEM.Loader", () => {
     test("should generate Loader", () => {
         const loader = new Loader(audioContext);
 
-        expect(loader.resources).toMatchObject({});
+        expect(loader.loadedResources).toMatchObject({});
         expect(loader.resourceURLs.length).toBe(0);
     });
 
@@ -18,7 +18,7 @@ describe("ESSEM.Loader", () => {
         loader.add(Texture, "somewhere");
         loader.add(AudioClip, "somewhere");
 
-        expect(loader.resources).toMatchObject({});
+        expect(loader.loadedResources).toMatchObject({});
         expect(loader.resourceURLs[0]).toMatchObject(["Texture", "somewhere"]);
         expect(loader.resourceURLs[1]).toMatchObject(["AudioClip", "somewhere"]);
     });
@@ -26,14 +26,29 @@ describe("ESSEM.Loader", () => {
     test("loadAll()", async () => {
         const loader = new Loader(audioContext);
 
-        const texturePath = require.resolve("../../examples/assets/blobfish.jpeg");
+        const texturePath = require.resolve("../../examples/assets/blobfish.jpg");
         const audioPath = require.resolve("../../examples/assets/shoot.wav");
         loader.add(Texture, texturePath);
         loader.add(AudioClip, audioPath);
         await loader.loadAll();
 
-        expect(loader.resources[texturePath]).toBeInstanceOf(Texture);
-        expect(loader.resources[audioPath]).toBeInstanceOf(AudioClip);
+        expect(loader.loadedResources[texturePath]).toBeInstanceOf(Texture);
+        expect(loader.loadedResources[audioPath]).toBeInstanceOf(AudioClip);
+        expect(loader.resourceURLs.length).toBe(0);
+    });
+
+    test("get()", async () => {
+        const loader = new Loader(audioContext);
+
+        const texturePath = require.resolve("../../examples/assets/blobfish.jpg");
+        const audioPath = require.resolve("../../examples/assets/shoot.wav");
+        loader.add(Texture, texturePath);
+        loader.add(AudioClip, audioPath);
+        await loader.loadAll();
+
+        expect(loader.get(texturePath)).toBeInstanceOf(Texture);
+        expect(loader.get(audioPath)).toBeInstanceOf(AudioClip);
+        expect(() => loader.get("UnknownResource")).toThrow();
         expect(loader.resourceURLs.length).toBe(0);
     });
 });

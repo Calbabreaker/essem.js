@@ -48,6 +48,7 @@ describe("ESSEM.Entity", () => {
         expect(entity["_componentMap"].size).toBe(2);
         expect(entity["_componentMap"].get("ComponentThing")).toBe(thing);
         expect(entity["_componentMap"].get("ValueComponent")).toBe(value);
+        expect(() => entity.addComponent(value)).toThrow();
     });
 
     test("removeComponent()", () => {
@@ -62,6 +63,7 @@ describe("ESSEM.Entity", () => {
         entity.removeComponent(ValueComponent);
 
         expect(entity["_componentMap"].size).toBe(0);
+        expect(() => entity.removeComponent(ValueComponent)).toThrow();
     });
 
     test("getComponent()", () => {
@@ -72,8 +74,10 @@ describe("ESSEM.Entity", () => {
 
         entity.addComponent(thing);
         entity.addComponent(value);
+
         expect(entity.getComponent(ValueComponent)).toBe(value);
         expect(entity.getComponent(ComponentThing)).toBe(thing);
+        expect(() => entity.getComponent("YESYES")).toThrow();
     });
 
     test("hasComponent()", () => {

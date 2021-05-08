@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Starter Example</title>
+        <title>Test</title>
         <script src="/build/essem.js"></script>
         <style>
             * {
@@ -28,7 +28,7 @@
                 canvasOptions: { fixedSize: false },
             });
 
-            app.loader.add(ESSEM.Texture, "assets/blobfish.jpeg");
+            app.loader.add(ESSEM.Texture, "assets/blobfish.jpg");
             app.loader.add(ESSEM.AudioClip, "assets/shoot.wav");
             app.registerSystem(ESSEM.SpriteRendererSystem, ESSEM.CameraSystem);
             document.body.appendChild(app.canvas.element);
@@ -49,7 +49,7 @@
 
             app.eventManager.addListener(ESSEM.ApplicationInitEvent, () => {
                 entity.addComponent(
-                    new ESSEM.SpriteComponent(app.loader.resources["assets/blobfish.jpeg"])
+                    new ESSEM.SpriteComponent(app.loader.get("assets/blobfish.jpg"))
                 );
             });
 
@@ -67,7 +67,7 @@
             app.eventManager.addListener(ESSEM.ApplicationUpdateEvent, (event) => {
                 entityTransform.rotation += ESSEM.toRadians(event.delta * 0.25);
                 redSquareTransform.rotation += ESSEM.toRadians(event.delta * 0.5);
-                backgroundColor += 3 - 0x000100 + 0x020000;
+                backgroundColor += 2 - 0x000100 + 0x020000;
                 app.renderer.backgroundColor = backgroundColor;
             });
         </script>

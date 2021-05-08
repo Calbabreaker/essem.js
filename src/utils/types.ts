@@ -15,6 +15,7 @@ export type TypedArrayTypes =
 declare global {
     interface Window {
         __ESSEM__: boolean;
-        ESSEM: { [key: string]: unknown };
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        ESSEM: { [key: string]: any };
     }
 }
