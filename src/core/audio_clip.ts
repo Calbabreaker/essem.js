@@ -6,9 +6,9 @@ import { assert } from "src/utils/misc";
  * @memberof ESSEM
  */
 export class AudioClip {
-    volume: number = 1;
-    loop: boolean = false;
-    playing: boolean = false;
+    volume = 1;
+    loop = false;
+    playing = false;
 
     readonly buffer: AudioBuffer;
     source: AudioBufferSourceNode | null = null;

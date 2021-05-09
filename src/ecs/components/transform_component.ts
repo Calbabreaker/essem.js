@@ -1,6 +1,6 @@
-import { Entity } from "../entity";
 import { Matrix3 } from "src/math/matrix3";
-import { Vector2 } from "src/math/vector2";
+import { Vector2, Vector2Proxy } from "src/math/vector2";
+import { Entity } from "../entity";
 
 /**
  * Component that holds the position, scale and rotation of an entity.
@@ -8,11 +8,23 @@ import { Vector2 } from "src/math/vector2";
  * @memberof ESSEM
  */
 export class TransformComponent {
-    private _position: Vector2;
-    private _scale: Vector2;
+    /**
+     * Position of the component.
+     */
+    position: Vector2Proxy;
+
+    /**
+     * Scale of the component.
+     */
+    scale: Vector2Proxy;
     private _rotation: number;
-    private _transformMatrix: Matrix3 = new Matrix3();
-    private _transformValid = false;
+
+    localMatrix: Matrix3 = new Matrix3();
+    globalMatrix: Matrix3 = new Matrix3();
+
+    private _localValid = false;
+    private _parentUpdateID = 0;
+    _globalUpdateID = 0;
 
     /**
      * @param position - Starting position.
@@ -20,54 +32,13 @@ export class TransformComponent {
      * @param rotation - Starting rotation.
      */
     constructor(position = new Vector2(), scale = new Vector2(1, 1), rotation = 0) {
-        this._position = position;
-        this._scale = scale;
+        this.position = new Vector2Proxy(this._onChange.bind(this), position.x, position.y);
+        this.scale = new Vector2Proxy(this._onChange.bind(this), scale.x, scale.y);
         this._rotation = rotation;
     }
 
-    /**
-     * Matrix that holds the transform of the component.
-     * This value will be cached and invalidated when making any changes to the component.
-     *
-     * @readonly
-     */
-    get transformMatrix(): Matrix3 {
-        if (!this._transformValid) {
-            this._transformMatrix.transform(this._position, this._scale, this._rotation);
-            this._transformValid = true;
-        }
-
-        return this._transformMatrix;
-    }
-
-    /**
-     * Position of the component.
-     *
-     * @member {Vector2}
-     */
-    set position(position: Vector2) {
-        this._transformValid = false;
-        this._position = position;
-    }
-
-    get position(): Vector2 {
-        this._transformValid = false;
-        return this._position;
-    }
-
-    /**
-     * Scale of the component.
-     *
-     * @member {Vector2}
-     */
-    set scale(scale: Vector2) {
-        this._transformValid = false;
-        this._scale = scale;
-    }
-
-    get scale(): Vector2 {
-        this._transformValid = false;
-        return this._scale;
+    private _onChange() {
+        this._localValid = false;
     }
 
     /**
@@ -76,53 +47,51 @@ export class TransformComponent {
      * @member {number}
      */
     set rotation(rotation: number) {
-        this._transformValid = false;
         this._rotation = rotation;
+        this._onChange();
     }
 
     get rotation(): number {
         return this._rotation;
     }
 
-    static getGlobalPosition(entity: Entity): Vector2 {
-        const vector = entity.getComponent(TransformComponent)._position.clone();
-        entity.forEachParent((parent) => {
-            vector.add(parent.getComponent(TransformComponent)._position);
-        });
+    updateTransform(parentTransform?: TransformComponent): void {
+        if (!this._localValid) {
+            this.localMatrix.transform(this.position, this.scale, this.rotation);
+            this._localValid = true;
+            // force update global transform
+            this._parentUpdateID = -1;
+        }
 
-        return vector;
+        if (parentTransform !== undefined) {
+            // parent exist then check parent
+            if (this._parentUpdateID !== parentTransform._globalUpdateID) {
+                this.globalMatrix = this.localMatrix.clone();
+                this.globalMatrix.multiplyFront(parentTransform.globalMatrix);
+                this._parentUpdateID = parentTransform._parentUpdateID;
+                this._globalUpdateID++;
+            }
+        } else {
+            // else have -2 as the id for the parentUpdateID to check
+            if (this._parentUpdateID !== -2) {
+                this.globalMatrix = this.localMatrix;
+                this._globalUpdateID++;
+                this._parentUpdateID = -2;
+            }
+        }
     }
 
-    static getGlobalScale(entity: Entity): Vector2 {
-        const vector = entity.getComponent(TransformComponent)._scale.clone();
-        entity.forEachParent((parent) => {
-            vector.add(parent.getComponent(TransformComponent)._scale);
-        });
+    static updateGlobalTransform(entity: Entity): void {
+        let parentTransform = undefined;
+        if (entity.parent instanceof Entity) {
+            TransformComponent.updateGlobalTransform(entity.parent);
+            if (entity.parent.hasComponent(TransformComponent)) {
+                parentTransform = entity.parent.getComponent(TransformComponent);
+            }
+        }
 
-        return vector;
-    }
-
-    static getGlobalRotation(entity: Entity): number {
-        let rotation = entity.getComponent(TransformComponent)._rotation;
-        entity.forEachParent((parent) => {
-            rotation += parent.getComponent(TransformComponent)._rotation;
-        });
-
-        return rotation;
-    }
-
-    /**
-     * Gets the global transform matrix relative to all the entity's parents.
-     *
-     * @param entity - Entity to get the global transform matrix of.
-     * @return A global transform matrix.
-     */
-    static getGlobalTransformMatrix(entity: Entity): Matrix3 {
-        const matrix = entity.getComponent(TransformComponent).transformMatrix.clone();
-        entity.forEachParent((parent) => {
-            matrix.multiplyFront(parent.getComponent(TransformComponent).transformMatrix);
-        });
-
-        return matrix;
+        if (entity.hasComponent(TransformComponent)) {
+            entity.getComponent(TransformComponent).updateTransform(parentTransform);
+        }
     }
 }

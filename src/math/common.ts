@@ -7,7 +7,7 @@
  * @param {number} [tolerance=0.001] - The range to check in.
  * @return Whether or not the values are approximately equal.
  */
-export function approxEquals(a: number, b: number, tolerance: number = 0.001): boolean {
+export function approxEquals(a: number, b: number, tolerance = 0.001): boolean {
     return Math.abs(a - b) <= tolerance;
 }
 

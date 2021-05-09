@@ -20,13 +20,14 @@ export class SpriteComponent {
     vertexData: Float32Array = new Float32Array(8);
     uvs: Float32Array;
 
+    _transformUpdateID = 0;
     private _hexColor!: number;
 
     /**
      * @param texture - Texture to use. This should be resued between other components.
      * @param {number} [color=0xffffff] - Colour of the sprite in hexadecimal.
      */
-    constructor(texture: Texture, color: number = 0xffffff) {
+    constructor(texture: Texture, color = 0xffffff) {
         this.texture = texture;
         this.color = color;
         this.uvs = texture.uvs;

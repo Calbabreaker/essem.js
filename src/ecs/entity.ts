@@ -10,7 +10,9 @@ export type ComponentClass = AnyCtor<Component>;
 let uidCounter = 0;
 
 /**
- * Entity class to handle components in ecs.
+ * Entity class to handle components, tags and queries in the entity component system.
+ * Note: Samed named components will be considered as the same component. This makes it possible
+ * to get the component just by using its name.
  *
  * @memberof ESSEM
  */
@@ -45,8 +47,7 @@ export class Entity {
     /**
      * Adds a new component to the entity.
      *
-     * @param {Component} component - Any object that is an instance of a class. Same named classes
-     *        will be considered as the same component.
+     * @param {Component} component - Any object that is an instance of a class.
      * @return {Component} The component that was added.
      */
     addComponent<T extends Component>(component: T): T {
@@ -62,7 +63,6 @@ export class Entity {
      * Removes a component from the entity.
      *
      * @param componentType - The component name or class to remove.
-     *        Same named classes will be considered as the same component.
      */
     removeComponent(componentType: ComponentClass | string): void {
         const typeName = getTypeName(componentType);
@@ -76,7 +76,6 @@ export class Entity {
      * Checks to see if the component is on the entity.
      *
      * @param componentType - The component name or class to check.
-     *        Same named classes will be considered as the same component.
      * @return Whether or not the entity has the component.
      */
     hasComponent(componentType: ComponentClass | string): boolean {
@@ -88,7 +87,6 @@ export class Entity {
      * Checks to see if all the components specified are on the entity.
      *
      * @param componentType - An array of the component names or classes to check.
-     *        Same named classes will be considered as the same component.
      * @return Whether or not the entity has all the components.
      */
     hasAllComponents(componentTypes: (ComponentClass | string)[]): boolean {
@@ -103,7 +101,6 @@ export class Entity {
      * Gets a component from the entity.
      *
      * @param {ComponentClass | string} componentType - The component name or class to get.
-     *        Same named classes will be considered as the same component.
      * @return {Component} The component that was retrieved.
      */
     getComponent<T extends Component>(componentType: AnyCtor<T> | string): T {
@@ -112,6 +109,8 @@ export class Entity {
         assert(component !== undefined, `Component '${typeName}' does not exist!`);
         return component as T;
     }
+
+    // TODO: make tags be like components
 
     addTag(tag: string): void {
         if (this.active) {
@@ -174,7 +173,8 @@ export class Entity {
         if (this.active === active) return;
         this._active = active;
 
-        // remove entity listing from components and tags
+        // removes entity listing from components and tags in the systems and scene but still
+        // retains them in the entity
         if (this._componentMap.size !== 0) {
             for (const [typeName] of this._componentMap) {
                 active
@@ -205,7 +205,7 @@ export class Entity {
             this._parent.children.delete(this._name);
         }
 
-        // add to parent
+        // add to new parent
         if (parent !== null) {
             assert(
                 !parent.children.has(this._name),
@@ -231,18 +231,32 @@ export class Entity {
         this.parent = this._parent;
     }
 
-    forEachParent(func: (parent: Entity) => void): void {
-        if (this._parent instanceof Entity) {
-            func(this._parent);
-            this._parent.forEachParent(func);
+    /**
+     * Loops through each parent and calls the function.
+     *
+     * @param func - The function to call for each parent. Returning false from this function will
+     *        stop the loop.
+     */
+    forEachParent(func: (parent: Entity) => void | boolean): void {
+        if (this.parent instanceof Entity) {
+            if (!func(this.parent)) return;
+            this.parent.forEachParent(func);
         }
     }
 
-    forEachChildrenRecursive(func: (child: Entity) => void): void {
-        this.children.forEach((child) => {
-            func(child);
+    /**
+     * Recursively loops through each child and calls the function.
+     * This will include all childrens' childrens.
+     * Since it is iterating over maps, it can be quite slow so it is not recommended to use this too much.
+     *
+     * @param func - The function to call for each children. Returning false from this function will
+     *        stop the loop.
+     */
+    forEachChildrenRecursive(func: (child: Entity) => void | boolean): void {
+        for (const [_a, child] of this.children) {
+            if (!func(child)) return;
             if (child.children.size !== 0) child.forEachChildrenRecursive(func);
-        });
+        }
     }
 
     /**

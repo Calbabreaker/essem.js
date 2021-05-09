@@ -44,9 +44,8 @@ export * from "./utils/types";
  * The version of the essem.js library being used.
  *
  * @memberof ESSEM
- * @type string
  */
-export const VERSION: string = "$_VERSION";
+export const VERSION = "$_VERSION";
 
 if (window.__ESSEM__) {
     throw new Error("essem.js is already imported!");

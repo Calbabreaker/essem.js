@@ -13,22 +13,24 @@ import { Vector2 } from "./vector2";
  * @memberof ESSEM
  */
 export class Matrix3 {
-    xScale: number;
-    ySkew: number;
-    xSkew: number;
-    yScale: number;
-    xTrans: number;
-    yTrans: number;
+    xScale!: number;
+    ySkew!: number;
+    xSkew!: number;
+    yScale!: number;
+    xTrans!: number;
+    yTrans!: number;
 
     private _array: Float32Array | null = null;
 
-    constructor(xScale = 1, ySkew = 0, xSkew = 0, yScale = 1, xTrans = 0, yTrans = 0) {
-        this.xScale = xScale;
-        this.ySkew = ySkew;
-        this.xSkew = xSkew;
-        this.yScale = yScale;
-        this.xTrans = xTrans;
-        this.yTrans = yTrans;
+    constructor(
+        xScale?: number,
+        ySkew?: number,
+        xSkew?: number,
+        yScale?: number,
+        xTrans?: number,
+        yTrans?: number
+    ) {
+        this.setValues(xScale, ySkew, xSkew, yScale, xTrans, yTrans);
     }
 
     clone(): Matrix3 {
@@ -39,6 +41,27 @@ export class Matrix3 {
             this.yScale,
             this.xTrans,
             this.yTrans
+        );
+    }
+
+    setValues(xScale = 1, ySkew = 0, xSkew = 0, yScale = 1, xTrans = 0, yTrans = 0): this {
+        this.xScale = xScale;
+        this.ySkew = ySkew;
+        this.xSkew = xSkew;
+        this.yScale = yScale;
+        this.xTrans = xTrans;
+        this.yTrans = yTrans;
+        return this;
+    }
+
+    setMatrix(matrix: Matrix3): this {
+        return this.setValues(
+            matrix.xScale,
+            matrix.ySkew,
+            matrix.xSkew,
+            matrix.yScale,
+            matrix.xTrans,
+            matrix.yTrans
         );
     }
 
@@ -96,16 +119,6 @@ export class Matrix3 {
         this.yScale = xScale / det;
         this.xTrans = (xSkew * this.yTrans - yScale * xTrans) / det;
         this.yTrans = -(xScale * this.yTrans - xSkew * xTrans) / det;
-        return this;
-    }
-
-    identity(): this {
-        this.xScale = 1;
-        this.ySkew = 0;
-        this.xSkew = 0;
-        this.yScale = 1;
-        this.xTrans = 0;
-        this.yTrans = 0;
         return this;
     }
 
@@ -183,7 +196,7 @@ export class Matrix3 {
 
     // TODO: perhaps make this not use matrix funcions?
     transform(position: Vector2, scale: Vector2, rotation: number): this {
-        this.identity();
+        this.setValues();
         if (rotation !== 0) {
             this.rotate(rotation);
         }
@@ -192,13 +205,7 @@ export class Matrix3 {
         return this;
     }
 
-    projection(
-        left: number,
-        right: number,
-        bottom: number,
-        top: number,
-        flip: boolean = true
-    ): this {
+    project(left: number, right: number, bottom: number, top: number, flip = true): this {
         const rl = right - left;
         const tb = top - bottom;
         const sign = flip ? -1 : 1;

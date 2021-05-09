@@ -32,6 +32,9 @@ export class ApplicationUpdateEvent extends Event {
     }
 }
 
+export class ApplicationRenderEvent extends Event {}
+export class ApplicationPreRenderEvent extends Event {}
+
 export interface IApplicationOptions {
     canvasOptions?: ICanvasOptions;
 }
@@ -68,7 +71,7 @@ export class Application {
     /**
      * @param {object} [options={}] - Optional parameters for Application.
      * @param {object} [options.canvasOptions={}] - Optional parameters for the canvas.
-     *      See {@link ESSEM.Canvas}
+     *        See {@link ESSEM.Canvas}
      */
     constructor(options: IApplicationOptions = {}) {
         this.canvas = new Canvas(options.canvasOptions, this.eventManager);
@@ -104,9 +107,11 @@ export class Application {
     private _onUpdate(): void {
         const now = performance.now();
         const delta = now - this.lastFrameTime;
-
-        this.renderer.update();
         this.eventManager.sendEvent(new ApplicationUpdateEvent(delta));
+
+        this.eventManager.sendEvent(new ApplicationPreRenderEvent());
+        this.renderer.update();
+        this.eventManager.sendEvent(new ApplicationRenderEvent());
 
         this.lastFrameTime = now;
     }

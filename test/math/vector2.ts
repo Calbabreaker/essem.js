@@ -13,7 +13,7 @@ describe("ESSEM.Vector2", () => {
 
     test("set()", () => {
         const vector = new Vector2(55, 55);
-        vector.set(15, 9);
+        vector.setValues(15, 9);
         expect(vector.x).toBe(15);
         expect(vector.y).toBe(9);
     });

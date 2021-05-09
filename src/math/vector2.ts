@@ -20,14 +20,14 @@ export class Vector2 {
     /**
      * The cache for toArray.
      */
-    private _array: Float32Array | null = null;
+    _array: Float32Array | null = null;
 
     constructor(x = 0, y = 0) {
         this.x = x;
         this.y = y;
     }
 
-    set(x = 0, y = 0): this {
+    setValues(x = 0, y = 0): this {
         this.x = x;
         this.y = y;
         return this;
@@ -175,10 +175,10 @@ export class Vector2 {
      * according to tolerance.
      *
      * @param vector - The input vector to compare.
-     * @param {number} [tolerance=0.001] - The range to check in.
+     * @param tolerance - The range to check in.
      * @return Whether or not the vectors are approximately equal.
      */
-    approxEquals(vector: Vector2, tolerance: number = 0.001): boolean {
+    approxEquals(vector: Vector2, tolerance = 0.001): boolean {
         return (
             approxEquals(this.x, vector.x, tolerance) && approxEquals(this.y, vector.y, tolerance)
         );
@@ -192,4 +192,66 @@ export class Vector2 {
     }
 
     static readonly ZERO = new Vector2(0, 0);
+}
+
+export class Vector2Proxy {
+    private _x: number;
+    private _y: number;
+    _array: Float32Array | null = null;
+    callbackFunc: () => void;
+
+    constructor(callbackFunc: () => void, x = 0, y = 0) {
+        this.callbackFunc = callbackFunc;
+        this._x = x;
+        this._y = y;
+        this._array;
+    }
+
+    get x(): number {
+        return this._x;
+    }
+
+    set x(x: number) {
+        if (this._x !== x) {
+            this._x = x;
+            this.callbackFunc();
+        }
+    }
+
+    get y(): number {
+        return this._y;
+    }
+
+    set y(y: number) {
+        if (this._y !== y) {
+            this._y = y;
+            this.callbackFunc();
+        }
+    }
+
+    setValues = Vector2.prototype.setValues;
+    setVector = Vector2.prototype.setVector;
+    clone = Vector2.prototype.clone;
+    toString = Vector2.prototype.toString;
+    toArray = Vector2.prototype.toArray;
+
+    add = Vector2.prototype.add;
+    subtract = Vector2.prototype.subtract;
+    multiply = Vector2.prototype.multiply;
+    divide = Vector2.prototype.divide;
+
+    distanceSquared = Vector2.prototype.distanceSquared;
+    distance = Vector2.prototype.distance;
+    magnitudeSquared = Vector2.prototype.magnitudeSquared;
+    magnitude = Vector2.prototype.magnitude;
+    normalize = Vector2.prototype.normalize;
+    dot = Vector2.prototype.dot;
+    cross = Vector2.prototype.cross;
+
+    random = Vector2.prototype.random;
+    rotate = Vector2.prototype.rotate;
+    angle = Vector2.prototype.angle;
+    exactEquals = Vector2.prototype.exactEquals;
+    approxEquals = Vector2.prototype.approxEquals;
+    transformMatrix3 = Vector2.prototype.transformMatrix3;
 }

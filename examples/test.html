@@ -60,14 +60,14 @@
             });
 
             app.eventManager.addListener(ESSEM.MousePressedEvent, () => {
-                app.loader.resources["assets/shoot.wav"].play();
+                app.loader.get("assets/shoot.wav").play();
             });
 
             let backgroundColor = 0x000000;
             app.eventManager.addListener(ESSEM.ApplicationUpdateEvent, (event) => {
                 entityTransform.rotation += ESSEM.toRadians(event.delta * 0.25);
                 redSquareTransform.rotation += ESSEM.toRadians(event.delta * 0.5);
-                backgroundColor += 2 - 0x000100 + 0x020000;
+                backgroundColor += 3 - 0x000100 + 0x020000;
                 app.renderer.backgroundColor = backgroundColor;
             });
         </script>

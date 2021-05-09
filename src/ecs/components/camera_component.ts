@@ -12,21 +12,28 @@ export class CameraComponent {
     private _aspectRatio = 0;
     private _size: number;
 
-    private _projectionMatrix = new Matrix3();
-    _projectionValid = false;
+    projectionMatrix = new Matrix3();
+    viewProjMatrix = new Matrix3();
+    private _projMatrixValid = false;
+    _transformUpdateID = 0;
 
     /**
      * @param {number} [size=100] - The size or 'inverse zoom' of the camera.
      * @param {boolean} [fixedAspectRatio=false] - Whether or not the camera shouldn't be automatically
      *        resized whenever the viewport resizes.
      */
-    constructor(size: number = 100, fixedAspectRatio: boolean = false) {
+    constructor(size = 100, fixedAspectRatio = false) {
         this._size = size;
         this.fixedAspectRatio = fixedAspectRatio;
     }
 
+    private _onChange(): void {
+        this._projMatrixValid = false;
+    }
+
     setViewportSize(width: number, height: number): void {
         this.aspectRatio = width / height;
+        this._onChange();
     }
 
     /**
@@ -39,12 +46,12 @@ export class CameraComponent {
     }
 
     set size(size: number) {
-        this._projectionValid = false;
         this._size = size;
+        this._onChange();
     }
 
     /**
-     * The current aspect ratio or 'inverse zoom' of the camera.
+     * The current aspect ratio of the camera.
      *
      * @member {number}
      */
@@ -53,22 +60,21 @@ export class CameraComponent {
     }
 
     set aspectRatio(aspectRatio: number) {
-        this._projectionValid = false;
         this._aspectRatio = aspectRatio;
+        this._onChange();
     }
 
-    /**
-     * The camera projection represented as a matrix.
-     *
-     * @member {Matrix3}
-     * @readonly
-     */
-    get projectionMatrix(): Matrix3 {
-        return this._projectionMatrix.projection(
-            -this._size * this.aspectRatio,
-            this._size * this.aspectRatio,
-            this._size,
-            -this._size
-        );
+    updateProjection(): void {
+        if (!this._projMatrixValid) {
+            this.projectionMatrix.project(
+                -this._size * this.aspectRatio,
+                this._size * this.aspectRatio,
+                this._size,
+                -this._size
+            );
+
+            this._projMatrixValid = true;
+            this._transformUpdateID = -1;
+        }
     }
 }

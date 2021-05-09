@@ -17,7 +17,7 @@ export class TextureExtension {
         this.boundTextures = new Array(gl.getParameter(gl.MAX_TEXTURE_IMAGE_UNITS)).fill(null);
     }
 
-    bindTexture(texture: Texture, slot: number = 0): void {
+    bindTexture(texture: Texture, slot = 0): void {
         const { gl, contextUID } = this.renderer;
 
         assert(

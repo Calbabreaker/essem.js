@@ -7,7 +7,7 @@ export class ObjectPool<T, M = undefined> {
     objectClass: ObjectClassType<T, M>;
     objectManager: M;
     availableObjects: T[] = [];
-    totalObjects: number = 0;
+    totalObjects = 0;
 
     constructor(objectClass: ObjectClassType<T, M>, objectManager: M) {
         this.objectClass = objectClass;

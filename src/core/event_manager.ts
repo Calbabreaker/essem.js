@@ -42,7 +42,7 @@ export class EventManager {
     }
 
     /**
-     * Send a event for all event's listeners to get.
+     * Send a event for all event listeners listening to the event to get.
      *
      * @param event - An instance of the event to send. Same named classes will be considered as
      *      the same event.

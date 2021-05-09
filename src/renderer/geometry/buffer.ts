@@ -19,7 +19,7 @@ export class Buffer {
     type: BUFFER_TYPE = BUFFER_TYPE.VERTEX_BUFFER;
     layout?: BufferLayout;
     glBuffers: Dict<GLBuffer | undefined> = {};
-    dirtyID: number = 0;
+    dirtyID = 0;
     dataSubLength?: number;
 
     isStatic: boolean;
@@ -28,7 +28,7 @@ export class Buffer {
      * @param data - A fixed typed array like Float32Array or UInt32Array.
      * @param isStatic - Whether or not the data is static or dynamic.
      */
-    constructor(data: TypedArrayTypes, isStatic: boolean = true, dataSubLength?: number) {
+    constructor(data: TypedArrayTypes, isStatic = true, dataSubLength?: number) {
         this.data = data;
         this.isStatic = isStatic;
         this.dataSubLength = dataSubLength;

@@ -126,7 +126,7 @@ export class Canvas {
 
         window.addEventListener("mousemove", (event) => {
             this._eventManager.sendEvent(new MouseMovedEvent(event.offsetX, event.offsetY));
-            this._mousePosition.set(event.clientX, event.clientY);
+            this._mousePosition.setValues(event.clientX, event.clientY);
         });
 
         window.addEventListener("wheel", (event) => {
@@ -147,7 +147,7 @@ export class Canvas {
      * @param height - The height to resize to.
      * @param {boolean} [sendEvent=true] - Whether or not to send a CanvasResizedEvent.
      */
-    resizeCanvas(width: number, height: number, sendEvent: boolean = true): void {
+    resizeCanvas(width: number, height: number, sendEvent = true): void {
         this.width = width;
         this.height = height;
         this.element.width = width;

@@ -13,23 +13,17 @@
             app.registerSystem(ESSEM.CameraSystem, ESSEM.SpriteRendererSystem);
             app.loader.add(ESSEM.Texture, "assets/fish.png");
 
-            const scene = app.createScene();
-
             document.body.appendChild(app.canvas.element);
 
             app.eventManager.addListener(ESSEM.ApplicationInitEvent, () => {
+                const scene = app.createScene();
                 const entity = scene.createEntity();
-                entity.addComponent(
-                    new ESSEM.TransformComponent(
-                        new ESSEM.Vector2(0, 0),
-                        new ESSEM.Vector2(0.1, 0.1)
-                    )
-                );
+                entity.addComponent(new ESSEM.TransformComponent());
                 entity.addComponent(new ESSEM.SpriteComponent(app.loader.get("assets/fish.png")));
 
                 const camera = scene.createEntity();
-                camera.addComponent(new ESSEM.TransformComponent(new ESSEM.Vector2(21, 0)));
-                camera.addComponent(new ESSEM.CameraComponent());
+                camera.addComponent(new ESSEM.TransformComponent(new ESSEM.Vector2(100, 0)));
+                camera.addComponent(new ESSEM.CameraComponent(500));
                 camera.addTag("MainCamera");
             });
         </script>
