@@ -4,7 +4,7 @@
  * @memberof ESSEM
  * @param a - The first value.
  * @param b - The second value.
- * @param {number} [tolerance=0.001] - The range to check in.
+ * @param tolerance - The range to check in.
  * @return Whether or not the values are approximately equal.
  */
 export function approxEquals(a: number, b: number, tolerance = 0.001): boolean {

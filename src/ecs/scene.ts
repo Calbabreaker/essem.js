@@ -47,7 +47,7 @@ export class Scene {
      * Creates a new entity that is aquired from a pool for efficency.
      *
      * @param [name=`Unnamed Entity ${entity.id}`] - The name of the entity.
-     * @param {ESSEM.Entity | ESSEM.Scene} [parent=this] - The parent for the entity. Default is this scene.
+     * @param parent - The parent for the entity. Default is this scene.
      * @return The entity that was created.
      */
     createEntity(name?: string, parent: Entity | Scene = this): Entity {

@@ -18,8 +18,8 @@ export class CameraComponent {
     _transformUpdateID = 0;
 
     /**
-     * @param {number} [size=100] - The size or 'inverse zoom' of the camera.
-     * @param {boolean} [fixedAspectRatio=false] - Whether or not the camera shouldn't be automatically
+     * @param size - The size or 'inverse zoom' of the camera.
+     * @param fixedAspectRatio - Whether or not the camera shouldn't be automatically
      *        resized whenever the viewport resizes.
      */
     constructor(size = 100, fixedAspectRatio = false) {
@@ -38,8 +38,6 @@ export class CameraComponent {
 
     /**
      * The current size or 'inverse zoom' of the camera.
-     *
-     * @member {number}
      */
     get size(): number {
         return this._size;
