@@ -8,15 +8,8 @@ import { Entity } from "../entity";
  * @memberof ESSEM
  */
 export class TransformComponent {
-    /**
-     * Position of the component.
-     */
-    position: Vector2Proxy;
-
-    /**
-     * Scale of the component.
-     */
-    scale: Vector2Proxy;
+    private _position = new Vector2Proxy(this._onChange.bind(this));
+    private _scale = new Vector2Proxy(this._onChange.bind(this));
     private _rotation: number;
 
     localMatrix: Matrix3 = new Matrix3();
@@ -32,8 +25,8 @@ export class TransformComponent {
      * @param rotation - Starting rotation.
      */
     constructor(position = new Vector2(), scale = new Vector2(1, 1), rotation = 0) {
-        this.position = new Vector2Proxy(this._onChange.bind(this), position.x, position.y);
-        this.scale = new Vector2Proxy(this._onChange.bind(this), scale.x, scale.y);
+        this.position = position;
+        this.scale = scale;
         this._rotation = rotation;
     }
 
@@ -42,17 +35,40 @@ export class TransformComponent {
     }
 
     /**
-     * Rotation of the component.
-     *
-     * @member {number}
+     * Position of the transform.
      */
+    get position(): Vector2 {
+        return this._position;
+    }
+
+    /**
+     * Scale of the transform.
+     */
+    set position(position: Vector2) {
+        this._position.setVector(position);
+    }
+
+    /**
+     * Scale of the transform.
+     */
+    get scale(): Vector2 {
+        return this._scale;
+    }
+
+    set scale(scale: Vector2) {
+        this._scale.setVector(scale);
+    }
+
+    /**
+     * Rotation of the component.
+     */
+    get rotation(): number {
+        return this._rotation;
+    }
+
     set rotation(rotation: number) {
         this._rotation = rotation;
         this._onChange();
-    }
-
-    get rotation(): number {
-        return this._rotation;
     }
 
     updateTransform(parentTransform?: TransformComponent): void {

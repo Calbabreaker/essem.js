@@ -2,7 +2,7 @@ import { Entity } from "./entity";
 import { assert, mapGet, lastItemSwapRemove } from "src/utils/misc";
 import { System } from "./system";
 import { ObjectPool } from "src/utils/object_pool";
-import { ArrayCtor } from "src/utils/types";
+import { ArrayConstructor } from "src/utils/types";
 
 /**
  * Handles all the entities.
@@ -78,7 +78,7 @@ export class Scene {
      * @return An array of entities with the tag.
      */
     getEntitesByTag(tag: string): Entity[] {
-        return mapGet(this._tagToEntities, tag, Array as ArrayCtor<Entity>);
+        return mapGet(this._tagToEntities, tag, Array as ArrayConstructor<Entity>);
     }
 
     /**
@@ -87,7 +87,7 @@ export class Scene {
      * @private
      */
     _entityComponentAdd(entity: Entity, typeName: string): void {
-        const systems = mapGet(this._typeNameToSystem, typeName, Array as ArrayCtor<System>);
+        const systems = mapGet(this._typeNameToSystem, typeName, Array as ArrayConstructor<System>);
         systems.forEach((system) => {
             if (entity._systemIndexMap.has(system.constructor.name)) return;
 
@@ -107,7 +107,7 @@ export class Scene {
      * @private
      */
     _entityComponentRemove(entity: Entity, typeName: string): void {
-        const systems = mapGet(this._typeNameToSystem, typeName, Array as ArrayCtor<System>);
+        const systems = mapGet(this._typeNameToSystem, typeName, Array as ArrayConstructor<System>);
         systems.forEach((system) => {
             const entityIndex = entity._systemIndexMap.get(system.constructor.name);
             if (entityIndex === undefined) return;
@@ -125,7 +125,7 @@ export class Scene {
      * @private
      */
     _entityTagRemove(entity: Entity, tag: string): void {
-        const entities = mapGet(this._tagToEntities, tag, Array as ArrayCtor<Entity>);
+        const entities = mapGet(this._tagToEntities, tag, Array as ArrayConstructor<Entity>);
         const index = entity._tagIndexMap.get(tag);
         assert(index !== undefined, `Tag ${tag} does not exist!`);
 
@@ -140,7 +140,7 @@ export class Scene {
      * @private
      */
     _entityTagAdd(entity: Entity, tag: string): void {
-        const entities = mapGet(this._tagToEntities, tag, Array as ArrayCtor<Entity>);
+        const entities = mapGet(this._tagToEntities, tag, Array as ArrayConstructor<Entity>);
         entities.push(entity);
         entity._tagIndexMap.set(tag, entities.length - 1);
     }
@@ -151,7 +151,7 @@ export class Scene {
      * @private
      */
     _systemTypeNameAdd(system: System, typeName: string): void {
-        const systems = mapGet(this._typeNameToSystem, typeName, Array as ArrayCtor<System>);
+        const systems = mapGet(this._typeNameToSystem, typeName, Array as ArrayConstructor<System>);
         systems.push(system);
         system.typeNames.push(typeName);
     }

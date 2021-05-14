@@ -1,5 +1,5 @@
 import { mapGet } from "src/utils/misc";
-import { AnyCtor } from "src/utils/types";
+import { AnyConstructor } from "src/utils/types";
 
 /**
  * Event base class that all events must extend from.
@@ -33,10 +33,10 @@ export class EventManager {
      * @param listenerFunc - The function that will receive the events.
      */
     addListener<T extends Event>(
-        eventType: AnyCtor<T> | string,
+        eventType: AnyConstructor<T> | string,
         listenerFunc: EventListenerFunc<T>
     ): void {
-        const eventName = (eventType as AnyCtor<T>).name ?? eventType;
+        const eventName = (eventType as AnyConstructor<T>).name ?? eventType;
         const listeners = mapGet(this.eventListenersMap, eventName, Array) as EventListenerFunc[];
         listeners.push(listenerFunc as EventListenerFunc<Event>);
     }

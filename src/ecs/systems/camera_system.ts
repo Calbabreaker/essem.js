@@ -23,7 +23,7 @@ export class CameraSystem extends System {
 
     onEntityAdd(entity: Entity): void {
         const cameraComponent = entity.getComponent(CameraComponent);
-        if (!cameraComponent.fixedAspectRatio) {
+        if (!cameraComponent.autoScale) {
             cameraComponent.setViewportSize(this.canvas.width, this.canvas.height);
         }
     }
@@ -47,7 +47,7 @@ export class CameraSystem extends System {
     onResized(event: CanvasResizedEvent): void {
         this.entities.forEach((entity) => {
             const cameraComponent = entity.getComponent(CameraComponent);
-            if (!cameraComponent.fixedAspectRatio) {
+            if (!cameraComponent.autoScale) {
                 cameraComponent.setViewportSize(event.width, event.height);
             }
         });

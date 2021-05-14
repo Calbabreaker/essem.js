@@ -1,4 +1,4 @@
-import { AnyCtor, Dict } from "src/utils/types";
+import { AnyConstructor, Dict } from "src/utils/types";
 import { AudioClip } from "./audio_clip";
 import { Texture } from "src/renderer/texture/texture";
 import { assert, getTypeName } from "src/utils/misc";
@@ -22,7 +22,7 @@ export class Loader {
         this._audioContext = audioContext;
     }
 
-    add(resourceType: AnyCtor<ResourceTypes> | ResourceTypeNames, url: string): this {
+    add(resourceType: AnyConstructor<ResourceTypes> | ResourceTypeNames, url: string): this {
         const resourceTypeName = getTypeName(resourceType) as ResourceTypeNames;
         this.resourceURLs.push([resourceTypeName, url]);
         return this;

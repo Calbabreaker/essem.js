@@ -1,11 +1,11 @@
 import { assert, getTypeName } from "src/utils/misc";
-import { AnyCtor } from "src/utils/types";
+import { AnyConstructor } from "src/utils/types";
 import { Scene } from "./scene";
 
 // basically any object
 // eslint-disable-next-line @typescript-eslint/ban-types
 export type Component = Object;
-export type ComponentClass = AnyCtor<Component>;
+export type ComponentClass = AnyConstructor<Component>;
 
 let uidCounter = 0;
 
@@ -103,7 +103,7 @@ export class Entity {
      * @param {ComponentClass | string} componentType - The component name or class to get.
      * @return {Component} The component that was retrieved.
      */
-    getComponent<T extends Component>(componentType: AnyCtor<T> | string): T {
+    getComponent<T extends Component>(componentType: AnyConstructor<T> | string): T {
         const typeName = getTypeName(componentType);
         const component = this._componentMap.get(typeName);
         assert(component !== undefined, `Component '${typeName}' does not exist!`);

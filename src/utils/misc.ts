@@ -1,4 +1,4 @@
-import { AnyCtor, ArrayTypes } from "./types";
+import { AnyConstructor, ArrayTypes } from "./types";
 
 /**
  * Error class that is used for {@link ESSEM.assert}.
@@ -35,7 +35,7 @@ export function assert(condition: boolean, message?: string): asserts condition 
  * @param defaultClass - The class to create a new instance from.
  * @return The value that was retrieved.
  */
-export function mapGet<K, V>(map: Map<K, V>, key: K, defaultClass: AnyCtor<V>): V {
+export function mapGet<K, V>(map: Map<K, V>, key: K, defaultClass: AnyConstructor<V>): V {
     if (!map.has(key)) map.set(key, new defaultClass());
     return map.get(key) as V;
 }
@@ -63,8 +63,8 @@ export function lastItemSwapRemove<T>(array: T[], index: number): T {
  * @param {AnyClass | string} type - Any class or string.
  * @return The name of the type.
  */
-export function getTypeName<T>(type: AnyCtor<T> | string): string {
-    return (type as AnyCtor<T>).name ?? type;
+export function getTypeName<T>(type: AnyConstructor<T> | string): string {
+    return (type as AnyConstructor<T>).name ?? type;
 }
 
 export function arrayEquals(array1: ArrayTypes, array2: ArrayTypes): boolean {

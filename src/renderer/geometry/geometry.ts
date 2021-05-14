@@ -1,5 +1,5 @@
 import { BUFFER_TYPE } from "src/utils/constants";
-import { AnyCtor, Dict, TypedArrayTypes } from "src/utils/types";
+import { AnyConstructor, Dict, TypedArrayTypes } from "src/utils/types";
 import { Buffer, BufferLayout, IAttribute } from "./buffer";
 
 export class Geometry {
@@ -28,7 +28,7 @@ export class Geometry {
 
 function ensureBuffer(
     buffer: Buffer | TypedArrayTypes | number[],
-    typedArrayClass: AnyCtor<TypedArrayTypes>
+    typedArrayClass: AnyConstructor<TypedArrayTypes>
 ) {
     if (!(buffer instanceof Buffer)) {
         if (buffer instanceof Array) {

@@ -197,13 +197,13 @@ export class Vector2 {
 export class Vector2Proxy {
     private _x: number;
     private _y: number;
+    private _callbackFunc: () => void;
     _array: Float32Array | null = null;
-    callbackFunc: () => void;
 
     constructor(callbackFunc: () => void, x = 0, y = 0) {
-        this.callbackFunc = callbackFunc;
         this._x = x;
         this._y = y;
+        this._callbackFunc = callbackFunc;
         this._array;
     }
 
@@ -214,7 +214,7 @@ export class Vector2Proxy {
     set x(x: number) {
         if (this._x !== x) {
             this._x = x;
-            this.callbackFunc();
+            this._callbackFunc();
         }
     }
 
@@ -225,7 +225,7 @@ export class Vector2Proxy {
     set y(y: number) {
         if (this._y !== y) {
             this._y = y;
-            this.callbackFunc();
+            this._callbackFunc();
         }
     }
 
