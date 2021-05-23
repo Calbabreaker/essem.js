@@ -1,4 +1,4 @@
-import { AnyConstructor, Dict } from "src/utils/types";
+import { AnyConstructor, Dictionary } from "src/utils/types";
 import { AudioClip } from "./audio_clip";
 import { Texture } from "src/renderer/texture/texture";
 import { assert, getTypeName } from "src/utils/misc";
@@ -16,7 +16,7 @@ export class Loader {
     private _audioContext: AudioContext;
 
     resourceURLs: [ResourceTypeNames, string][] = [];
-    loadedResources: Dict<ResourceTypes | undefined> = {};
+    loadedResources: Dictionary<ResourceTypes | undefined> = {};
 
     constructor(audioContext: AudioContext) {
         this._audioContext = audioContext;

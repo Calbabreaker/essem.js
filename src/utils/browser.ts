@@ -1,23 +1,3 @@
-// caches the result from webgl2Supported function
-let webgl2Supported: boolean | undefined;
-
-/**
- * Checks to see if WebGL2 is supported in the browser.
- *
- * @memberof ESSEM
- * @return Whether or not WebGL2 is supported.
- */
-export function isWebGL2Supported(): boolean {
-    if (webgl2Supported === undefined) {
-        const canvasElm = document.createElement("canvas");
-        const gl = canvasElm.getContext("webgl2");
-
-        webgl2Supported = gl !== undefined;
-    }
-
-    return webgl2Supported;
-}
-
 let saidHello = false;
 
 /**
@@ -27,8 +7,15 @@ let saidHello = false;
  */
 export function sayHello(): void {
     if (!saidHello) {
-        // TODO: make this look better
-        console.log("---\n--- essem.js v$_VERSION\n---");
+        const banner = "essem.js ⚒️⚒️⚒️ v$_VERSION";
+        const border = `-${"-".repeat(banner.length)}--`;
+        console.log(
+            `%c${border}\n- %c ${banner} %c -\n${border}`,
+            "background-color: #f0f010;",
+            "background-color: #000; color: #afa92f;",
+            "background-color: #f0f010;"
+        );
+
         saidHello = true;
     }
 }

@@ -1,4 +1,4 @@
-import { ArrayTypes, Dict } from "src/utils/types";
+import { ArrayTypes, Dictionary } from "src/utils/types";
 
 export interface IProgramUniformData {
     location: WebGLUniformLocation;
@@ -11,8 +11,8 @@ export interface IProgramAttributeData {
 
 export class GLProgram {
     handle: WebGLProgram;
-    uniformDatas: Dict<IProgramUniformData> = {};
-    attributeDatas: Dict<IProgramAttributeData> = {};
+    uniformDatas: Dictionary<IProgramUniformData> = {};
+    attributeDatas: Dictionary<IProgramAttributeData> = {};
 
     constructor(handle: WebGLProgram) {
         this.handle = handle;

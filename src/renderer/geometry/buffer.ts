@@ -1,6 +1,6 @@
 import { ShaderDataTypes, shaderDataTypeSize } from "../shader/shader_utils";
 import { BUFFER_TYPE } from "src/utils/constants";
-import { Dict, TypedArrayTypes } from "src/utils/types";
+import { Dictionary, TypedArrayTypes } from "src/utils/types";
 import { GLBuffer } from "./gl_buffer";
 
 export interface IAttribute {
@@ -18,7 +18,7 @@ export class Buffer {
     data: TypedArrayTypes;
     type: BUFFER_TYPE = BUFFER_TYPE.VERTEX_BUFFER;
     layout?: BufferLayout;
-    glBuffers: Dict<GLBuffer | undefined> = {};
+    glBuffers: Dictionary<GLBuffer | undefined> = {};
     dirtyID = 0;
     dataSubLength?: number;
 

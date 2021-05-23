@@ -1,4 +1,4 @@
-import { Dict } from "src/utils/types";
+import { Dictionary } from "src/utils/types";
 import {
     TEXTURE_TYPES,
     SCALE_MODES,
@@ -40,7 +40,7 @@ export class Texture {
 
     dirtyID = 0;
     dirtyStyleID = 0;
-    glTextures: Dict<GLTexture | undefined> = {};
+    glTextures: Dictionary<GLTexture | undefined> = {};
 
     /**
      * @param {HTMLCanvasElement | HTMLImageElement} source - The source for the texture.

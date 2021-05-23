@@ -1,5 +1,4 @@
 import { assert } from "src/utils/misc";
-import { isWebGL2Supported } from "src/utils/browser";
 import { hexToRGBA } from "src/utils/colors";
 import { TextureExtension } from "./texture/texture_extension";
 import { ShaderExtension } from "./shader/shader_extension";
@@ -31,27 +30,24 @@ export class Renderer {
     extensions: IRendererExtensions;
 
     constructor(canvasElement: HTMLCanvasElement) {
-        // TODO: perhaps don't use isWebGL2Supported func?
-        if (isWebGL2Supported()) {
-            const gl = canvasElement.getContext("webgl2");
-            assert(gl !== null, "Failed to create WebGL2 context");
-
-            this.gl = gl;
-            this.contextUID = (uidCounter++).toString();
-
-            this.extensions = {
-                texture: new TextureExtension(this),
-                shader: new ShaderExtension(this),
-                buffer: new BufferExtension(this),
-                geometry: new GeometryExtension(this),
-            } as IRendererExtensions;
-
-            // batch requires other extensions to be created first
-            this.extensions.batch = new BatchRendererExtension(this);
-        } else {
+        const gl = canvasElement.getContext("webgl2");
+        if (gl === null) {
             alert("WebGL2 is not supported in your browser!");
-            throw new Error("WebGL2 not supported!");
+            assert(false, "WebGL2 not supported!");
         }
+
+        this.gl = gl;
+        this.contextUID = (uidCounter++).toString();
+
+        this.extensions = {
+            texture: new TextureExtension(this),
+            shader: new ShaderExtension(this),
+            buffer: new BufferExtension(this),
+            geometry: new GeometryExtension(this),
+        } as IRendererExtensions;
+
+        // batch requires other extensions to be created first
+        this.extensions.batch = new BatchRendererExtension(this);
     }
 
     update(): void {

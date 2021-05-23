@@ -11,7 +11,7 @@ describe("ESSEM.Vector2", () => {
         expect(vectorDefault.y).toBe(0);
     });
 
-    test("set()", () => {
+    test("setValues()", () => {
         const vector = new Vector2(55, 55);
         vector.setValues(15, 9);
         expect(vector.x).toBe(15);
@@ -26,6 +26,25 @@ describe("ESSEM.Vector2", () => {
         expect(vector1.y).toBe(845);
         expect(vector2.x).toBe(928);
         expect(vector2.y).toBe(845);
+    });
+
+    test("clone()", () => {
+        const vector1 = new Vector2(100, 200);
+        const vector2 = vector1.clone();
+        expect(vector1.x).toBe(100);
+        expect(vector1.y).toBe(200);
+        expect(vector2.x).toBe(100);
+        expect(vector2.y).toBe(200);
+    });
+
+    test("toArray()", () => {
+        const vector = new Vector2(110, 210);
+        const array = vector.toArray();
+        expect(vector.x).toBe(110);
+        expect(vector.y).toBe(210);
+        expect(array.length).toBe(2);
+        expect(array[0]).toBe(110);
+        expect(array[1]).toBe(210);
     });
 
     test("add()", () => {

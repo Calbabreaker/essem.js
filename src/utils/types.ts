@@ -1,6 +1,6 @@
 export type AnyConstructor<T> = new (...args: any[]) => T;
 export type ArrayConstructor<T> = new (...items: T[]) => T[];
-export type Dict<T> = { [key: string]: T };
+export type Dictionary<T> = { [key: string]: T };
 export type ArrayTypes = boolean[] | number[] | TypedArrayTypes;
 export type TypedArrayTypes =
     | Float32Array

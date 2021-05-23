@@ -1,4 +1,4 @@
-import { Dict } from "src/utils/types";
+import { Dictionary } from "src/utils/types";
 import { GLProgram } from "./gl_program";
 import { IShaderInfo } from "./shader_utils";
 import { UniformTypes } from "./uniforms";
@@ -18,9 +18,9 @@ export class Shader {
 
     attributeInfos: IShaderInfo[] | undefined;
     uniformInfos: IShaderInfo[] | undefined;
-    uniforms: Dict<UniformTypes> = {};
+    uniforms: Dictionary<UniformTypes> = {};
 
-    glPrograms: Dict<GLProgram | undefined> = {};
+    glPrograms: Dictionary<GLProgram | undefined> = {};
 
     constructor(vertexSrc: string, fragmentSrc: string, name = "Unnamed") {
         this.vertexSrc = vertexSrc;

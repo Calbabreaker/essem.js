@@ -1,10 +1,10 @@
 import dts from "rollup-plugin-dts";
+import glsl from "rollup-plugin-glsl";
 import replace from "rollup-plugin-re";
 import serve from "rollup-plugin-serve";
 import sourcemaps from "rollup-plugin-sourcemaps";
 import typescript from "rollup-plugin-typescript2";
 import { terser } from "rollup-plugin-terser";
-import { string } from "rollup-plugin-string";
 
 import path from "path";
 import pkg from "./package.json";
@@ -36,8 +36,8 @@ export default () => {
                     $_VERSION: pkg.version,
                 },
             }),
-            string({
-                include: ["src/**/*.glsl"],
+            glsl({
+                include: "src/**/*.glsl",
             }),
             sourcemaps(),
             typescript(),
