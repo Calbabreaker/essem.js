@@ -299,5 +299,4 @@ export class Entity {
 
         this.parent = null;
     }
-
 }
