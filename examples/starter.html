@@ -22,7 +22,9 @@
                 entity.addComponent(new ESSEM.SpriteComponent(app.loader.get("assets/fish.png")));
 
                 const camera = scene.createEntity();
-                camera.addComponent(new ESSEM.TransformComponent(new ESSEM.Vector2(1, 0), new ESSEM.Vector2(2, 2)));
+                camera.addComponent(
+                    new ESSEM.TransformComponent(new ESSEM.Vector2(1, 0), new ESSEM.Vector2(2, 2))
+                );
                 camera.addComponent(new ESSEM.CameraComponent());
                 camera.addTag("MainCamera");
             });

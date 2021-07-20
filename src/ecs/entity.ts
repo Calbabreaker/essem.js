@@ -64,7 +64,7 @@ export class Entity {
      *
      * @param componentType - The component name or class to remove.
      */
-    removeComponent(componentType: ComponentClass | string): void {
+    removeComponent(componentType: ComponentClass | string) {
         const typeName = getTypeName(componentType);
         assert(this._componentMap.has(typeName), `Component '${typeName}' does not exist!`);
 

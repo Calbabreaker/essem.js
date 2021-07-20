@@ -5,6 +5,6 @@ module.exports = {
     modulePaths: ["./"],
     verbose: true,
     transform: {
-        "\\.glsl$": "./test/text_loader.js",
+        "\\.glsl$": "./test/glsl_loader.js",
     },
 };
