@@ -33,15 +33,10 @@ export class Scene {
      */
     children: Map<string, Entity> = new Map();
 
-    entityPool: ObjectPool<Entity, Scene>;
-
     private _typeNameToSystem: Map<string, System[]> = new Map();
     private _tagToEntities: Map<string, Entity[]> = new Map();
 
-    constructor() {
-        this.entityPool = new ObjectPool<Entity, Scene>(Entity, this);
-        this.entityPool.reserve(100);
-    }
+    constructor() {}
 
     /**
      * Creates a new entity that is aquired from a pool for efficency.

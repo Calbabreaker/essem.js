@@ -21,8 +21,8 @@ export class AssertionError extends Error {
  * @param message - The message to use in the Error.
  * @return {void}
  */
-export function assert(condition: boolean, message?: string): asserts condition {
-    if (!condition) throw new AssertionError(message);
+export function assert(condition: unknown, message?: string): asserts condition {
+    if (!Boolean(condition)) throw new AssertionError(message);
 }
 
 /**

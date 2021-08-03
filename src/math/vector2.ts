@@ -20,7 +20,7 @@ export class Vector2 {
     /**
      * The cache for toArray.
      */
-    _array: Float32Array | null = null;
+    _cacheArray: Float32Array | null = null;
 
     constructor(x = 0, y = 0) {
         this.x = x;
@@ -54,9 +54,9 @@ export class Vector2 {
      *        to use the vector's array cache.
      */
     toArray(out?: Float32Array): Float32Array {
-        if (!this._array) this._array = new Float32Array(2);
+        if (!this._cacheArray) this._cacheArray = new Float32Array(2);
 
-        const array = out ?? this._array;
+        const array = out ?? this._cacheArray;
         array[0] = this.x;
         array[1] = this.y;
         return array;
@@ -197,14 +197,14 @@ export class Vector2 {
 export class Vector2Proxy {
     private _x: number;
     private _y: number;
-    private _callbackFunc: () => void;
-    _array: Float32Array | null = null;
+    private _onChangeCallback: () => void;
+    _cacheArray: Float32Array | null = null;
 
-    constructor(callbackFunc: () => void, x = 0, y = 0) {
+    constructor(onChangeCallback: () => void, x = 0, y = 0) {
         this._x = x;
         this._y = y;
-        this._callbackFunc = callbackFunc;
-        this._array;
+        this._onChangeCallback = onChangeCallback;
+        this._cacheArray;
     }
 
     get x(): number {
@@ -214,7 +214,7 @@ export class Vector2Proxy {
     set x(x: number) {
         if (this._x !== x) {
             this._x = x;
-            this._callbackFunc();
+            this._onChangeCallback();
         }
     }
 
@@ -225,7 +225,7 @@ export class Vector2Proxy {
     set y(y: number) {
         if (this._y !== y) {
             this._y = y;
-            this._callbackFunc();
+            this._onChangeCallback();
         }
     }
 

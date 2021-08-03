@@ -1,29 +1,22 @@
 import { Vector2, Vector2Proxy } from "src/math/vector2";
 import { Matrix3 } from "src/math/matrix3";
+import { Component } from "../component";
 
 /**
  * Component for viewing on the screen.
  * All render systems will look for a entity tagged 'MainCamera' as the camera to render with.
- * Note that you can set the zoom of the camera by modifying the scale property of the TransformComponent.
+ * Note that you can set the zoom of the camera by modifying the scale property on the TransformComponent.
  *
  * @memberof ESSEM
  */
-export class CameraComponent {
-    autoScale: boolean;
+export class CameraComponent extends Component {
+    autoScale: boolean = true;
     private _size = new Vector2Proxy(this._onChange.bind(this));
 
     projectionMatrix = new Matrix3();
     viewProjMatrix = new Matrix3();
     private _projMatrixValid = false;
     _transformUpdateID = 0;
-
-    /**
-     * @param autoScale - Whether or not the camera will automatically scale to fit the viewport
-     *      size.
-     */
-    constructor(autoScale = false) {
-        this.autoScale = autoScale;
-    }
 
     private _onChange(): void {
         this._projMatrixValid = false;
@@ -50,4 +43,6 @@ export class CameraComponent {
             this._transformUpdateID = -1;
         }
     }
+
+    static schema = { autoScale: true };
 }

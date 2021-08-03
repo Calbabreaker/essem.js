@@ -1,7 +1,9 @@
 import { Application } from "src/core/application";
 import { ComponentClass, Entity } from "./entity";
 import { Scene } from "./scene";
-import { getTypeName } from "src/utils/misc";
+import { assert, getTypeName } from "src/utils/misc";
+import { ECSManager } from "./ecs_manager";
+import { Query } from "./query";
 
 export type SystemClass = new (scene: Scene) => System;
 
@@ -46,13 +48,10 @@ export abstract class System {
      */
     typeNames: string[] = [];
 
-    /**
-     * The scene that the system is active on.
-     */
-    protected scene: Scene;
+    protected ecsManager: ECSManager;
 
-    constructor(scene: Scene) {
-        this.scene = scene;
+    constructor(ecsManager: ECSManager) {
+        this.ecsManager = ecsManager;
     }
 
     /**
@@ -64,24 +63,16 @@ export abstract class System {
      */
     abstract setup(app: Application): void;
 
-    /**
-     * Optional abstract function that gets called whenever a matching entity gets added.
-     *
-     * @param entity - The entity that was added to this.entites.
-     */
-    onEntityAdd?(entity: Entity): void;
+    addQuery(componentTagTypes: (ComponentClass | string)[]) {
+        const query = new Query([]);
+        componentTagTypes.forEach((componentTagType) => {
+            const typeName = getTypeName(componentTagType);
+            query.typeNames.push(typeName);
 
-    /**
-     * Sets the component types that the system will use to collect entities.
-     * Note that previous sets of component types will not be removed and so new sets will just be
-     * added on top.
-     *
-     * @param componentTypes - Array of component classes or names.
-     */
-    setComponents(componentTypes: (ComponentClass | string)[]): void {
-        for (const componentType of componentTypes) {
-            const typeName = getTypeName(componentType);
-            this.scene._systemTypeNameAdd(this, typeName);
-        }
+            const queries = this.ecsManager.typeNameToQuery.get(typeName);
+            assert(queries, `${typeName} has not been registered!`);
+
+            queries.push(query);
+        });
     }
 }
