@@ -20,13 +20,13 @@ jobs:
             - name: Install yarn and xvfb
               run: npm install -g yarn && sudo apt-get install xvfb
             - name: Install dependencies
-              run: yarn install
-            - name: Lint code
-              run: yarn run lint:fix
+              run: yarn 
             - name: Build library
-              run: yarn run build
+              run: yarn build
             - name: Run Unit Tests
-              run: xvfb-run --auto-servernum yarn run test
+              run: xvfb-run --auto-servernum yarn test
+            - name: Lint code
+              run: yarn lint:fix
             - name: Commit changes
               uses: stefanzweifel/git-auto-commit-action@v4
               with:
