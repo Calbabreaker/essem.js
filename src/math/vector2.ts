@@ -130,7 +130,7 @@ export class Vector2 {
     }
 
     dot(vector: Vector2): number {
-        return this.x * vector.x + this.y + vector.y;
+        return this.x * vector.x + this.y * vector.y;
     }
 
     cross(vector: Vector2): number {
@@ -140,7 +140,7 @@ export class Vector2 {
     random(magnitude = 1): this {
         const rValue = Math.random() * Math.PI * 2;
         this.x = Math.cos(rValue) * magnitude;
-        this.y = Math.cos(rValue) * magnitude;
+        this.y = Math.sin(rValue) * magnitude;
         return this;
     }
 
