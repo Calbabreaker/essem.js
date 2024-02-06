@@ -16,17 +16,17 @@ jobs:
             - name: Setup Node.js
               uses: actions/setup-node@v1
               with:
-                  node-version: 12.x
-            - name: Install yarn and xvfb
-              run: npm install -g yarn && sudo apt-get install xvfb
+                  node-version: 20.x
+            - name: Install pnpm and xvfb
+              run: npm install -g pnpm && sudo apt-get install xvfb
             - name: Install dependencies
-              run: yarn 
+              run: pnpm install
             - name: Build library
-              run: yarn build
+              run: pnpm build
             - name: Run Unit Tests
-              run: xvfb-run --auto-servernum yarn test
+              run: xvfb-run --auto-servernum pnpm test
             - name: Lint code
-              run: yarn lint:fix
+              run: pnpm lint:fix
             - name: Commit changes
               uses: stefanzweifel/git-auto-commit-action@v4
               with:
