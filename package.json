@@ -12,12 +12,11 @@
         "LICENSE"
     ],
     "scripts": {
-        "start": "yarn run dev",
+        "start": "pnpm run dev",
         "dev": "rollup -cw --environment SERVER",
         "build": "rollup -c",
         "lint": "eslint --ext .js,.ts . --max-warnings 0",
-        "lint:fix": "yarn run lint --fix",
-        "test": "jest",
+        "lint:fix": "pnpm run lint --fix",
         "docs": "webdoc --site-root docs"
     },
     "repository": {
@@ -44,24 +43,20 @@
     "devDependencies": {
         "@rollup/plugin-terser": "^0.4.4",
         "@rollup/plugin-typescript": "^11.1.6",
-        "@types/jest": "^26.0.24",
         "@types/node": "^20.11.16",
-        "@typescript-eslint/eslint-plugin": "^4.28.3",
-        "@typescript-eslint/parser": "^4.28.3",
-        "@webdoc/cli": "^1.5.2",
-        "eslint": "^7.30.0",
-        "eslint-config-prettier": "^8.3.0",
-        "eslint-plugin-prettier": "^3.4.0",
-        "jest": "^29.7.0",
-        "jest-electron": "^0.1.12",
-        "prettier": "^2.3.2",
-        "rollup": "^2.53.1",
+        "@typescript-eslint/eslint-plugin": "^6.21.0",
+        "@typescript-eslint/parser": "^6.21.0",
+        "@webdoc/cli": "^2.2.0",
+        "eslint": "^8.56.0",
+        "eslint-config-prettier": "^9.1.0",
+        "eslint-plugin-prettier": "^5.1.3",
+        "prettier": "^3.2.5",
+        "rollup": "^4.9.6",
         "rollup-plugin-dts": "^6.1.0",
         "rollup-plugin-glsl": "^1.3.0",
         "rollup-plugin-re": "^1.0.7",
-        "rollup-plugin-serve": "^1.1.0",
+        "rollup-plugin-serve": "^1.1.1",
         "rollup-plugin-sourcemaps": "^0.6.3",
-        "ts-jest": "^29.1.2",
         "tslib": "^2.6.2",
         "typescript": "^5.3.3"
     }

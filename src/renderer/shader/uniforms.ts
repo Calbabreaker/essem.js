@@ -12,7 +12,7 @@ export function uploadUniform(
     /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
     value: any, // easier to just use any type
     info: IShaderInfo,
-    uniformData: IProgramUniformData
+    uniformData: IProgramUniformData,
 ): void {
     const { cachedValue, location } = uniformData;
 

@@ -86,7 +86,7 @@ export class BufferLayout {
                 attribute.dataType,
                 attribute.name,
                 shaderDataTypeSize(attribute.dataType),
-                attribute.normalized
+                attribute.normalized,
             );
 
             element.offset = this.stride;

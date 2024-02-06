@@ -13,7 +13,7 @@ export function sayHello(): void {
             `%c${border}\n- %c ${banner} %c -\n${border}`,
             "background-color: #f0f010;",
             "background-color: #000; color: #afa92f;",
-            "background-color: #f0f010;"
+            "background-color: #f0f010;",
         );
 
         saidHello = true;

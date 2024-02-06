@@ -22,7 +22,7 @@ export class TextureExtension {
 
         assert(
             this.boundTextures[slot] !== undefined,
-            `Can't bind texture at invalid slot ${slot}!`
+            `Can't bind texture at invalid slot ${slot}!`,
         );
 
         const glTexture = texture.glTextures[contextUID] ?? this.initTexture(texture);
@@ -72,7 +72,7 @@ export class TextureExtension {
             texture.format,
             texture.format,
             texture.dataType,
-            texture.source
+            texture.source,
         );
         glTexture.dirtyID = texture.dirtyID;
     }

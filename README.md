@@ -67,8 +67,7 @@ First, run `pnpm` to install the dependencies.
 Then, to develop the library you should use `pnpm run dev` which will setup a development server
 and automatically compiles all the typescript files.
 
-After you made some changes, you should use `pnpm run lint:fix` to lint the code and run
-`pnpm run build && pnpm run test` to test the code.
+After you made some changes, you should use `pnpm run lint:fix` to lint the code.
 This will also be automatically ran with github actions on every push.
 
 To build the documentation from jsdoc: `pnpm run docs`

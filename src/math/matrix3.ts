@@ -28,7 +28,7 @@ export class Matrix3 {
         xSkew?: number,
         yScale?: number,
         xTrans?: number,
-        yTrans?: number
+        yTrans?: number,
     ) {
         this.setValues(xScale, ySkew, xSkew, yScale, xTrans, yTrans);
     }
@@ -40,7 +40,7 @@ export class Matrix3 {
             this.xSkew,
             this.yScale,
             this.xTrans,
-            this.yTrans
+            this.yTrans,
         );
     }
 
@@ -61,7 +61,7 @@ export class Matrix3 {
             matrix.xSkew,
             matrix.yScale,
             matrix.xTrans,
-            matrix.yTrans
+            matrix.yTrans,
         );
     }
 

@@ -73,7 +73,7 @@ export class GeometryExtension {
                         element.componentCount,
                         webglType,
                         buffer.layout.stride,
-                        element.offset
+                        element.offset,
                     );
                 } else {
                     gl.vertexAttribPointer(
@@ -82,7 +82,7 @@ export class GeometryExtension {
                         webglType,
                         element.normalized,
                         buffer.layout.stride,
-                        element.offset
+                        element.offset,
                     );
                 }
             }

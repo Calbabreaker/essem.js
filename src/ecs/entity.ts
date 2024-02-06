@@ -209,7 +209,7 @@ export class Entity {
         if (parent !== null) {
             assert(
                 !parent.children.has(this._name),
-                `Other child with name '${this._name}' already exist!`
+                `Other child with name '${this._name}' already exist!`,
             );
             parent.children.set(this._name, this);
         }

@@ -57,7 +57,7 @@ export class ShaderExtension {
         gl.linkProgram(webglProgram);
         assert(
             gl.getProgramParameter(webglProgram, gl.LINK_STATUS),
-            `WebGL program failed to link!\n${gl.getProgramInfoLog(webglProgram)}`
+            `WebGL program failed to link!\n${gl.getProgramInfoLog(webglProgram)}`,
         );
 
         gl.deleteShader(glVertexShader);
@@ -83,7 +83,7 @@ export class ShaderExtension {
 
         assert(
             gl.getShaderParameter(webglShader, gl.COMPILE_STATUS),
-            `Failed to compile ${shaderTypeName} shader!\n${gl.getShaderInfoLog(webglShader)}`
+            `Failed to compile ${shaderTypeName} shader!\n${gl.getShaderInfoLog(webglShader)}`,
         );
 
         return webglShader;
@@ -112,7 +112,7 @@ export class ShaderExtension {
 
             const location = gl.getUniformLocation(
                 glProgram.handle,
-                info.name
+                info.name,
             ) as WebGLUniformLocation;
 
             glProgram.uniformDatas[info.name] = {

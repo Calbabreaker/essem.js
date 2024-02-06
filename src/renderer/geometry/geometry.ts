@@ -53,7 +53,7 @@ export class Geometry {
      */
     addVertexBuffer(
         bufferParam: Buffer | TypedArrayTypes | number[],
-        attributes: IAttribute | IAttribute[] | BufferLayout
+        attributes: IAttribute | IAttribute[] | BufferLayout,
     ): this {
         const buffer = ensureBuffer(bufferParam, Float32Array);
         buffer.type = BUFFER_TYPE.VERTEX_BUFFER;
@@ -78,7 +78,7 @@ export class Geometry {
 
 function ensureBuffer(
     buffer: Buffer | TypedArrayTypes | number[],
-    typedArrayClass: AnyConstructor<TypedArrayTypes>
+    typedArrayClass: AnyConstructor<TypedArrayTypes>,
 ) {
     if (!(buffer instanceof Buffer)) {
         if (buffer instanceof Array) {

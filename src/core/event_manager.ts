@@ -34,7 +34,7 @@ export class EventManager {
      */
     addListener<T extends Event>(
         eventType: AnyConstructor<T> | string,
-        listenerFunc: EventListenerFunc<T>
+        listenerFunc: EventListenerFunc<T>,
     ): void {
         const eventName = (eventType as AnyConstructor<T>).name ?? eventType;
         const listeners = mapGet(this.eventListenersMap, eventName, Array) as EventListenerFunc[];

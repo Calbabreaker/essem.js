@@ -88,7 +88,7 @@ export function glslToShaderDataType(glslType: number): ShaderDataTypes {
 export function shaderDataTypeDefaultValue(
     dataType: ShaderDataTypes,
     isArray: boolean,
-    count: number
+    count: number,
 ): ArrayTypes | number | boolean {
     /* eslint-disable no-fallthrough */
     // prettier-ignore

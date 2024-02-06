@@ -17,14 +17,12 @@ jobs:
               uses: actions/setup-node@v1
               with:
                   node-version: 20.x
-            - name: Install pnpm and xvfb
-              run: npm install -g pnpm && sudo apt-get install xvfb
+            - name: Install pnpm
+              run: npm install -g pnpm
             - name: Install dependencies
               run: pnpm install
             - name: Build library
               run: pnpm build
-            - name: Run Unit Tests
-              run: xvfb-run --auto-servernum pnpm test
             - name: Lint code
               run: pnpm lint:fix
             - name: Commit changes

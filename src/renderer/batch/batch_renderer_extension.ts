@@ -46,7 +46,7 @@ export class BatchRendererExtension {
         ]);
 
         this.vertices = new Float32Array(
-            settings.BATCH_SIZE * 4 * bufferLayout.totalComponentCount
+            settings.BATCH_SIZE * 4 * bufferLayout.totalComponentCount,
         );
         const vertexBuffer = new Buffer(this.vertices, false);
 

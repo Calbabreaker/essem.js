@@ -7,7 +7,7 @@ import typescript from "@rollup/plugin-typescript";
 import terser from "@rollup/plugin-terser";
 
 import path from "path";
-import pkg from "./package.json";
+import pkg from "./package.json" with { type: "json" };
 
 export default () => {
     const useServer = process.env.SERVER || false;
@@ -23,7 +23,7 @@ export default () => {
     ].join("\n");
 
     const baseBundle = {
-        input: path.join(__dirname, "src/index.ts"),
+        input: path.join(import.meta.dirname, "src/index.ts"),
         output: {
             sourcemap: true,
             banner,
@@ -69,7 +69,7 @@ export default () => {
         ...baseBundle,
         output: {
             ...baseBundle.output,
-            file: path.join(__dirname, "build/essem.js"),
+            file: path.join(import.meta.dirname, "build/essem.js"),
             format: "umd",
         },
     });
@@ -86,7 +86,7 @@ export default () => {
             ...minifiedBundle,
             output: {
                 ...minifiedBundle.output,
-                file: path.join(__dirname, "build/essem.min.js"),
+                file: path.join(import.meta.dirname, "build/essem.min.js"),
                 format: "umd",
             },
         });
@@ -96,7 +96,7 @@ export default () => {
             ...baseBundle,
             output: {
                 ...baseBundle.output,
-                file: path.join(__dirname, "build/essem.module.js"),
+                file: path.join(import.meta.dirname, "build/essem.module.js"),
                 format: "esm",
                 sourcemap: false,
             },
@@ -107,7 +107,7 @@ export default () => {
             ...minifiedBundle,
             output: {
                 ...minifiedBundle.output,
-                file: path.join(__dirname, "build/essem.module.min.js"),
+                file: path.join(import.meta.dirname, "build/essem.module.min.js"),
                 format: "esm",
             },
         });
