@@ -3,8 +3,8 @@ import glsl from "rollup-plugin-glsl";
 import replace from "rollup-plugin-re";
 import serve from "rollup-plugin-serve";
 import sourcemaps from "rollup-plugin-sourcemaps";
-import typescript from "rollup-plugin-typescript2";
-import { terser } from "rollup-plugin-terser";
+import typescript from "@rollup/plugin-typescript";
+import terser from "@rollup/plugin-terser";
 
 import path from "path";
 import pkg from "./package.json";
@@ -30,6 +30,7 @@ export default () => {
             name: "ESSEM",
         },
         plugins: [
+            typescript(),
             replace({
                 include: "src/**/*.ts",
                 replaces: {
@@ -40,7 +41,6 @@ export default () => {
                 include: "src/**/*.glsl",
             }),
             sourcemaps(),
-            typescript(),
         ],
     };
 

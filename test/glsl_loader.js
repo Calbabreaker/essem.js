@@ -1,4 +1,5 @@
-const tsTransformer = require("ts-jest").createTransformer();
+const tsJest = require("ts-jest");
+const tsTransformer = new tsJest.TsJestTransformer();
 
 module.exports = {
     process(src, filename, ...rest) {

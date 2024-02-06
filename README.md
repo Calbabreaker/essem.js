@@ -53,23 +53,22 @@ app.eventManager.addListener(ESSEM.ApplicationInitEvent, () => {
 ## Documentation
 
 The documentation is [here](https://calbabreaker.github.io/essem.js/docs/).
-You can also build the documentation from the sources by doing `yarn run docs`
-and then viewing the 
+You can also build the documentation from the sources by doing `pnpm run docs`
+and then viewing the
 `docs/` directory.
 
 ## Contributing
 
-We're using yarn for this project so make sure it's installed through your
-package manager and use yarn for every command.
+We're using pnpm for this project so make sure it's installed through your
+package manager and use pnpm for every command.
 
-First, run `yarn` to install the dependencies.
+First, run `pnpm` to install the dependencies.
 
-Then, to develop the library you should use `yarn run dev` which will setup a development server
+Then, to develop the library you should use `pnpm run dev` which will setup a development server
 and automatically compiles all the typescript files.
 
-After you made some changes, you should use `yarn run lint:fix` to lint the code and run 
-`yarn run build && yarn run test` to test the code.
+After you made some changes, you should use `pnpm run lint:fix` to lint the code and run
+`pnpm run build && pnpm run test` to test the code.
 This will also be automatically ran with github actions on every push.
 
-To build the documentation from jsdoc: `yarn run docs`
-
+To build the documentation from jsdoc: `pnpm run docs`
